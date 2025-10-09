@@ -1,0 +1,91 @@
+{
+  "@@locale": "ar",
+  "appTitle": "متجر البقالة",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "welcome": "مرحباً",
+  "@welcome": {
+    "description": "Welcome message"
+  },
+  "loading": "جاري التحميل...",
+  "@loading": {
+    "description": "Loading message"
+  },
+  "error": "خطأ",
+  "@error": {
+    "description": "Error message"
+  },
+  "success": "نجح",
+  "@success": {
+    "description": "Success message"
+  },
+  "cancel": "إلغاء",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "confirm": "تأكيد",
+  "@confirm": {
+    "description": "Confirm button text"
+  },
+  "save": "حفظ",
+  "@save": {
+    "description": "Save button text"
+  },
+  "delete": "حذف",
+  "@delete": {
+    "description": "Delete button text"
+  },
+  "edit": "تعديل",
+  "@edit": {
+    "description": "Edit button text"
+  },
+  "add": "إضافة",
+  "@add": {
+    "description": "Add button text"
+  },
+  "search": "بحث",
+  "@search": {
+    "description": "Search placeholder text"
+  },
+  "filter": "تصفية",
+  "@filter": {
+    "description": "Filter button text"
+  },
+  "sort": "ترتيب",
+  "@sort": {
+    "description": "Sort button text"
+  },
+  "clear": "مسح",
+  "@clear": {
+    "description": "Clear button text"
+  },
+  "retry": "إعادة المحاولة",
+  "@retry": {
+    "description": "Retry button text"
+  },
+  "back": "رجوع",
+  "@back": {
+    "description": "Back button text"
+  },
+  "next": "التالي",
+  "@next": {
+    "description": "Next button text"
+  },
+  "previous": "السابق",
+  "@previous": {
+    "description": "Previous button text"
+  },
+  "done": "تم",
+  "@done": {
+    "description": "Done button text"
+  },
+  "skip": "تخطي",
+  "@skip": {
+    "description": "Skip button text"
+  },
+  "continue": "متابعة",
+  "@continue": {
+    "description": "Continue button text"
+  }
+}

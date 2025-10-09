@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="60" cy="60" r="55" fill="url(#gradient)" stroke="white" stroke-width="2"/>
+  
+  <!-- Shopping Cart -->
+  <g transform="translate(30, 35)">
+    <path d="M5 15C5 13.89 5.89 13 7 13H8.59L11.59 6.59C11.84 6.05 12.37 5.71 13 5.71H47C47.63 5.71 48.16 6.05 48.41 6.59L51.41 13H53C54.11 13 55 13.89 55 15S54.11 17 53 17H7C5.89 17 5 16.11 5 15ZM9.41 15H50.59L48.59 11H12.41L9.41 15Z" fill="white"/>
+    <path d="M15 45C13.89 45 13 45.89 13 47S13.89 49 15 49 17 48.11 17 47 16.11 45 15 45ZM15 43C17.21 43 19 44.79 19 47S17.21 51 15 51 11 49.21 11 47 12.79 43 15 43Z" fill="white"/>
+    <path d="M45 45C43.89 45 43 45.89 43 47S43.89 49 45 49 47 48.11 47 47 46.11 45 45 45ZM45 43C47.21 43 49 44.79 49 47S47.21 51 45 51 41 49.21 41 47 42.79 43 45 43Z" fill="white"/>
+  </g>
+  
+  <!-- Organic Leaf -->
+  <g transform="translate(20, 20)">
+    <path d="M12 2C12 2 8 6 8 10C8 14 12 18 16 18C20 18 24 14 24 10C24 6 20 2 16 2C14 2 12 2 12 2Z" fill="#4CAF50"/>
+  </g>
+  
+  <!-- Fresh Indicator -->
+  <circle cx="85" cy="25" r="8" fill="#4CAF50" stroke="white" stroke-width="2"/>
+  <circle cx="85" cy="25" r="4" fill="white"/>
+  
+  <!-- Gradient Definition -->
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2E7D32;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#4CAF50;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#66BB6A;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg>
