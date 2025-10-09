@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
 class LoadingWidget extends StatelessWidget {
-  final String? message;
-  final double? size;
-  final Color? color;
 
   const LoadingWidget({
     super.key,
@@ -11,10 +8,12 @@ class LoadingWidget extends StatelessWidget {
     this.size,
     this.color,
   });
+  final String? message;
+  final double? size;
+  final Color? color;
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
+  Widget build(BuildContext context) => Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -37,14 +36,9 @@ class LoadingWidget extends StatelessWidget {
         ],
       ),
     );
-  }
 }
 
 class LoadingOverlay extends StatelessWidget {
-  final Widget child;
-  final bool isLoading;
-  final String? loadingMessage;
-  final Color? overlayColor;
 
   const LoadingOverlay({
     super.key,
@@ -53,14 +47,17 @@ class LoadingOverlay extends StatelessWidget {
     this.loadingMessage,
     this.overlayColor,
   });
+  final Widget child;
+  final bool isLoading;
+  final String? loadingMessage;
+  final Color? overlayColor;
 
   @override
-  Widget build(BuildContext context) {
-    return Stack(
+  Widget build(BuildContext context) => Stack(
       children: [
         child,
         if (isLoading)
-          Container(
+          ColoredBox(
             color: overlayColor ?? Colors.black.withOpacity(0.5),
             child: LoadingWidget(
               message: loadingMessage,
@@ -69,18 +66,17 @@ class LoadingOverlay extends StatelessWidget {
           ),
       ],
     );
-  }
 }
 
 class ShimmerLoading extends StatefulWidget {
-  final Widget child;
-  final bool isLoading;
 
   const ShimmerLoading({
     super.key,
     required this.child,
     required this.isLoading,
   });
+  final Widget child;
+  final bool isLoading;
 
   @override
   State<ShimmerLoading> createState() => _ShimmerLoadingState();
@@ -98,7 +94,7 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
-    _animation = Tween<double>(begin: -1.0, end: 2.0).animate(
+    _animation = Tween<double>(begin: -1, end: 2).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
     _animationController.repeat();
@@ -118,10 +114,8 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
 
     return AnimatedBuilder(
       animation: _animation,
-      builder: (context, child) {
-        return ShaderMask(
-          shaderCallback: (bounds) {
-            return LinearGradient(
+      builder: (context, child) => ShaderMask(
+          shaderCallback: (bounds) => LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
@@ -134,21 +128,14 @@ class _ShimmerLoadingState extends State<ShimmerLoading>
                 _animation.value,
                 _animation.value + 0.3,
               ].map((stop) => stop.clamp(0.0, 1.0)).toList(),
-            ).createShader(bounds);
-          },
+            ).createShader(bounds),
           child: widget.child,
-        );
-      },
+        ),
     );
   }
 }
 
 class LoadingButton extends StatelessWidget {
-  final VoidCallback? onPressed;
-  final String text;
-  final bool isLoading;
-  final Widget? icon;
-  final ButtonStyle? style;
 
   const LoadingButton({
     super.key,
@@ -158,10 +145,14 @@ class LoadingButton extends StatelessWidget {
     this.icon,
     this.style,
   });
+  final VoidCallback? onPressed;
+  final String text;
+  final bool isLoading;
+  final Widget? icon;
+  final ButtonStyle? style;
 
   @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
+  Widget build(BuildContext context) => ElevatedButton(
       onPressed: isLoading ? null : onPressed,
       style: style,
       child: isLoading
@@ -184,14 +175,9 @@ class LoadingButton extends StatelessWidget {
               ],
             ),
     );
-  }
 }
 
 class LoadingCard extends StatelessWidget {
-  final double? height;
-  final double? width;
-  final EdgeInsetsGeometry? margin;
-  final EdgeInsetsGeometry? padding;
 
   const LoadingCard({
     super.key,
@@ -200,10 +186,13 @@ class LoadingCard extends StatelessWidget {
     this.margin,
     this.padding,
   });
+  final double? height;
+  final double? width;
+  final EdgeInsetsGeometry? margin;
+  final EdgeInsetsGeometry? padding;
 
   @override
-  Widget build(BuildContext context) {
-    return Card(
+  Widget build(BuildContext context) => Card(
       margin: margin,
       child: Container(
         height: height ?? 200,
@@ -212,13 +201,9 @@ class LoadingCard extends StatelessWidget {
         child: const LoadingWidget(),
       ),
     );
-  }
 }
 
 class LoadingList extends StatelessWidget {
-  final int itemCount;
-  final double itemHeight;
-  final EdgeInsetsGeometry? padding;
 
   const LoadingList({
     super.key,
@@ -226,33 +211,26 @@ class LoadingList extends StatelessWidget {
     this.itemHeight = 80,
     this.padding,
   });
+  final int itemCount;
+  final double itemHeight;
+  final EdgeInsetsGeometry? padding;
 
   @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
+  Widget build(BuildContext context) => ListView.builder(
       padding: padding,
       itemCount: itemCount,
-      itemBuilder: (context, index) {
-        return Container(
+      itemBuilder: (context, index) => Container(
           height: itemHeight,
           margin: const EdgeInsets.symmetric(vertical: 4),
           decoration: BoxDecoration(
             color: Colors.grey[300],
             borderRadius: BorderRadius.circular(8),
           ),
-        );
-      },
+        ),
     );
-  }
 }
 
 class LoadingGrid extends StatelessWidget {
-  final int itemCount;
-  final double itemHeight;
-  final int crossAxisCount;
-  final double crossAxisSpacing;
-  final double mainAxisSpacing;
-  final EdgeInsetsGeometry? padding;
 
   const LoadingGrid({
     super.key,
@@ -263,27 +241,29 @@ class LoadingGrid extends StatelessWidget {
     this.mainAxisSpacing = 8,
     this.padding,
   });
+  final int itemCount;
+  final double itemHeight;
+  final int crossAxisCount;
+  final double crossAxisSpacing;
+  final double mainAxisSpacing;
+  final EdgeInsetsGeometry? padding;
 
   @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
+  Widget build(BuildContext context) => GridView.builder(
       padding: padding,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: crossAxisCount,
         crossAxisSpacing: crossAxisSpacing,
         mainAxisSpacing: mainAxisSpacing,
-        childAspectRatio: 1.0,
+        childAspectRatio: 1,
       ),
       itemCount: itemCount,
-      itemBuilder: (context, index) {
-        return Container(
+      itemBuilder: (context, index) => Container(
           height: itemHeight,
           decoration: BoxDecoration(
             color: Colors.grey[300],
             borderRadius: BorderRadius.circular(8),
           ),
-        );
-      },
+        ),
     );
-  }
 }

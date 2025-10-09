@@ -29,8 +29,9 @@ final sl = GetIt.instance;
 Future<void> init() async {
   // External
   final sharedPreferences = await SharedPreferences.getInstance();
-  sl.registerLazySingleton(() => sharedPreferences);
-
+  if (!sl.isRegistered<SharedPreferences>()) {
+    sl.registerLazySingleton(() => sharedPreferences);
+  }
   // Services
   // sl.registerLazySingleton(() => ApiService());
   // sl.registerLazySingleton(() => AuthService(sl()));

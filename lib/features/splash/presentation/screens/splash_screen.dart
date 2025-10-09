@@ -48,8 +48,8 @@ class _SplashScreenState extends State<SplashScreen>
     );
 
     _backgroundAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
+      begin: 0,
+      end: 1,
     ).animate(CurvedAnimation(
       parent: _backgroundController,
       curve: Curves.easeInOut,
@@ -62,8 +62,8 @@ class _SplashScreenState extends State<SplashScreen>
     );
 
     _contentAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
+      begin: 0,
+      end: 1,
     ).animate(CurvedAnimation(
       parent: _contentController,
       curve: Curves.elasticOut,
@@ -76,8 +76,8 @@ class _SplashScreenState extends State<SplashScreen>
     );
 
     _particleAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
+      begin: 0,
+      end: 1,
     ).animate(CurvedAnimation(
       parent: _particleController,
       curve: Curves.linear,
@@ -168,7 +168,7 @@ class _SplashScreenState extends State<SplashScreen>
                               ],
                             ),
                             child: const AppLogo(
-                              size: 120.0,
+                              size: 120,
                               showText: true,
                             ),
                           ),
@@ -190,7 +190,7 @@ class _SplashScreenState extends State<SplashScreen>
                               borderRadius: BorderRadius.circular(30),
                             ),
                             child: const Padding(
-                              padding: EdgeInsets.all(15.0),
+                              padding: EdgeInsets.all(15),
                               child: CircularProgressIndicator(
                                 strokeWidth: 3,
                                 valueColor:
