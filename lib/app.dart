@@ -4,6 +4,7 @@ import 'core/theme/app_theme.dart';
 import 'config/routes/app_routes.dart';
 import 'config/di/injection_container.dart' as di;
 import 'core/services/navigation_service.dart';
+import 'features/onboarding/presentation/views/onboarding_v2_screen.dart';
 import 'features/splash/presentation/screens/splash_screen.dart';
 
 class GroceryShopApp extends StatelessWidget {
@@ -33,16 +34,14 @@ class GroceryShopApp extends StatelessWidget {
       navigatorKey: NavigationService.navigatorKey,
       initialRoute: AppRoutes.splash,
       onGenerateRoute: _generateRoute,
-      builder: (context, child) {
-        return MediaQuery(
+      builder: (context, child) => MediaQuery(
           data: MediaQuery.of(context).copyWith(
             textScaler: TextScaler.linear(
               MediaQuery.of(context).textScaleFactor.clamp(0.8, 1.2),
             ),
           ),
           child: child!,
-        );
-      },
+        ),
     );
   }
 
@@ -63,6 +62,8 @@ class GroceryShopApp extends StatelessWidget {
           builder: (_) => const HomeScreen(),
           settings: settings,
         );
+      case AppRoutes.onboarding:
+        return MaterialPageRoute(builder: (_) => const OnboardingV2Screen());
       default:
         return MaterialPageRoute(
           builder: (_) => const NotFoundScreen(),
@@ -78,40 +79,97 @@ class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
       ),
-      body: const Center(
-        child: Text('Login Screen - To be implemented'),
+      body: Center(
+        child: Column(
+          children: [
+            const Text('Login Screen - To be implemented'),
+            SizedBox(
+              width: double.infinity,
+              height: 54,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF2E4482),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  elevation: 0,
+                ),
+                onPressed: () {
+                  NavigationService.navigateTo(AppRoutes.home);
+                },
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Go To Home',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w500)),
+                    SizedBox(width: 8),
+                    Icon(Icons.arrow_forward, size: 22),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
-  }
 }
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
       ),
-      body: const Center(
-        child: Text('Home Screen - To be implemented'),
+      body: Center(
+        child: Column(
+          children: [
+            const Text('Home Screen - To be implemented'),
+            SizedBox(
+              width: double.infinity,
+              height: 54,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF2E4482),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  elevation: 0,
+                ),
+                onPressed: () {
+                  NavigationService.navigateTo(AppRoutes.home);
+                },
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Go To Login',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w500)),
+                    SizedBox(width: 8),
+                    Icon(Icons.arrow_forward, size: 22),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
-  }
 }
 
 class NotFoundScreen extends StatelessWidget {
   const NotFoundScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
         title: const Text('Not Found'),
       ),
@@ -119,5 +177,4 @@ class NotFoundScreen extends StatelessWidget {
         child: Text('Page not found'),
       ),
     );
-  }
 }

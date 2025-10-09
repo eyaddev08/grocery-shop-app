@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import '../theme/app_theme.dart';
 
 class AppLogo extends StatelessWidget {
@@ -76,11 +77,16 @@ class AppLogo extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: Icon(
-                    Icons.shopping_cart_rounded,
-                    size: size * 0.4,
-                    color: Colors.white,
+                  child: SvgPicture.asset(
+                    'assets/images/logo_image.svg',
+                    height: size * 0.4,
+                    color: const Color(0xFFFFC857),
                   ),
+                  // Icon(
+                  //   Icons.shopping_cart_rounded,
+                  //   size: size * 0.4,
+                  //   color: Colors.white,
+                  // ),
                 ),
               ),
               // Fresh produce indicator (small green dot)
