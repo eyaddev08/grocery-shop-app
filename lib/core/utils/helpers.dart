@@ -9,7 +9,7 @@ class Helpers {
   static String formatCurrency(double amount, {String currency = 'USD'}) {
     final formatter = NumberFormat.currency(
       locale: 'en_US',
-      symbol: '\$',
+      symbol: r'$',
       decimalDigits: 2,
     );
     return formatter.format(amount);
@@ -59,7 +59,7 @@ class Helpers {
   // Capitalize each word
   static String capitalizeWords(String text) {
     if (text.isEmpty) return text;
-    return text.split(' ').map((word) => capitalize(word)).join(' ');
+    return text.split(' ').map(capitalize).join(' ');
   }
 
   // Truncate text
@@ -109,9 +109,7 @@ class Helpers {
   }
 
   // Convert degrees to radians
-  static double _degreesToRadians(double degrees) {
-    return degrees * (3.1415926535897932 / 180);
-  }
+  static double _degreesToRadians(double degrees) => degrees * (3.1415926535897932 / 180);
 
   // Show snackbar
   static void showSnackBar(BuildContext context, String message,
@@ -179,8 +177,7 @@ class Helpers {
     required String message,
     String confirmText = 'Confirm',
     String cancelText = 'Cancel',
-  }) {
-    return showDialog<bool>(
+  }) => showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(title),
@@ -197,7 +194,6 @@ class Helpers {
         ],
       ),
     );
-  }
 
   // Check if device is tablet
   static bool isTablet(BuildContext context) {
@@ -206,9 +202,7 @@ class Helpers {
   }
 
   // Check if device is phone
-  static bool isPhone(BuildContext context) {
-    return !isTablet(context);
-  }
+  static bool isPhone(BuildContext context) => !isTablet(context);
 
   // Get responsive padding
   static EdgeInsets getResponsivePadding(BuildContext context) {
@@ -294,18 +288,16 @@ class Helpers {
   }
 
   // Check if string is numeric
-  static bool isNumeric(String string) {
-    return double.tryParse(string) != null;
-  }
+  static bool isNumeric(String string) => double.tryParse(string) != null;
 
   // Generate random color
   static Color generateRandomColor() {
     final random = DateTime.now().millisecondsSinceEpoch;
     return Color.fromRGBO(
-      (random % 256),
-      ((random + 100) % 256),
-      ((random + 200) % 256),
-      1.0,
+      random % 256,
+      (random + 100) % 256,
+      (random + 200) % 256,
+      1,
     );
   }
 
