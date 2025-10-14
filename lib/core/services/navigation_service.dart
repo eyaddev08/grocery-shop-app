@@ -53,28 +53,28 @@ class NavigationService {
   // }
 
   static Future<void> navigateFromSplash() async {
-  final prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
 
-  /// [onboardingSeen] = true إذا تم عرض الـ onBoarding مسبقًا
-  bool onboardingSeen = prefs.getBool('onboarding_seen') ?? false;
+    /// [onboardingSeen] = true إذا تم عرض الـ onBoarding مسبقًا
+    bool onboardingSeen = prefs.getBool('onboarding_seen') ?? false;
 
-  if (!onboardingSeen) {
-    // أول مرة يفتح التطبيق
-    await prefs.setBool('onboarding_seen', true);
-    await navigateAndClearStack(AppRoutes.onboarding);
-    return;
+    if (!onboardingSeen) {
+      // أول مرة يفتح التطبيق
+      await prefs.setBool('onboarding_seen', true);
+      await navigateAndClearStack(AppRoutes.onboarding);
+      return;
+    }
+
+    // إذا تم فتح التطبيق مسبقًا، افحص حالة الدخول
+    /// (يمكنك تعديل شرط isLoggedIn كما يناسب مشروعك)
+    bool isLoggedIn = false; // this should come from your auth/local-storage
+
+    if (isLoggedIn) {
+      await navigateAndClearStack(AppRoutes.layout);
+    } else {
+      await navigateAndClearStack(AppRoutes.login);
+    }
   }
-
-  // إذا تم فتح التطبيق مسبقًا، افحص حالة الدخول
-  /// (يمكنك تعديل شرط isLoggedIn كما يناسب مشروعك)
-  bool isLoggedIn = false; // this should come from your auth/local-storage
-
-  if (isLoggedIn) {
-    await navigateAndClearStack(AppRoutes.home);
-  } else {
-    await navigateAndClearStack(AppRoutes.login);
-  }
-}
 
   // Handle deep linking
   static Future<void> handleDeepLink(String? link) async {
@@ -82,14 +82,14 @@ class NavigationService {
 
     // Parse the deep link and navigate accordingly
     switch (link) {
-      case '/home':
-        await navigateAndClearStack(AppRoutes.home);
+      case '/layout':
+        await navigateAndClearStack(AppRoutes.layout);
         break;
       case '/login':
         await navigateAndClearStack(AppRoutes.login);
         break;
       default:
-        await navigateAndClearStack(AppRoutes.home);
+        await navigateAndClearStack(AppRoutes.layout);
         break;
     }
   }

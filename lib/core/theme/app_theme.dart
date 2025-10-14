@@ -32,8 +32,7 @@ class AppTheme {
   static const Color darkTextSecondaryColor = Color(0xFFB3B3B3);
 
   // Light Theme
-  static ThemeData get lightTheme {
-    return ThemeData(
+  static ThemeData get lightTheme => ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
       primarySwatch: _createMaterialColor(primaryColor),
@@ -254,11 +253,9 @@ class AppTheme {
         space: 1,
       ),
     );
-  }
 
   // Dark Theme
-  static ThemeData get darkTheme {
-    return ThemeData(
+  static ThemeData get darkTheme => ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
       primarySwatch: _createMaterialColor(primaryColor),
@@ -480,7 +477,6 @@ class AppTheme {
         space: 1,
       ),
     );
-  }
 
   // Helper method to create MaterialColor from Color
   static MaterialColor _createMaterialColor(Color color) {

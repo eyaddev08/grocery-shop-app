@@ -5,9 +5,9 @@ class AppRoutes {
   static const String register = '/register';
   static const String forgotPassword = '/forgot-password';
   static const String resetPassword = '/reset-password';
-  
 
   // Main App Routes
+  static const String layout = '/layout';
   static const String home = '/home';
   static const String categories = '/categories';
   static const String products = '/products';
@@ -40,6 +40,7 @@ class AppRoutes {
     register: 'Register',
     forgotPassword: 'Forgot Password',
     resetPassword: 'Reset Password',
+    layout: 'Layout',
     home: 'Home',
     categories: 'Categories',
     products: 'Products',
@@ -80,6 +81,7 @@ class AppRoutes {
   // Check if route is main app route
   static bool isMainAppRoute(String route) {
     return [
+      layout,
       home,
       categories,
       products,
@@ -133,6 +135,7 @@ class AppRoutes {
   // Get main app routes
   static List<String> getMainAppRoutes() {
     return [
+      layout,
       home,
       categories,
       products,

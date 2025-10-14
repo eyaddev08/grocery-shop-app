@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'core/theme/app_theme.dart';
-import 'config/routes/app_routes.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'config/di/injection_container.dart' as di;
+import 'config/di/injection_container.dart';
+import 'config/routes/app_routes.dart';
 import 'core/services/navigation_service.dart';
+import 'core/theme/app_theme.dart';
+import 'core/utils/layout.dart';
+import 'features/Home/domain/usecases/get_products_usecase.dart';
+import 'features/Home/presentation/manger/cubit/grocery_cubit.dart';
 import 'features/onboarding/presentation/views/onboarding_v2_screen.dart';
 import 'features/splash/presentation/screens/splash_screen.dart';
 
@@ -35,13 +41,13 @@ class GroceryShopApp extends StatelessWidget {
       initialRoute: AppRoutes.splash,
       onGenerateRoute: _generateRoute,
       builder: (context, child) => MediaQuery(
-          data: MediaQuery.of(context).copyWith(
-            textScaler: TextScaler.linear(
-              MediaQuery.of(context).textScaleFactor.clamp(0.8, 1.2),
-            ),
+        data: MediaQuery.of(context).copyWith(
+          textScaler: TextScaler.linear(
+            MediaQuery.of(context).textScaleFactor.clamp(0.8, 1.2),
           ),
-          child: child!,
         ),
+        child: child!,
+      ),
     );
   }
 
@@ -54,12 +60,20 @@ class GroceryShopApp extends StatelessWidget {
         );
       case AppRoutes.login:
         return MaterialPageRoute(
-          builder: (_) => const LoginScreen(),
+          builder: (context) => const LoginScreen(),
+          settings: settings,
+        );
+      case AppRoutes.layout:
+        return MaterialPageRoute(
+          builder: (context) => const Layout(),
           settings: settings,
         );
       case AppRoutes.home:
         return MaterialPageRoute(
-          builder: (_) => const HomeScreen(),
+          builder: (_) => BlocProvider(
+            create: (context) => GroceryCubit(sl<GetProductsUseCase>()),
+            child: const HomeScreen(),
+          ),
           settings: settings,
         );
       case AppRoutes.onboarding:
@@ -80,44 +94,44 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            const Text('Login Screen - To be implemented'),
-            SizedBox(
-              width: double.infinity,
-              height: 54,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF2E4482),
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+        appBar: AppBar(
+          title: const Text('Login'),
+        ),
+        body: Center(
+          child: Column(
+            children: [
+              const Text('Login Screen - To be implemented'),
+              SizedBox(
+                width: double.infinity,
+                height: 54,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF2E4482),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    elevation: 0,
                   ),
-                  elevation: 0,
-                ),
-                onPressed: () {
-                  NavigationService.navigateTo(AppRoutes.home);
-                },
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Go To Home',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w500)),
-                    SizedBox(width: 8),
-                    Icon(Icons.arrow_forward, size: 22),
-                  ],
+                  onPressed: () {
+                    NavigationService.navigateTo(AppRoutes.layout);
+                  },
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Go To Home',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w500)),
+                      SizedBox(width: 8),
+                      Icon(Icons.arrow_forward, size: 22),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
 }
 
 class HomeScreen extends StatelessWidget {
@@ -125,44 +139,44 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            const Text('Home Screen - To be implemented'),
-            SizedBox(
-              width: double.infinity,
-              height: 54,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF2E4482),
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+        appBar: AppBar(
+          title: const Text('Home'),
+        ),
+        body: Center(
+          child: Column(
+            children: [
+              const Text('Home Screen - To be implemented'),
+              SizedBox(
+                width: double.infinity,
+                height: 54,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF2E4482),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    elevation: 0,
                   ),
-                  elevation: 0,
-                ),
-                onPressed: () {
-                  NavigationService.navigateTo(AppRoutes.home);
-                },
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Go To Login',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w500)),
-                    SizedBox(width: 8),
-                    Icon(Icons.arrow_forward, size: 22),
-                  ],
+                  onPressed: () {
+                    NavigationService.navigateTo(AppRoutes.home);
+                  },
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Go To Login',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w500)),
+                      SizedBox(width: 8),
+                      Icon(Icons.arrow_forward, size: 22),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
 }
 
 class NotFoundScreen extends StatelessWidget {
@@ -170,11 +184,11 @@ class NotFoundScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(
-        title: const Text('Not Found'),
-      ),
-      body: const Center(
-        child: Text('Page not found'),
-      ),
-    );
+        appBar: AppBar(
+          title: const Text('Not Found'),
+        ),
+        body: const Center(
+          child: Text('Page not found'),
+        ),
+      );
 }

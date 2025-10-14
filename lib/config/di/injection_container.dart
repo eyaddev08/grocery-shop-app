@@ -1,6 +1,10 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../features/Home/data/repositories/product_repository_impl.dart';
+import '../../features/Home/domain/usecases/get_products_usecase.dart';
+import '../../features/Home/presentation/manger/cubit/grocery_cubit.dart';
+
 // Services
 // import 'package:grocery_shop_app/core/services/api_service.dart';
 // import 'package:grocery_shop_app/core/services/auth_service.dart';
@@ -10,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // Repositories
 // import 'package:grocery_shop_app/features/auth/data/repositories/auth_repository_impl.dart';
-// import 'package:grocery_shop_app/features/products/data/repositories/product_repository_impl.dart';
+import '../../features/Home/domain/repositories/product_repository.dart';
 // import 'package:grocery_shop_app/features/cart/data/repositories/cart_repository_impl.dart';
 
 // Use Cases
@@ -41,18 +45,33 @@ Future<void> init() async {
 
   // Repositories
   // sl.registerLazySingleton(() => AuthRepositoryImpl(sl(), sl()));
-  // sl.registerLazySingleton(() => ProductRepositoryImpl(sl()));
+  // sl.registerLazySingleton(() => ProductRepositoryImpl());
+  if (!sl.isRegistered<ProductRepository>()) {
+    sl.registerLazySingleton<ProductRepository>(() => ProductRepositoryImpl());
+  }
+
+  // register usecase
+  if (!sl.isRegistered<GetProductsUseCase>()) {
+    sl.registerLazySingleton<GetProductsUseCase>(
+        () => GetProductsUseCase(sl<ProductRepository>()));
+  }
+
+  // register cubit/bloc
+  if (!sl.isRegistered<GroceryCubit>()) {
+    sl.registerFactory<GroceryCubit>(
+        () => GroceryCubit(sl<GetProductsUseCase>()));
+  }
   // sl.registerLazySingleton(() => CartRepositoryImpl(sl()));
 
   // Use Cases
   // sl.registerLazySingleton(() => LoginUseCase(sl()));
   // sl.registerLazySingleton(() => RegisterUseCase(sl()));
-  // sl.registerLazySingleton(() => GetProductsUseCase(sl()));
+  // sl.registerLazySingleton(() => GetProductsUseCase(sl<ProductRepositoryImpl>()));
   // sl.registerLazySingleton(() => AddToCartUseCase(sl()));
 
   // Blocs/Cubits
   // sl.registerFactory(() => AuthBloc(sl(), sl()));
-  // sl.registerFactory(() => ProductsBloc(sl()));
+  // sl.registerFactory(() => GroceryCubit(sl()));
   // sl.registerFactory(() => CartBloc(sl()));
 }
 
@@ -63,19 +82,14 @@ Future<void> reset() async {
 }
 
 // Helper function to check if dependency is registered
-bool isRegistered<T extends Object>() {
-  return sl.isRegistered<T>();
-}
+bool isRegistered<T extends Object>() => sl.isRegistered<T>();
 
 // Helper function to get dependency
-T get<T extends Object>() {
-  return sl.get<T>();
-}
+T get<T extends Object>() => sl.get<T>();
 
 // Helper function to get dependency with parameter
-T getWithParam<T extends Object, P extends Object>(P param) {
-  return sl.get<T>(param1: param);
-}
+T getWithParam<T extends Object, P extends Object>(P param) =>
+    sl.get<T>(param1: param);
 
 // Helper function to register singleton
 void registerSingleton<T extends Object>(T instance) {
