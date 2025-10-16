@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../features/Home/presentation/views/home_screen.dart';
+import '../../features/categories/presentation/screens/categories_screen.dart';
 import '../constants/app_constants.dart';
 import '../widgets/bottom_nav_item.dart';
 import 'functions/show_exit_dialog.dart';
@@ -16,7 +17,7 @@ class _LayoutState extends State<Layout> {
 
   final _pages = [
     const HomeScreen(),
-    const SizedBox(),
+    const CategoriesScreen(),
     const SizedBox(),
     const SizedBox(),
   ];

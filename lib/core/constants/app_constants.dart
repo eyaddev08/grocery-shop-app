@@ -10,3 +10,8 @@ const muted = Color(0xFF61697C);
 const navInactive = Color(0xFF8791A5);
 const homeCircleDark = Color(0xFF131418);
 const smallBlue = Color(0xFF2A4BA0);
+
+  double s(BuildContext context) => MediaQuery.of(context).size.width / 375.0;
+    
+
+
