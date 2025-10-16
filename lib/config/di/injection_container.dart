@@ -15,6 +15,10 @@ import '../../features/Home/presentation/manger/cubit/grocery_cubit.dart';
 // Repositories
 // import 'package:grocery_shop_app/features/auth/data/repositories/auth_repository_impl.dart';
 import '../../features/Home/domain/repositories/product_repository.dart';
+import '../../features/categories/data/repositories/category_repository_impl.dart';
+import '../../features/categories/domain/repositories/category_repository.dart';
+import '../../features/categories/domain/usecases/get_categories.dart';
+import '../../features/categories/presentation/manger/categories_cubit.dart';
 // import 'package:grocery_shop_app/features/cart/data/repositories/cart_repository_impl.dart';
 
 // Use Cases
@@ -60,6 +64,24 @@ Future<void> init() async {
   if (!sl.isRegistered<GroceryCubit>()) {
     sl.registerFactory<GroceryCubit>(
         () => GroceryCubit(sl<GetProductsUseCase>()));
+  }
+  
+   // Categories registrations
+  if (!sl.isRegistered<CategoryRepository>()) {
+    sl.registerLazySingleton<CategoryRepository>(
+        () => CategoryRepositoryImpl());
+  }
+
+  // register categories usecase
+  if (!sl.isRegistered<GetCategories>()) {
+    sl.registerLazySingleton<GetCategories>(
+        () => GetCategories(sl<CategoryRepository>()));
+  }
+
+  // register categories cubit
+  if (!sl.isRegistered<CategoriesCubit>()) {
+    sl.registerFactory<CategoriesCubit>(
+        () => CategoriesCubit(sl<GetCategories>()));
   }
   // sl.registerLazySingleton(() => CartRepositoryImpl(sl()));
 

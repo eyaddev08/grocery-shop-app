@@ -6,33 +6,23 @@ class NavigationService {
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>();
 
-  static Future<dynamic> navigateTo(String routeName, {Object? arguments}) {
-    return navigatorKey.currentState!
+  static Future<dynamic> navigateTo(String routeName, {Object? arguments}) => navigatorKey.currentState!
         .pushNamed(routeName, arguments: arguments);
-  }
 
   static Future<dynamic> navigateAndReplace(String routeName,
-      {Object? arguments}) {
-    return navigatorKey.currentState!
+      {Object? arguments}) => navigatorKey.currentState!
         .pushReplacementNamed(routeName, arguments: arguments);
-  }
 
   static Future<dynamic> navigateAndClearStack(String routeName,
-      {Object? arguments}) {
-    return navigatorKey.currentState!.pushNamedAndRemoveUntil(
+      {Object? arguments}) => navigatorKey.currentState!.pushNamedAndRemoveUntil(
       routeName,
       (Route<dynamic> route) => false,
       arguments: arguments,
     );
-  }
 
-  static void goBack() {
-    return navigatorKey.currentState!.pop();
-  }
+  static void goBack() => navigatorKey.currentState!.pop();
 
-  static bool canGoBack() {
-    return navigatorKey.currentState!.canPop();
-  }
+  static bool canGoBack() => navigatorKey.currentState!.canPop();
 
   // // Splash screen specific navigation logic
   // static Future<void> navigateFromSplash() async {
@@ -56,7 +46,7 @@ class NavigationService {
     final prefs = await SharedPreferences.getInstance();
 
     /// [onboardingSeen] = true إذا تم عرض الـ onBoarding مسبقًا
-    bool onboardingSeen = prefs.getBool('onboarding_seen') ?? false;
+    final bool onboardingSeen = prefs.getBool('onboarding_seen') ?? false;
 
     if (!onboardingSeen) {
       // أول مرة يفتح التطبيق
@@ -67,7 +57,7 @@ class NavigationService {
 
     // إذا تم فتح التطبيق مسبقًا، افحص حالة الدخول
     /// (يمكنك تعديل شرط isLoggedIn كما يناسب مشروعك)
-    bool isLoggedIn = false; // this should come from your auth/local-storage
+    const bool isLoggedIn = false; // this should come from your auth/local-storage
 
     if (isLoggedIn) {
       await navigateAndClearStack(AppRoutes.layout);

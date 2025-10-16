@@ -10,6 +10,8 @@ import 'core/theme/app_theme.dart';
 import 'core/utils/layout.dart';
 import 'features/Home/domain/usecases/get_products_usecase.dart';
 import 'features/Home/presentation/manger/cubit/grocery_cubit.dart';
+import 'features/categories/domain/usecases/get_categories.dart';
+import 'features/categories/presentation/manger/categories_cubit.dart';
 import 'features/onboarding/presentation/views/onboarding_v2_screen.dart';
 import 'features/splash/presentation/screens/splash_screen.dart';
 
@@ -65,17 +67,25 @@ class GroceryShopApp extends StatelessWidget {
         );
       case AppRoutes.layout:
         return MaterialPageRoute(
-          builder: (context) => const Layout(),
-          settings: settings,
-        );
-      case AppRoutes.home:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => GroceryCubit(sl<GetProductsUseCase>()),
-            child: const HomeScreen(),
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                  create: (context) => GroceryCubit(sl<GetProductsUseCase>())),
+              BlocProvider(
+                  create: (context) =>
+                      CategoriesCubit(sl<GetCategories>())..load()),
+            ],
+            child: const Layout(),
           ),
           settings: settings,
         );
+      // case AppRoutes.home:
+      //   return MaterialPageRoute(
+      //     builder: (_) =>
+      //       const HomeScreen(),
+
+      //     settings: settings,
+      //   );
       case AppRoutes.onboarding:
         return MaterialPageRoute(builder: (_) => const OnboardingV2Screen());
       default:
