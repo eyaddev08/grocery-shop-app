@@ -19,6 +19,14 @@ import '../../features/categories/data/repositories/category_repository_impl.dar
 import '../../features/categories/domain/repositories/category_repository.dart';
 import '../../features/categories/domain/usecases/get_categories.dart';
 import '../../features/categories/presentation/manger/categories_cubit.dart';
+import '../../features/products/data/repositories/product_repository_impl.dart'
+    as products_impl;
+import '../../features/products/domain/repositories/product_repository.dart'
+    as products_repo;
+import '../../features/products/domain/usecases/get_products.dart'
+    as products_uc;
+import '../../features/products/presentation/manger/products_cubit.dart'
+    as products_cubit;
 // import 'package:grocery_shop_app/features/cart/data/repositories/cart_repository_impl.dart';
 
 // Use Cases
@@ -65,11 +73,27 @@ Future<void> init() async {
     sl.registerFactory<GroceryCubit>(
         () => GroceryCubit(sl<GetProductsUseCase>()));
   }
-  
-   // Categories registrations
+
+  // Categories registrations
   if (!sl.isRegistered<CategoryRepository>()) {
     sl.registerLazySingleton<CategoryRepository>(
         () => CategoryRepositoryImpl());
+  }
+
+  // Products registrations
+  if (!sl.isRegistered<products_repo.ProductRepository>()) {
+    sl.registerLazySingleton<products_repo.ProductRepository>(
+        () => products_impl.ProductRepositoryImpl());
+  }
+
+  if (!sl.isRegistered<products_uc.GetProducts>()) {
+    sl.registerLazySingleton<products_uc.GetProducts>(
+        () => products_uc.GetProducts(sl<products_repo.ProductRepository>()));
+  }
+
+  if (!sl.isRegistered<products_cubit.ProductsCubit>()) {
+    sl.registerFactory<products_cubit.ProductsCubit>(
+        () => products_cubit.ProductsCubit(sl<products_uc.GetProducts>()));
   }
 
   // register categories usecase
