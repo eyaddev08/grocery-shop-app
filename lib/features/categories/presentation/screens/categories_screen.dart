@@ -3,6 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/filters_card_widget.dart';
+import '../../../products/data/repositories/product_repository_impl.dart';
+import '../../../products/domain/usecases/get_products.dart';
+import '../../../products/presentation/manger/products_cubit.dart';
+import '../../../products/presentation/screens/products_screen.dart';
 import '../manger/categories_cubit.dart';
 import '../manger/categories_state.dart';
 import '../widgets/category_card.dart';
@@ -110,7 +114,13 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       return CategoriesCard(
                           category: c,
                           onTap: () {
-                            Navigator.of(context).push( MaterialPageRoute(builder: (builder) =>  const SizedBox()));
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (builder) => BlocProvider(
+                                      create: (context) => ProductsCubit(
+                                          GetProducts(ProductRepositoryImpl()))
+                                        ..load(),
+                                      child: const ProductsScreen(),
+                                    )));
                           });
                     },
                   )
