@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/constants/app_constants.dart';
+import '../../../../../core/constants/app_colors.dart';
 import 'animated_hero_banner.dart';
 
 import 'products_list_view.dart';

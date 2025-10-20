@@ -1,4 +1,6 @@
 import 'package:get_it/get_it.dart';
+import 'package:grocery_shop_app/features/product_details/domain/usecases/get_similar_product.dart';
+import 'package:grocery_shop_app/features/product_details/presentation/manager/similar_product/similar_product_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../features/Home/data/repositories/product_repository_impl.dart';
@@ -19,6 +21,8 @@ import '../../features/categories/data/repositories/category_repository_impl.dar
 import '../../features/categories/domain/repositories/category_repository.dart';
 import '../../features/categories/domain/usecases/get_categories.dart';
 import '../../features/categories/presentation/manger/categories_cubit.dart';
+import '../../features/product_details/data/repositories/similar_product_repository_imp.dart';
+import '../../features/product_details/domain/repositories/similar_product_repository.dart';
 import '../../features/products/data/repositories/product_repository_impl.dart'
     as products_impl;
 import '../../features/products/domain/repositories/product_repository.dart'
@@ -27,6 +31,15 @@ import '../../features/products/domain/usecases/get_products.dart'
     as products_uc;
 import '../../features/products/presentation/manger/products_cubit.dart'
     as products_cubit;
+
+import '../../features/product_details/data/repositories/product_details_repository_impl.dart'
+    as pd_impl;
+import '../../features/product_details/domain/repositories/product_details_repository.dart'
+    as pd_repo;
+import '../../features/product_details/domain/usecases/get_product_details.dart'
+    as pd_uc;
+import '../../features/product_details/presentation/manager/product_details/product_details_cubit.dart'
+    as pd_cubit;
 // import 'package:grocery_shop_app/features/cart/data/repositories/cart_repository_impl.dart';
 
 // Use Cases
@@ -94,6 +107,38 @@ Future<void> init() async {
   if (!sl.isRegistered<products_cubit.ProductsCubit>()) {
     sl.registerFactory<products_cubit.ProductsCubit>(
         () => products_cubit.ProductsCubit(sl<products_uc.GetProducts>()));
+  }
+
+  // product details registrations
+  if (!sl.isRegistered<pd_repo.ProductDetailsRepository>()) {
+    sl.registerLazySingleton<pd_repo.ProductDetailsRepository>(
+        () => pd_impl.ProductDetailsRepositoryImpl());
+  }
+
+  if (!sl.isRegistered<pd_uc.GetProductDetails>()) {
+    sl.registerLazySingleton<pd_uc.GetProductDetails>(
+        () => pd_uc.GetProductDetails(sl<pd_repo.ProductDetailsRepository>()));
+  }
+
+  if (!sl.isRegistered<pd_cubit.ProductDetailsCubit>()) {
+    sl.registerFactory<pd_cubit.ProductDetailsCubit>(
+        () => pd_cubit.ProductDetailsCubit(getProductDetails: sl()));
+  }
+
+  // similar product registrations
+  if (!sl.isRegistered<SimilarProductRepository>()) {
+    sl.registerLazySingleton<SimilarProductRepository>(
+        () => SimilarProductRepositoryImpl());
+  }
+
+  if (!sl.isRegistered<GetSimilarProduct>()) {
+    sl.registerLazySingleton<GetSimilarProduct>(
+        () => GetSimilarProduct(sl<SimilarProductRepository>()));
+  }
+
+  if (!sl.isRegistered<SimilarProductCubit>()) {
+    sl.registerFactory<SimilarProductCubit>(
+        () => SimilarProductCubit(getSimilarProduct: sl<GetSimilarProduct>()));
   }
 
   // register categories usecase

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../core/constants/app_constants.dart';
+import '../../../../../core/constants/app_colors.dart';
 
 class RecommendedCard extends StatelessWidget {
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../constants/app_constants.dart';
+import '../constants/app_colors.dart';
 
 class CustomAppBarWidget extends StatelessWidget {
   const CustomAppBarWidget({

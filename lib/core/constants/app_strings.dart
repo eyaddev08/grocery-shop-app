@@ -21,6 +21,8 @@ class AppStrings {
   static const String skip = 'Skip';
   static const String continue_ = 'Continue';
 
+  
+
   // Authentication
   static const String login = 'Login';
   static const String register = 'Register';
@@ -46,6 +48,7 @@ class AppStrings {
 
   // Product
   static const String product = 'Product';
+  static const String productDetails = 'Product Details';
   static const String products = 'Products';
   static const String price = 'Price';
   static const String quantity = 'Quantity';
