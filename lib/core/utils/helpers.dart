@@ -150,7 +150,7 @@ class Helpers {
   // Show loading dialog
   static void showLoadingDialog(BuildContext context,
       {String message = 'Loading...'}) {
-    showDialog(
+     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(

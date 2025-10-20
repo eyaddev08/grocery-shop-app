@@ -1,4 +1,7 @@
 
+  import 'package:flutter/material.dart';
+
+double s(BuildContext context) => MediaQuery.of(context).size.width / 375.0;
 
 class Dimensions {
   static double fontSizeExtraSmall = 10; //14

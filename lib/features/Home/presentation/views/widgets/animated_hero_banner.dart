@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import '../../../../../core/constants/app_constants.dart';
+import '../../../../../core/constants/app_colors.dart';
 import 'promo_card.dart';
 
 class AnimatedHeroBanner extends StatefulWidget {

@@ -64,23 +64,18 @@ class AppRoutes {
   };
 
   // Get route name
-  static String getRouteName(String route) {
-    return routeNames[route] ?? 'Unknown';
-  }
+  static String getRouteName(String route) => routeNames[route] ?? 'Unknown';
 
   // Check if route is authentication route
-  static bool isAuthRoute(String route) {
-    return [
+  static bool isAuthRoute(String route) => [
       login,
       register,
       forgotPassword,
       resetPassword,
     ].contains(route);
-  }
 
   // Check if route is main app route
-  static bool isMainAppRoute(String route) {
-    return [
+  static bool isMainAppRoute(String route) => [
       layout,
       home,
       categories,
@@ -99,42 +94,32 @@ class AppRoutes {
       about,
       contact,
     ].contains(route);
-  }
 
   // Check if route is onboarding route
-  static bool isOnboardingRoute(String route) {
-    return [
+  static bool isOnboardingRoute(String route) => [
       onboarding,
       welcome,
     ].contains(route);
-  }
 
   // Check if route is error route
-  static bool isErrorRoute(String route) {
-    return [
+  static bool isErrorRoute(String route) => [
       notFound,
       error,
     ].contains(route);
-  }
 
   // Get all routes
-  static List<String> getAllRoutes() {
-    return routeNames.keys.toList();
-  }
+  static List<String> getAllRoutes() => routeNames.keys.toList();
 
   // Get auth routes
-  static List<String> getAuthRoutes() {
-    return [
+  static List<String> getAuthRoutes() => [
       login,
       register,
       forgotPassword,
       resetPassword,
     ];
-  }
 
   // Get main app routes
-  static List<String> getMainAppRoutes() {
-    return [
+  static List<String> getMainAppRoutes() => [
       layout,
       home,
       categories,
@@ -153,21 +138,16 @@ class AppRoutes {
       about,
       contact,
     ];
-  }
 
   // Get onboarding routes
-  static List<String> getOnboardingRoutes() {
-    return [
+  static List<String> getOnboardingRoutes() => [
       onboarding,
       welcome,
     ];
-  }
 
   // Get error routes
-  static List<String> getErrorRoutes() {
-    return [
+  static List<String> getErrorRoutes() => [
       notFound,
       error,
     ];
-  }
 }

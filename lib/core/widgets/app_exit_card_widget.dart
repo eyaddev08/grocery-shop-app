@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:grocery_shop_app/core/constants/app_constants.dart';
+import 'package:grocery_shop_app/core/constants/app_colors.dart';
 import '../utils/custom_themes.dart';
 import '../utils/dimensions.dart';
 import 'custom_button_widget.dart';

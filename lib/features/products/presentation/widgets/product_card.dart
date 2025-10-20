@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'package:grocery_shop_app/core/constants/app_constants.dart';
+import 'package:grocery_shop_app/core/constants/app_colors.dart';
+import '../../../../config/di/injection_container.dart';
+import '../../../product_details/domain/usecases/get_product_details.dart';
+
+import '../../../product_details/domain/usecases/get_similar_product.dart';
+import '../../../product_details/presentation/manager/product_details/product_details_cubit.dart';
+import '../../../product_details/presentation/manager/similar_product/similar_product_cubit.dart';
+import '../../../product_details/presentation/screens/product_details_screen.dart';
 import '../../domain/entities/product.dart';
 
 class ProductCard extends StatelessWidget {
@@ -65,22 +74,39 @@ class ProductCard extends StatelessWidget {
                   ),
                 ),
               )
-            : SizedBox(
-                height: 194,
-                child: Container(
-                  width: 160,
+            : GestureDetector(
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (builder) => MultiBlocProvider(
+                              providers: [
+                                BlocProvider(
+                                  create: (context) => ProductDetailsCubit(
+                                      getProductDetails:
+                                          sl<GetProductDetails>()),
+                                ),
+                                BlocProvider(
+                                  create: (context) => SimilarProductCubit(
+                                      getSimilarProduct:
+                                          sl<GetSimilarProduct>()),
+                                ),
+                              ],
+                              child: ProductDetailsScreen(productId: p!.id),
+                            ))),
+                child: SizedBox(
                   height: 194,
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF7F8FA),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Opacity(
-                        opacity: 0.60,
-                        child: Center(
+                  child: Container(
+                    width: 160,
+                    height: 194,
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF7F8FA),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
                           child: Container(
                             width: 98,
                             height: 98,
@@ -99,48 +125,47 @@ class ProductCard extends StatelessWidget {
                             ),
                           ),
                         ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Container(
-                            width: 24,
-                            height: 24,
-                            decoration: ShapeDecoration(
-                              color: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Container(
+                              width: 32,
+                              height: 32,
+                              decoration: ShapeDecoration(
+                                color: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
                               ),
+                              child: Image.asset('assets/images/add_icon.png',
+                                  color: yellow, height: 18),
                             ),
-                            child: Image.asset('assets/images/add_icon.png',
-                                color: yellow),
+                          ],
+                        ),
+                        Text(
+                          '\$${(p?.price ?? 0).toStringAsFixed(0)}',
+                          style: const TextStyle(
+                            color: Color(0xFF1E222B),
+                            fontSize: 14,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w600,
+                            height: 1.43,
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        '\$${(p?.price ?? 0).toStringAsFixed(0)}',
-                        style: const TextStyle(
-                          color: Color(0xFF1E222B),
-                          fontSize: 14,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w600,
-                          height: 1.43,
                         ),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        p?.title ?? '',
-                        style: const TextStyle(
-                          color: Color(0xFF61697C),
-                          fontSize: 12,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w400,
-                          height: 1.33,
-                          letterSpacing: 0.24,
+                        const SizedBox(height: 6),
+                        Text(
+                          p?.title ?? '',
+                          style: const TextStyle(
+                            color: Color(0xFF61697C),
+                            fontSize: 12,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w400,
+                            height: 1.33,
+                            letterSpacing: 0.24,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ));

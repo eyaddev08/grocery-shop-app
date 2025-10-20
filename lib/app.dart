@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grocery_shop_app/features/products/domain/usecases/get_products.dart';
-
 import 'config/di/injection_container.dart' as di;
 import 'config/di/injection_container.dart';
 import 'config/routes/app_routes.dart';
@@ -14,17 +12,18 @@ import 'features/Home/presentation/manger/cubit/grocery_cubit.dart';
 import 'features/categories/domain/usecases/get_categories.dart';
 import 'features/categories/presentation/manger/categories_cubit.dart';
 import 'features/onboarding/presentation/views/onboarding_v2_screen.dart';
+
 import 'features/products/data/repositories/product_repository_impl.dart';
-import 'features/products/domain/repositories/product_repository.dart';
+import 'features/products/domain/usecases/get_products.dart';
 import 'features/products/presentation/manger/products_cubit.dart';
+import 'features/products/presentation/screens/products_screen.dart';
 import 'features/splash/presentation/screens/splash_screen.dart';
 
-    class GroceryShopApp extends StatelessWidget {
+class GroceryShopApp extends StatelessWidget {
   const GroceryShopApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    
     // Initialize dependencies
     di.init();
 
@@ -79,19 +78,22 @@ import 'features/splash/presentation/screens/splash_screen.dart';
               BlocProvider(
                   create: (context) =>
                       CategoriesCubit(sl<GetCategories>())..load()),
-              // BlocProvider(create: (context) => ProductsCubit(GetProducts(ProductRepositoryImpl()))),
+              // BlocProvider(create: (context) => ProductDetailsCubit(getProductDetails:  sl<GetProductDetails>())),
             ],
             child: const Layout(),
           ),
           settings: settings,
         );
-      // case AppRoutes.home:
-      //   return MaterialPageRoute(
-      //     builder: (_) =>
-      //       const HomeScreen(),
 
-      //     settings: settings,
-      //   );
+      case AppRoutes.products:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) =>
+                ProductsCubit(GetProducts(ProductRepositoryImpl()))..load(),
+            child: const ProductsScreen(),
+          ),
+          settings: settings,
+        );
       case AppRoutes.onboarding:
         return MaterialPageRoute(builder: (_) => const OnboardingV2Screen());
       default:

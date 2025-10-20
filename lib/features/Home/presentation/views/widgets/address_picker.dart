@@ -1,7 +1,7 @@
 // Simple bottom sheet to pick an address
 import 'package:flutter/material.dart';
 
-import '../../../../../core/constants/app_constants.dart';
+import '../../../../../core/constants/app_colors.dart';
 
 class AddressPicker extends StatelessWidget {
   const AddressPicker({super.key, required this.selected});
