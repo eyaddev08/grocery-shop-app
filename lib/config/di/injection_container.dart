@@ -40,6 +40,17 @@ import '../../features/product_details/domain/usecases/get_product_details.dart'
     as pd_uc;
 import '../../features/product_details/presentation/manager/product_details/product_details_cubit.dart'
     as pd_cubit;
+import '../../features/cart/data/repositories/cart_repository_impl.dart'
+    as cart_impl;
+import '../../features/cart/domain/repositories/cart_repository.dart'
+    as cart_repo;
+import '../../features/cart/domain/usecases/get_cart.dart' as cart_get_uc;
+import '../../features/cart/domain/usecases/add_to_cart.dart' as cart_add_uc;
+import '../../features/cart/domain/usecases/remove_from_cart.dart'
+    as cart_remove_uc;
+import '../../features/cart/domain/usecases/update_quantity.dart'
+    as cart_update_uc;
+import '../../features/cart/presentation/manager/cart_cubit.dart' as cart_cubit;
 // import 'package:grocery_shop_app/features/cart/data/repositories/cart_repository_impl.dart';
 
 // Use Cases
@@ -151,6 +162,40 @@ Future<void> init() async {
   if (!sl.isRegistered<CategoriesCubit>()) {
     sl.registerFactory<CategoriesCubit>(
         () => CategoriesCubit(sl<GetCategories>()));
+  }
+
+  // Cart registrations
+  if (!sl.isRegistered<cart_repo.CartRepository>()) {
+    sl.registerLazySingleton<cart_repo.CartRepository>(
+        () => cart_impl.CartRepositoryImpl());
+  }
+
+  if (!sl.isRegistered<cart_get_uc.GetCart>()) {
+    sl.registerLazySingleton<cart_get_uc.GetCart>(
+        () => cart_get_uc.GetCart(sl<cart_repo.CartRepository>()));
+  }
+
+  if (!sl.isRegistered<cart_add_uc.AddToCart>()) {
+    sl.registerLazySingleton<cart_add_uc.AddToCart>(
+        () => cart_add_uc.AddToCart(sl<cart_repo.CartRepository>()));
+  }
+
+  if (!sl.isRegistered<cart_remove_uc.RemoveFromCart>()) {
+    sl.registerLazySingleton<cart_remove_uc.RemoveFromCart>(
+        () => cart_remove_uc.RemoveFromCart(sl<cart_repo.CartRepository>()));
+  }
+
+  if (!sl.isRegistered<cart_update_uc.UpdateQuantity>()) {
+    sl.registerLazySingleton<cart_update_uc.UpdateQuantity>(
+        () => cart_update_uc.UpdateQuantity(sl<cart_repo.CartRepository>()));
+  }
+
+  if (!sl.isRegistered<cart_cubit.CartCubit>()) {
+    sl.registerFactory<cart_cubit.CartCubit>(() => cart_cubit.CartCubit(
+        getCartUsecase: sl(),
+        addToCartUsecase: sl(),
+        removeFromCartUsecase: sl(),
+        updateQuantityUsecase: sl()));
   }
   // sl.registerLazySingleton(() => CartRepositoryImpl(sl()));
 

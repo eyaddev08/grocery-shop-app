@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../config/routes/app_routes.dart';
 import '../constants/app_colors.dart';
+import '../services/navigation_service.dart';
 
 class CustomAppBarWidget extends StatelessWidget {
   const CustomAppBarWidget({
@@ -50,7 +52,9 @@ class CustomAppBarWidget extends StatelessWidget {
             clipBehavior: Clip.none,
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  NavigationService.navigateTo(AppRoutes.cart);
+                },
                 icon: SvgPicture.asset(
                   'assets/svg/bag_icon.svg',
                   height: 22,

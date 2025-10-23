@@ -1,17 +1,14 @@
-
-  import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 double s(BuildContext context) => MediaQuery.of(context).size.width / 375.0;
 
 class Dimensions {
-  static double fontSizeExtraSmall = 10; //14
-  static double fontSizeSmall = 12; // 16;
-  static double fontSizeDefault = 14; // 18;
-  static double fontSizeLarge = 16; // 22
-  static double fontSizeExtraLarge =
-        18; // 26
-  static double fontSizeOverLarge =
- 24; // 28
+  static const double fontSizeExtraSmall = 10; //14
+  static const double fontSizeSmall = 12; // 16;
+  static const double fontSizeDefault = 14; // 18;
+  static const double fontSizeLarge = 16; // 22
+  static const double fontSizeExtraLarge = 18; // 26
+  static const double fontSizeOverLarge = 24; // 28
   static const double fontSizeWallet = 24;
 
   static const double paddingSizeExtraExtraSmall = 2;

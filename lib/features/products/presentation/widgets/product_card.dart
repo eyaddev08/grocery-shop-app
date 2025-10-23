@@ -6,6 +6,8 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:grocery_shop_app/core/constants/app_colors.dart';
 import '../../../../config/di/injection_container.dart';
+import '../../../cart/presentation/manager/cart_cubit.dart';
+import '../../../cart/domain/entities/cart_item.dart' as cart_entity;
 import '../../../product_details/domain/usecases/get_product_details.dart';
 
 import '../../../product_details/domain/usecases/get_similar_product.dart';
@@ -75,9 +77,9 @@ class ProductCard extends StatelessWidget {
                 ),
               )
             : GestureDetector(
-                onTap: () => Navigator.push(
+                onTap: () => Navigator.push<void>(
                     context,
-                    MaterialPageRoute(
+                    MaterialPageRoute<void>(
                         builder: (builder) => MultiBlocProvider(
                               providers: [
                                 BlocProvider(
@@ -128,17 +130,33 @@ class ProductCard extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Container(
-                              width: 32,
-                              height: 32,
-                              decoration: ShapeDecoration(
-                                color: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                            GestureDetector(
+                              onTap: () {
+                                // add to cart using CartCubit from context
+                                final cubit = context.read<CartCubit>();
+                                if (p != null) {
+                                  final item = cart_entity.CartItem(
+                                      id: p.id,
+                                      title: p.title,
+                                      price: p.price,
+                                      regularPrice: p.regularPrice,
+                                      quantity: 1,
+                                      image: p.image);
+                                  cubit.addItem(item);
+                                }
+                              },
+                              child: Container(
+                                width: 32,
+                                height: 32,
+                                decoration: ShapeDecoration(
+                                  color: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
                                 ),
+                                child: Image.asset('assets/images/add_icon.png',
+                                    color: yellow, height: 18),
                               ),
-                              child: Image.asset('assets/images/add_icon.png',
-                                  color: yellow, height: 18),
                             ),
                           ],
                         ),
