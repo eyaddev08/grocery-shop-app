@@ -11,20 +11,23 @@ class ProductRepositoryImpl implements ProductRepository {
         subtitle: 'Sea fish',
         filterLabel: 'Popular',
         price: 89,
+         regularPrice: 112,
         image: null),
     const Product(
         id: 'p2',
         title: 'Gold Fish',
         subtitle: 'Fresh',
         filterLabel: 'Low Price',
-        price: 325,
+        price: 146,
+         regularPrice: 165,
         image: null),
     const Product(
         id: 'p3',
         title: 'Tang',
         subtitle: 'Big tang',
         filterLabel: 'Small Fishes',
-        price: 325,
+        price: 286,
+       
         image: null),
     const Product(
         id: 'p4',
@@ -32,13 +35,15 @@ class ProductRepositoryImpl implements ProductRepository {
         subtitle: 'Sea fish',
         filterLabel: 'Big',
         price: 89,
+         
         image: null),
     const Product(
         id: 'p5',
         title: 'Gold Fish',
         subtitle: 'Fresh',
         filterLabel: '',
-        price: 325,
+        price: 315,
+         regularPrice: 366,
         image: null),
     const Product(
         id: 'p6',
@@ -46,6 +51,7 @@ class ProductRepositoryImpl implements ProductRepository {
         subtitle: 'Big tang',
         filterLabel: '',
         price: 325,
+       
         image: null),
   ];
 

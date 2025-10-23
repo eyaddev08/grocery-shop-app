@@ -9,6 +9,10 @@ import 'core/theme/app_theme.dart';
 import 'core/utils/layout.dart';
 import 'features/Home/domain/usecases/get_products_usecase.dart';
 import 'features/Home/presentation/manger/cubit/grocery_cubit.dart';
+import 'features/cart/domain/usecases/add_to_cart.dart';
+import 'features/cart/domain/usecases/remove_from_cart.dart';
+import 'features/cart/domain/usecases/update_quantity.dart';
+import 'features/cart/presentation/manager/cart_cubit.dart';
 import 'features/categories/domain/usecases/get_categories.dart';
 import 'features/categories/presentation/manger/categories_cubit.dart';
 import 'features/onboarding/presentation/views/onboarding_v2_screen.dart';
@@ -17,6 +21,8 @@ import 'features/products/data/repositories/product_repository_impl.dart';
 import 'features/products/domain/usecases/get_products.dart';
 import 'features/products/presentation/manger/products_cubit.dart';
 import 'features/products/presentation/screens/products_screen.dart';
+import 'features/cart/presentation/screens/cart_screen.dart';
+import 'features/cart/domain/usecases/get_cart.dart';
 import 'features/splash/presentation/screens/splash_screen.dart';
 
 class GroceryShopApp extends StatelessWidget {
@@ -37,22 +43,42 @@ class GroceryShopApp extends StatelessWidget {
       ),
     );
 
-    return MaterialApp(
-      title: 'Grocery Shop',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
-      navigatorKey: NavigationService.navigatorKey,
-      initialRoute: AppRoutes.splash,
-      onGenerateRoute: _generateRoute,
-      builder: (context, child) => MediaQuery(
-        data: MediaQuery.of(context).copyWith(
-          textScaler: TextScaler.linear(
-            MediaQuery.of(context).textScaleFactor.clamp(0.8, 1.2),
-          ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+            create: (context) => GroceryCubit(sl<GetProductsUseCase>())),
+        BlocProvider(
+            create: (context) => CategoriesCubit(sl<GetCategories>())..load()),
+        BlocProvider(
+          create: (context) =>
+              ProductsCubit(GetProducts(ProductRepositoryImpl()))..load(),
         ),
-        child: child!,
+        BlocProvider(
+          create: (context) => CartCubit(
+            getCartUsecase: sl<GetCart>(),
+            addToCartUsecase: sl<AddToCart>(),
+            removeFromCartUsecase: sl<RemoveFromCart>(),
+            updateQuantityUsecase: sl<UpdateQuantity>(),
+          )..load(),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'Grocery Shop',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: ThemeMode.system,
+        navigatorKey: NavigationService.navigatorKey,
+        initialRoute: AppRoutes.splash,
+        onGenerateRoute: _generateRoute,
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            textScaler: TextScaler.linear(
+              MediaQuery.of(context).textScaleFactor.clamp(0.8, 1.2),
+            ),
+          ),
+          child: child!,
+        ),
       ),
     );
   }
@@ -71,27 +97,22 @@ class GroceryShopApp extends StatelessWidget {
         );
       case AppRoutes.layout:
         return MaterialPageRoute(
-          builder: (context) => MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                  create: (context) => GroceryCubit(sl<GetProductsUseCase>())),
-              BlocProvider(
-                  create: (context) =>
-                      CategoriesCubit(sl<GetCategories>())..load()),
-              // BlocProvider(create: (context) => ProductDetailsCubit(getProductDetails:  sl<GetProductDetails>())),
-            ],
-            child: const Layout(),
-          ),
+          builder: (context) => const Layout(),
           settings: settings,
         );
-
+      case AppRoutes.cart:
+        return MaterialPageRoute(
+          builder: (context) => const CartScreen(),
+          settings: settings,
+        );
       case AppRoutes.products:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) =>
-                ProductsCubit(GetProducts(ProductRepositoryImpl()))..load(),
-            child: const ProductsScreen(),
-          ),
+          builder: (context) => const ProductsScreen(),
+          settings: settings,
+        );
+      case AppRoutes.checkout:
+        return MaterialPageRoute(
+          builder: (context) => const SizedBox(),
           settings: settings,
         );
       case AppRoutes.onboarding:
@@ -101,6 +122,7 @@ class GroceryShopApp extends StatelessWidget {
           builder: (_) => const NotFoundScreen(),
           settings: settings,
         );
+      
     }
   }
 }
