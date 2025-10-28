@@ -28,7 +28,7 @@ class AppExitCard extends StatelessWidget {
                     width: 60,
                     child: Image.asset(
                       'assets/images/logout.png',
-                      color: yellow,
+                      color: kYellow,
                     )),
               ),
               const SizedBox(
@@ -71,7 +71,7 @@ class AppExitCard extends StatelessWidget {
                         ),
                         const Expanded(
                             child: CustomButton(
-                                backgroundColor: yellow,
+                                backgroundColor: kYellow,
                                 buttonText: 'Exit',
                                 onTap: SystemNavigator.pop))
                       ]))

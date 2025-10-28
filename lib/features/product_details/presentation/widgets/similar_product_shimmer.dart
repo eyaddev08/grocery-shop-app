@@ -40,7 +40,7 @@ class SimilarProductShimmer extends StatelessWidget {
                         width: 80,
                         height: 12,
                         decoration: BoxDecoration(
-                            color: baseColor,
+                            color: kBaseColor,
                             borderRadius: BorderRadius.circular(6))),
                     const SizedBox(height: 8),
                     Row(
@@ -49,14 +49,14 @@ class SimilarProductShimmer extends StatelessWidget {
                             width: 40,
                             height: 14,
                             decoration: BoxDecoration(
-                                color: baseColor,
+                                color: kBaseColor,
                                 borderRadius: BorderRadius.circular(6))),
                         const Spacer(),
                         Container(
                             width: 32,
                             height: 32,
                             decoration: BoxDecoration(
-                                color: baseColor, shape: BoxShape.circle)),
+                                color: kBaseColor, shape: BoxShape.circle)),
                       ],
                     ),
                   ],

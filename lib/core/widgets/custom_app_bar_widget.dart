@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../config/routes/app_routes.dart';
+import '../../features/cart/presentation/manager/cart_cubit.dart';
 import '../constants/app_colors.dart';
 import '../services/navigation_service.dart';
 
@@ -9,7 +11,7 @@ class CustomAppBarWidget extends StatelessWidget {
   const CustomAppBarWidget({
     super.key,
     this.label = 'Hey, Halal',
-    this.backgroundColor = deepBlue,
+    this.backgroundColor = kPrimaryBlue,
     this.titleSpacing = 18,
     this.centerTitle = false,
     this.labelSize = 22,
@@ -68,17 +70,24 @@ class CustomAppBarWidget extends StatelessWidget {
                     width: 22 * scale,
                     height: 22 * scale,
                     decoration: BoxDecoration(
-                        color: yellow,
+                        color: kYellow,
                         shape: BoxShape.circle,
                         border:
                             Border.all(color: Colors.white, width: 2 * scale)),
-                    child: Center(
-                        child: Text('3',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12 * scale,
-                                fontWeight: FontWeight.w600,
-                                height: 1)))),
+                    child: BlocBuilder<CartCubit, CartState>(
+                      builder: (context, state) {
+                        int count = 0;
+                        if (state is CartLoaded) count = state.items.length;
+
+                        return Center(
+                            child: Text(count.toString(),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12 * scale,
+                                    fontWeight: FontWeight.w600,
+                                    height: 1)));
+                      },
+                    )),
               )
             ],
           ),

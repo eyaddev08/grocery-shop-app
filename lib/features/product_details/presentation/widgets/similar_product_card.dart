@@ -88,7 +88,7 @@ class SimilarProductCard extends StatelessWidget {
                             ),
                           ),
                           child: Image.asset('assets/images/add_icon.png',
-                              color: yellow, height: 18),
+                              color: kYellow, height: 18),
                         ),
                       ],
                     ),

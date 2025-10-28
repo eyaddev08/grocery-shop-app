@@ -23,10 +23,10 @@ class CounterCart extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: ShapeDecoration(
-              color: textDark.withOpacity(0.06),
+              color: kTextDark.withOpacity(0.06),
               shape: const OvalBorder(),
             ),
-            child: Icon(icon, size: Dimensions.iconSizeSmall, color: textDark),
+            child: Icon(icon, size: Dimensions.iconSizeSmall, color: kTextDark),
           ),
         ),
       );

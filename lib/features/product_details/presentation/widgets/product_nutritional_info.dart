@@ -21,7 +21,7 @@ class ProductNutritionalInfo extends StatelessWidget {
                 fontFamily: 'Poppins',
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
-                color: textDark,
+                color: kTextDark,
               ),
             ),
             trailing: const Icon(Icons.keyboard_arrow_down, color: kMutedGray),

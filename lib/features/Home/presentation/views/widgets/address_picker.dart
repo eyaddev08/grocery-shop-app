@@ -21,7 +21,7 @@ class AddressPicker extends StatelessWidget {
             .map((o) => ListTile(
                   title: Text(o),
                   trailing: o == selected
-                      ? const Icon(Icons.check, color: yellow)
+                      ? const Icon(Icons.check, color: kYellow)
                       : null,
                   onTap: () => Navigator.of(context).pop(o),
                 ))

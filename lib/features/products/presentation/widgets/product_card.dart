@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:grocery_shop_app/core/constants/app_colors.dart';
 import '../../../../config/di/injection_container.dart';
+import '../../../../core/widgets/custom_snackbar_widget.dart';
 import '../../../cart/presentation/manager/cart_cubit.dart';
 import '../../../cart/domain/entities/cart_item.dart' as cart_entity;
 import '../../../product_details/domain/usecases/get_product_details.dart';
@@ -144,6 +145,8 @@ class ProductCard extends StatelessWidget {
                                       image: p.image);
                                   cubit.addItem(item);
                                 }
+                                      showCustomSnackBarWidget(
+                                          'The product has been successfully added to your basket!', context);
                               },
                               child: Container(
                                 width: 32,
@@ -155,7 +158,7 @@ class ProductCard extends StatelessWidget {
                                   ),
                                 ),
                                 child: Image.asset('assets/images/add_icon.png',
-                                    color: yellow, height: 18),
+                                    color: kYellow, height: 18),
                               ),
                             ),
                           ],

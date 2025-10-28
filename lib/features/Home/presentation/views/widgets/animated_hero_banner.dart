@@ -28,21 +28,21 @@ class _AnimatedHeroBannerState extends State<AnimatedHeroBanner> {
   final promos = [
     {
       'image': 'assets/svg/logo_image.svg',
-      'bg': yellow,
+      'bg': kYellow,
       'title': 'Get',
       'big': '50% OFF',
       'sub': 'On first 03 order'
     },
     {
       'image': 'assets/svg/logo_image.svg',
-      'bg': beige,
+      'bg': kBeige,
       'title': 'New',
       'big': 'Deals',
       'sub': 'Limited time'
     },
     {
       'image': 'assets/svg/logo_image.svg',
-      'bg': navInactive,
+      'bg': kNavInactive,
       'title': 'Get',
       'big': '40% OFF',
       'sub': 'On first 04 order'

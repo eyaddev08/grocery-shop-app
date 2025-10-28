@@ -15,6 +15,14 @@ import 'features/cart/domain/usecases/update_quantity.dart';
 import 'features/cart/presentation/manager/cart_cubit.dart';
 import 'features/categories/domain/usecases/get_categories.dart';
 import 'features/categories/presentation/manger/categories_cubit.dart';
+import 'features/checkout/domain/usecases/add_address.dart';
+import 'features/checkout/domain/usecases/delete_address.dart';
+import 'features/checkout/domain/usecases/get_addresses.dart';
+import 'features/checkout/domain/usecases/set_default_address.dart';
+import 'features/checkout/domain/usecases/update_address.dart';
+import 'features/checkout/presentation/manager/address_cubit.dart';
+import 'features/checkout/presentation/screens/add_address_sscreen.dart';
+import 'features/checkout/presentation/screens/checkout_screen.dart';
 import 'features/onboarding/presentation/views/onboarding_v2_screen.dart';
 
 import 'features/products/data/repositories/product_repository_impl.dart';
@@ -60,6 +68,21 @@ class GroceryShopApp extends StatelessWidget {
             removeFromCartUsecase: sl<RemoveFromCart>(),
             updateQuantityUsecase: sl<UpdateQuantity>(),
           )..load(),
+        ),
+        // BlocProvider(
+        //   create: (context) => CheckoutCubit(
+        //     getAddresses: sl<GetAddresses>(),
+        //     addAddress: sl<AddAddress>(),
+        //   )..load(),
+        // ),
+        BlocProvider(
+          create: (context) => AddressCubit(
+            getAddresses: sl<GetAddressesUseCase>(),
+            addAddress: sl<AddAddressUseCase>(),
+            deleteAddress: sl<DeleteAddressUseCase>(),
+            updateAddress: sl<UpdateAddressUseCase>(),
+            setDefaultAddress: sl<SetDefaultAddressUseCase>(),
+          )..loadAddresses(),
         ),
       ],
       child: MaterialApp(
@@ -112,9 +135,19 @@ class GroceryShopApp extends StatelessWidget {
         );
       case AppRoutes.checkout:
         return MaterialPageRoute(
-          builder: (context) => const SizedBox(),
+          builder: (context) => const CheckoutScreen(),
           settings: settings,
         );
+      case AppRoutes.addAddress:
+        return MaterialPageRoute(
+          builder: (context) => const AddAddressScreen(),
+          settings: settings,
+        );
+      //  case AppRoutes.addCard:
+      // return MaterialPageRoute(
+      //   builder: (context) => const AddCardScreen(),
+      //   settings: settings,
+      // );
       case AppRoutes.onboarding:
         return MaterialPageRoute(builder: (_) => const OnboardingV2Screen());
       default:
@@ -122,7 +155,6 @@ class GroceryShopApp extends StatelessWidget {
           builder: (_) => const NotFoundScreen(),
           settings: settings,
         );
-      
     }
   }
 }
