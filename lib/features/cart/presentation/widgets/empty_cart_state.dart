@@ -12,7 +12,7 @@ class EmptyCartState extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.shopping_cart_outlined, size: 84, color: muted),
+              const Icon(Icons.shopping_cart_outlined, size: 84, color: kMuted),
               const SizedBox(height: 12),
               const Text('Your cart is empty',
                   style: TextStyle(
@@ -22,7 +22,7 @@ class EmptyCartState extends StatelessWidget {
                       fontFamily: 'Poppins')),
               const SizedBox(height: 6),
               const Text('Add items to collect them here.',
-                  style: TextStyle(color: muted, fontFamily: 'Poppins')),
+                  style: TextStyle(color: kMuted, fontFamily: 'Poppins')),
               const SizedBox(height: 16),
               CustomButton(
                 buttonText: 'Shop now',

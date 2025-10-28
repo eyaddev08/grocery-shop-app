@@ -6,7 +6,8 @@ class TitleBody extends StatelessWidget {
   const TitleBody({
     super.key,
     required this.scale,
-    this.onTap, required this.title,
+    this.onTap,
+    required this.title,
   });
   final String title;
   final double scale;
@@ -21,7 +22,7 @@ class TitleBody extends StatelessWidget {
             style: TextStyle(
                 fontSize: 18 * scale,
                 fontWeight: FontWeight.w600,
-                color: textDark)),
+                color: kTextDark)),
         InkWell(
             onTap: onTap,
             child: const Text('View all',

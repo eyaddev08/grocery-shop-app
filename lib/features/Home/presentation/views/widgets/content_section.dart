@@ -30,14 +30,14 @@ class ContentSection extends StatelessWidget {
             child: const Row(children: [
               Expanded(
                   child: SavingsCard(
-                      background: yellow,
+                      background: kYellow,
                       number: '346',
                       unit: 'USD',
                       label: 'Your total savings')),
               SizedBox(width: 12),
               Expanded(
                   child: SavingsCard(
-                      background: beige,
+                      background: kBeige,
                       number: '215',
                       unit: 'HRS',
                       label: 'Your time saved'))

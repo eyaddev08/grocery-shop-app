@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../constants/app_colors.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({
-    super.key, required this.title,
+    super.key,
+    required this.title,
   });
   final String title;
 
@@ -15,31 +17,29 @@ class CustomAppBar extends StatelessWidget {
           child: Row(
             children: [
               Container(
-                width: 45,
-                height: 45,
+                width: 40,
+                height: 40,
                 decoration: BoxDecoration(
-                  color: textDark.withOpacity(0.06),
-                  shape: BoxShape.circle,
-                ),
+                    color: kTextDark.withOpacity(0.06), shape: BoxShape.circle),
                 child: IconButton(
-                  padding: EdgeInsets.zero,
-                  icon:
-                      const Icon(Icons.chevron_left, size: 20, color: textDark),
-                  onPressed: () => Navigator.pop(context),
-                ),
+                    padding: EdgeInsets.zero,
+                    icon: SvgPicture.asset(
+                      'assets/svg/arr_icon.svg',
+                      height: 12,
+                      width: 12,
+                      color: kTextDark.withOpacity(0.8),
+                    ),
+                    onPressed: () => Navigator.of(context).maybePop()),
               ),
-              const SizedBox(width: 16),
-               SizedBox(
-                width: 143,
-                child: Text(title,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: textDark,
-                    fontSize: 20,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w400,
-                    height: 1.50,
-                  ),
+              const SizedBox(width: 12),
+              Text(
+                title,
+                style: TextStyle(
+                  color: kTextDark.withOpacity(0.8),
+                  fontSize: 19,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w400,
+                  height: 1.50,
                 ),
               ),
             ],

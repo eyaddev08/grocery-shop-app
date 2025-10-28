@@ -9,8 +9,8 @@ class CartItemShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Shimmer.fromColors(
-        baseColor: baseColor,
-        highlightColor: highlightColor,
+        baseColor: kBaseColor,
+        highlightColor: kHighlightColor,
         child: Column(
           children: [
             Row(

@@ -35,7 +35,7 @@ class HeaderSection extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(
                   18 * scale, 14 * scale, 18 * scale, 14 * scale),
               decoration: const BoxDecoration(
-                color: deepBlue,
+                color: kPrimaryBlue,
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(22),
                   bottomRight: Radius.circular(22),
@@ -67,7 +67,7 @@ class HeaderSection extends StatelessWidget {
                                 width: 22 * scale,
                                 height: 22 * scale,
                                 decoration: BoxDecoration(
-                                    color: yellow,
+                                    color: kYellow,
                                     shape: BoxShape.circle,
                                     border: Border.all(
                                         color: Colors.white, width: 2 * scale)),
@@ -90,7 +90,7 @@ class HeaderSection extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                           horizontal: 16 * scale, vertical: 12 * scale),
                       decoration: BoxDecoration(
-                          color: searchBlue,
+                          color: kSearchBlue,
                           borderRadius: BorderRadius.circular(28 * scale)),
                       child: Row(
                         children: [

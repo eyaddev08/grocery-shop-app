@@ -21,8 +21,6 @@ class AppStrings {
   static const String skip = 'Skip';
   static const String continue_ = 'Continue';
 
-  
-
   // Authentication
   static const String login = 'Login';
   static const String register = 'Register';
@@ -71,6 +69,10 @@ class AppStrings {
   static const String tax = 'Tax';
   static const String shipping = 'Shipping';
   static const String checkout = 'Checkout';
+  static const String addAddress = 'Add Address';
+  static const String editAddress = 'Edit Address';
+  static const String addCard = 'Add Card';
+
   static const String removeItem = 'Remove Item';
   static const String updateQuantity = 'Update Quantity';
 
