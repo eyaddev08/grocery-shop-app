@@ -5,7 +5,7 @@ import 'package:grocery_shop_app/core/widgets/custom_app_bar.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/custom_themes.dart';
 import '../../../../core/widgets/custom_dropdown_form_field.dart';
-import '../manager/address_cubit.dart';
+import '../manager/checkout_cubit.dart';
 import '../widgets/custom_input_field.dart';
 
 class AddAddressScreen extends StatefulWidget {
@@ -28,7 +28,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<AddressCubit>();
+    final cubit = context.read<CheckoutCubit>();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const PreferredSize(

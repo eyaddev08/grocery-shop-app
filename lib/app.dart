@@ -20,7 +20,7 @@ import 'features/checkout/domain/usecases/delete_address.dart';
 import 'features/checkout/domain/usecases/get_addresses.dart';
 import 'features/checkout/domain/usecases/set_default_address.dart';
 import 'features/checkout/domain/usecases/update_address.dart';
-import 'features/checkout/presentation/manager/address_cubit.dart';
+import 'features/checkout/presentation/manager/checkout_cubit.dart';
 import 'features/checkout/presentation/screens/add_address_sscreen.dart';
 import 'features/checkout/presentation/screens/checkout_screen.dart';
 import 'features/onboarding/presentation/views/onboarding_v2_screen.dart';
@@ -76,7 +76,7 @@ class GroceryShopApp extends StatelessWidget {
         //   )..load(),
         // ),
         BlocProvider(
-          create: (context) => AddressCubit(
+          create: (context) => CheckoutCubit(
             getAddresses: sl<GetAddressesUseCase>(),
             addAddress: sl<AddAddressUseCase>(),
             deleteAddress: sl<DeleteAddressUseCase>(),

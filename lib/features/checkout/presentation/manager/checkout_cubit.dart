@@ -7,16 +7,16 @@ import '../../domain/usecases/delete_address.dart';
 import '../../domain/usecases/get_addresses.dart';
 import '../../domain/usecases/set_default_address.dart';
 import '../../domain/usecases/update_address.dart';
-import 'address_state.dart';
+import 'checkout_state.dart';
 
-class AddressCubit extends Cubit<AddressState> {
-  AddressCubit({
+class CheckoutCubit extends Cubit<CheckoutState> {
+  CheckoutCubit({
     required this.getAddresses,
     required this.addAddress,
     required this.updateAddress,
     required this.setDefaultAddress,
     required this.deleteAddress,
-  }) : super(AddressInitial());
+  }) : super(CheckoutInitial());
   final GetAddressesUseCase getAddresses;
   final AddAddressUseCase addAddress;
   final UpdateAddressUseCase updateAddress;
@@ -24,16 +24,16 @@ class AddressCubit extends Cubit<AddressState> {
   final DeleteAddressUseCase deleteAddress;
 
   Future<void> loadAddresses() async {
-    emit(AddressLoading());
+    emit(CheckoutLoading());
     try {
       final list = await getAddresses();
       if (list.isEmpty) {
-        emit(AddressEmpty());
+        emit(CheckoutEmpty());
       } else {
-        emit(AddressLoaded(list));
+        emit(CheckoutLoaded(list));
       }
     } catch (e) {
-      emit(AddressError(e.toString()));
+      emit(CheckoutError(e.toString()));
     }
   }
 
