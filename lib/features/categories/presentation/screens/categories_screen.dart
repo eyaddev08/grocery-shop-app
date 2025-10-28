@@ -50,7 +50,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     padding: EdgeInsets.fromLTRB(
                         18 * scale, 14 * scale, 18 * scale, 14 * scale),
                     decoration: const BoxDecoration(
-                      color: deepBlue,
+                      color: kPrimaryBlue,
                     ),
                     child: const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,7 +113,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                           category: c,
                           onTap: () {
                             NavigationService.navigateTo(AppRoutes.products);
-                           
                           });
                     },
                   )

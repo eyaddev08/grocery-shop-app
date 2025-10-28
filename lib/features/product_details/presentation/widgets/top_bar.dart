@@ -16,16 +16,17 @@ class TopBar extends StatelessWidget {
           Container(
             width: 40,
             height: 40,
-            decoration: const BoxDecoration(
-              color: kSoftBg,
-              shape: BoxShape.circle,
-            ),
+            decoration: BoxDecoration(
+                color: kTextDark.withOpacity(0.06), shape: BoxShape.circle),
             child: IconButton(
-              padding: EdgeInsets.zero,
-              icon: const Icon(Icons.chevron_left,
-                  size: 18, color: Colors.black87),
-              onPressed: () => Navigator.pop(context),
-            ),
+                padding: EdgeInsets.zero,
+                icon: SvgPicture.asset(
+                  'assets/svg/arr_icon.svg',
+                  height: 12,
+                  width: 12,
+                  color: kTextDark.withOpacity(0.8),
+                ),
+                onPressed: () => Navigator.of(context).maybePop()),
           ),
           const Spacer(),
           SizedBox(
@@ -35,10 +36,8 @@ class TopBar extends StatelessWidget {
               child: Container(
                 width: 40,
                 height: 40,
-                decoration: const BoxDecoration(
-                  color: kSoftBg,
-                  shape: BoxShape.circle,
-                ),
+                decoration: BoxDecoration(
+                    color: kTextDark.withOpacity(0.06), shape: BoxShape.circle),
                 child: Stack(
                   clipBehavior: Clip.none,
                   children: [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_shop_app/core/constants/app_colors.dart';
 
 const titilliumRegular = TextStyle(
   fontFamily: 'Poppins',
@@ -8,6 +9,7 @@ const titleRegular = TextStyle(
   fontFamily: 'Poppins',
   fontWeight: FontWeight.w500,
   fontSize: 14,
+  color: kMuted,
 );
 const titleHeader = TextStyle(
   fontFamily: 'Poppins',
@@ -37,14 +39,10 @@ const textRegular = TextStyle(
   fontSize: 14,
 );
 
-const textMedium = TextStyle(
-    fontFamily: 'Poppins',
-    fontSize: 14,
-    fontWeight: FontWeight.w500);
-const textBold = TextStyle(
-    fontFamily: 'Poppins',
-    fontSize: 14,
-    fontWeight: FontWeight.w600);
+const textMedium =
+    TextStyle(fontFamily: 'Poppins', fontSize: 14, color: kTextDark, fontWeight: FontWeight.w500);
+const textBold =
+    TextStyle(fontFamily: 'Poppins', fontSize: 14, fontWeight: FontWeight.w600);
 
 const robotoBold = TextStyle(
   fontFamily: 'Poppins',

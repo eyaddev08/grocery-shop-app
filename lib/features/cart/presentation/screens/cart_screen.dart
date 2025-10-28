@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../config/routes/app_routes.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/services/navigation_service.dart';
 import '../../../../core/utils/functions/show_removed_snack_bar.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
+import '../../../../core/widgets/custom_button_widget.dart';
 import '../manager/cart_cubit.dart';
 import '../widgets/cart_item_card.dart';
 import '../widgets/cart_summary_section.dart';
@@ -78,7 +81,7 @@ class CartScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: const Icon(Icons.delete_forever,
-                                    color: textDark),
+                                    color: kTextDark),
                               ),
                               onDismissed: (_) {
                                 context.read<CartCubit>().removeItem(item.id);
@@ -113,7 +116,12 @@ class CartScreen extends StatelessWidget {
                           return CartSummarySection(
                               subtotal: subtotal,
                               delivery: shipping,
-                              total: total);
+                              total: total,
+                              button:  CustomButton(
+              buttonText: 'Proceed To checkout',
+              onTap: () => NavigationService.navigateTo(AppRoutes.checkout),
+             
+            ),);
                         },
                       ),
                     ),

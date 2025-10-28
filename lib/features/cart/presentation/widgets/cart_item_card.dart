@@ -29,7 +29,6 @@ class CartItemCard extends StatelessWidget {
                   ? SvgPicture.asset(item.image!)
                   : SvgPicture.asset('assets/svg/empty_image.svg'),
             ),
-
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -39,7 +38,7 @@ class CartItemCard extends StatelessWidget {
                   Text(
                     item.title,
                     style: const TextStyle(
-                        color: textDark,
+                        color: kTextDark,
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                         fontFamily: 'Poppins'),
@@ -49,7 +48,7 @@ class CartItemCard extends StatelessWidget {
                     children: [
                       Text('\$${item.price.toStringAsFixed(2)}',
                           style: const TextStyle(
-                              color: textDark,
+                              color: kTextDark,
                               fontSize: 14,
                               fontWeight: FontWeight.w600)),
                       const SizedBox(width: 8),
@@ -59,7 +58,7 @@ class CartItemCard extends StatelessWidget {
                             child: Text(
                               '\$${item.price.toStringAsFixed(2)}',
                               style: const TextStyle(
-                                color: muted,
+                                color: kMuted,
                                 decoration: TextDecoration.lineThrough,
                                 fontSize: 14,
                                 fontFamily: 'Poppins',
@@ -86,19 +85,19 @@ class CartItemCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CounterCart(onTap: onDecrement, icon:  Icons.remove),
+                    CounterCart(onTap: onDecrement, icon: Icons.remove),
                     const SizedBox(width: 8),
                     AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 6),
                       decoration: BoxDecoration(
-                          color:  textDark.withOpacity(0.03),
+                          color: kTextDark.withOpacity(0.03),
                           borderRadius: BorderRadius.circular(6)),
                       child: Text(
                         '${item.quantity}',
                         style: const TextStyle(
-                          color: textDark,
+                          color: kTextDark,
                           fontSize: 14,
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.w500,

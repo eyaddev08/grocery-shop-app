@@ -15,6 +15,9 @@ class AppRoutes {
   static const String search = '/search';
   static const String cart = '/cart';
   static const String checkout = '/checkout';
+    static const String addAddress = '/add_address';
+     static const String editAddress = '/edit_address';
+      static const String addCard = '/add_Card';
   static const String profile = '/profile';
   static const String orders = '/orders';
   static const String orderDetails = '/order-details';
@@ -48,6 +51,10 @@ class AppRoutes {
     search: 'Search',
     cart: 'Cart',
     checkout: 'Checkout',
+    addAddress: 'Add Address',
+    editAddress: 'Edit Address',
+    addCard: 'Add Card',
+
     profile: 'Profile',
     orders: 'Orders',
     orderDetails: 'Order Details',
@@ -84,6 +91,9 @@ class AppRoutes {
       search,
       cart,
       checkout,
+      addAddress,
+      editAddress,
+      addAddress,
       profile,
       orders,
       orderDetails,
@@ -128,6 +138,9 @@ class AppRoutes {
       search,
       cart,
       checkout,
+      addAddress,
+      editAddress,
+      addAddress,
       profile,
       orders,
       orderDetails,

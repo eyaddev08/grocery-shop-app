@@ -94,7 +94,7 @@ class _LayoutState extends State<Layout> {
               decoration: BoxDecoration(
                   color: homeCircleDark,
                   borderRadius: BorderRadius.circular(12 * scale)),
-              child: Icon(icon, color: yellow, size: 22 * scale),
+              child: Icon(icon, color: kYellow, size: 22 * scale),
             ),
             SizedBox(height: 6 * scale),
             const SizedBox.shrink(),
@@ -106,8 +106,8 @@ class _LayoutState extends State<Layout> {
       icon: icon,
       label: label,
       active: false,
-      activeColor: smallBlue,
-      inactiveColor: navInactive,
+      activeColor: kPrimaryBlue,
+      inactiveColor: kNavInactive,
       onTap: () => _onNav(index),
       scale: scale,
     );

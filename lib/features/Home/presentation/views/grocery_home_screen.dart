@@ -24,7 +24,7 @@ class _GroceryHomeScreenState extends State<GroceryHomeScreen> {
   Widget build(BuildContext context) {
     final scale = s(context);
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F6F8),
+   
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(240),
           child: HeaderSection(

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_shop_app/config/routes/app_routes.dart';
 import 'package:grocery_shop_app/core/utils/dimensions.dart';
 
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/services/navigation_service.dart';
-import '../../../../core/widgets/custom_button_widget.dart';
+
 
 class CartSummarySection extends StatelessWidget {
   const CartSummarySection({
@@ -12,17 +10,20 @@ class CartSummarySection extends StatelessWidget {
     required this.subtotal,
     required this.delivery,
     required this.total,
+   required this.button,
   });
 
   final double subtotal;
   final double delivery;
   final double total;
+  final Widget button;
+
 
   @override
   Widget build(BuildContext context) => Container(
         width: double.infinity,
         decoration: ShapeDecoration(
-          color: pale,
+          color: kPale,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),
@@ -43,12 +44,7 @@ class CartSummarySection extends StatelessWidget {
                 amount: '\$${total.toStringAsFixed(2)}',
                 isTotal: true),
             const SizedBox(height: 35),
-            CustomButton(
-              buttonText: 'Proceed To checkout',
-              onTap: () => NavigationService.navigateTo(AppRoutes.checkout),
-            ),
-        
-
+           button,
             const SizedBox(height: 8),
           ],
         ),
