@@ -8,8 +8,9 @@ import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/custom_button_widget.dart';
 import '../../../../core/widgets/custom_snackbar_widget.dart';
 import '../../../../core/widgets/delet_address_show_dialog_widget.dart';
-import '../manager/address_cubit.dart';
-import '../manager/address_state.dart';
+import '../../../cart/presentation/manager/cart_cubit.dart';
+import '../manager/checkout_cubit.dart';
+import '../manager/checkout_state.dart';
 import '../widgets/add_new_address_card.dart';
 import '../widgets/address_card.dart';
 import 'edit_address_screen.dart';
@@ -20,9 +21,16 @@ class CheckoutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: Colors.white,
-        appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(50),
-          child: CustomAppBar(title: 'Shopping Cart (5)'),
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(50),
+          child: BlocBuilder<CartCubit, CartState>(
+            builder: (context, state) {
+              int count = 0;
+              if (state is CartLoaded) count = state.items.length;
+
+              return CustomAppBar(title: 'Shopping Cart ($count)');
+            },
+          ),
         ),
         body: SafeArea(
           child: Padding(
@@ -43,18 +51,18 @@ class CheckoutScreen extends StatelessWidget {
                     )),
                 const SizedBox(height: 12),
                 Expanded(
-                  child: BlocBuilder<AddressCubit, AddressState>(
+                  child: BlocBuilder<CheckoutCubit, CheckoutState>(
                     builder: (context, state) {
-                      if (state is AddressLoading) {
+                      if (state is CheckoutLoading) {
                         return const Center(child: CircularProgressIndicator());
-                      } else if (state is AddressEmpty) {
+                      } else if (state is CheckoutEmpty) {
                         return Center(
                           child: AddNewAddressCard(onTap: () async {
                             await NavigationService.navigateTo(
                                 AppRoutes.addAddress);
                           }),
                         );
-                      } else if (state is AddressLoaded) {
+                      } else if (state is CheckoutLoaded) {
                         final list = state.addresses;
                         return SingleChildScrollView(
                           child: Column(
@@ -62,7 +70,7 @@ class CheckoutScreen extends StatelessWidget {
                               ...list.map((a) => AddressCard(
                                     address: a,
                                     onSelect: () => context
-                                        .read<AddressCubit>()
+                                        .read<CheckoutCubit>()
                                         .chooseDefault(a.id),
                                     onEdit: () async {
                                       await Navigator.of(context).push(
@@ -70,14 +78,14 @@ class CheckoutScreen extends StatelessWidget {
                                               builder: (_) =>
                                                   BlocProvider.value(
                                                     value: context
-                                                        .read<AddressCubit>(),
+                                                        .read<CheckoutCubit>(),
                                                     child: EditAddressScreen(
                                                         address: a),
                                                   )));
                                       showCustomSnackBarWidget(
                                           'Edit Address', context);
                                       await context
-                                          .read<AddressCubit>()
+                                          .read<CheckoutCubit>()
                                           .loadAddresses();
                                     },
                                     onDelete: () async {
@@ -94,7 +102,7 @@ class CheckoutScreen extends StatelessWidget {
 
                                       if (confirm == true) {
                                         await context
-                                            .read<AddressCubit>()
+                                            .read<CheckoutCubit>()
                                             .removeAddress(a.id);
 
                                         showCustomSnackBarWidget(
@@ -110,7 +118,7 @@ class CheckoutScreen extends StatelessWidget {
                             ],
                           ),
                         );
-                      } else if (state is AddressError) {
+                      } else if (state is CheckoutError) {
                         return Center(child: Text('Error: ${state.message}'));
                       } else {
                         return const SizedBox.shrink();

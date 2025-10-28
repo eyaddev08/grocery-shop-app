@@ -6,7 +6,7 @@ import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/custom_dropdown_form_field.dart';
 import '../../../../core/widgets/custom_button_widget.dart';
 import '../../domain/entities/address.dart';
-import '../manager/address_cubit.dart';
+import '../manager/checkout_cubit.dart';
 import '../widgets/custom_input_field.dart';
 
 class EditAddressScreen extends StatefulWidget {
@@ -37,7 +37,7 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<AddressCubit>();
+    final cubit = context.read<CheckoutCubit>();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const PreferredSize(

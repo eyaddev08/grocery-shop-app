@@ -28,7 +28,7 @@ import '../../features/checkout/domain/usecases/delete_address.dart';
 import '../../features/checkout/domain/usecases/get_addresses.dart';
 import '../../features/checkout/domain/usecases/set_default_address.dart';
 import '../../features/checkout/domain/usecases/update_address.dart';
-import '../../features/checkout/presentation/manager/address_cubit.dart';
+import '../../features/checkout/presentation/manager/checkout_cubit.dart';
 
 import '../../features/product_details/data/repositories/similar_product_repository_imp.dart';
 import '../../features/product_details/domain/repositories/similar_product_repository.dart';
@@ -207,10 +207,7 @@ Future<void> init() async {
         updateQuantityUsecase: sl()));
   }
 
-
-
-
-   // Checkout registrations
+  // Checkout registrations
   if (!sl.isRegistered<AddressRepository>()) {
     sl.registerLazySingleton<AddressRepository>(
         () => InMemoryAddressRepository());
@@ -224,39 +221,40 @@ Future<void> init() async {
   //       () => AddAddress(sl<AddressRepository>()));
   // }
 
-   
-   
   //   if (!sl.isRegistered<CheckoutCubit>()) {
   //   sl.registerFactory<CheckoutCubit>(() => CheckoutCubit(
   //       getAddresses: sl(),
   //       addAddress: sl()));
   // }
 
-   if (!sl.isRegistered<GetAddressesUseCase>()) {
+  if (!sl.isRegistered<GetAddressesUseCase>()) {
     sl.registerLazySingleton<GetAddressesUseCase>(
         () => GetAddressesUseCase(sl<AddressRepository>()));
   }
-   if (!sl.isRegistered<AddAddressUseCase>()) {
+  if (!sl.isRegistered<AddAddressUseCase>()) {
     sl.registerLazySingleton<AddAddressUseCase>(
         () => AddAddressUseCase(sl<AddressRepository>()));
   }
-    if (!sl.isRegistered<UpdateAddressUseCase>()) {
+  if (!sl.isRegistered<UpdateAddressUseCase>()) {
     sl.registerLazySingleton<UpdateAddressUseCase>(
         () => UpdateAddressUseCase(sl<AddressRepository>()));
   }
-   if (!sl.isRegistered<SetDefaultAddressUseCase>()) {
+  if (!sl.isRegistered<SetDefaultAddressUseCase>()) {
     sl.registerLazySingleton<SetDefaultAddressUseCase>(
         () => SetDefaultAddressUseCase(sl<AddressRepository>()));
   }
-    if (!sl.isRegistered<DeleteAddressUseCase>()) {
+  if (!sl.isRegistered<DeleteAddressUseCase>()) {
     sl.registerLazySingleton<DeleteAddressUseCase>(
         () => DeleteAddressUseCase(sl<AddressRepository>()));
   }
 
- if (!sl.isRegistered<AddressCubit>()) {
-    sl.registerFactory<AddressCubit>(() => AddressCubit(
+  if (!sl.isRegistered<CheckoutCubit>()) {
+    sl.registerFactory<CheckoutCubit>(() => CheckoutCubit(
         getAddresses: sl(),
-        addAddress: sl(), updateAddress: sl(), setDefaultAddress: sl(), deleteAddress: sl()));
+        addAddress: sl(),
+        updateAddress: sl(),
+        setDefaultAddress: sl(),
+        deleteAddress: sl()));
   }
   // sl.registerLazySingleton(() => CartRepositoryImpl(sl()));
 
