@@ -5,10 +5,8 @@ import '../utils/custom_themes.dart';
 import '../utils/dimensions.dart';
 
 class CustomButton extends StatelessWidget {
-
   const CustomButton({
     super.key,
-    
     required this.buttonText,
     this.isBuy = false,
     this.isBorder = false,
@@ -22,9 +20,10 @@ class CustomButton extends StatelessWidget {
     this.borderWidth,
     this.isLoading = false,
     this.buttonHeight = 56,
-    this.buttonWidth = double.infinity, required this.onTap,
+    this.buttonWidth = double.infinity,
+    this.onTap,
   });
-  final VoidCallback? onTap;
+  final Function()? onTap;
   final String? buttonText;
   final bool isBuy;
   final bool isBorder;
@@ -42,7 +41,7 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => TextButton(
-        onPressed: isLoading ? null : onTap,
+        onPressed: isLoading ? null : onTap as void Function()?,
         style: TextButton.styleFrom(padding: const EdgeInsets.all(0)),
         child: Container(
           width: buttonWidth,

@@ -30,6 +30,10 @@ import '../../features/checkout/domain/usecases/set_default_address.dart';
 import '../../features/checkout/domain/usecases/update_address.dart';
 import '../../features/checkout/presentation/manager/checkout_cubit.dart';
 
+import '../../features/payment/data/repositories/mock_payment_repository.dart';
+import '../../features/payment/domain/repositories/payment_repository.dart';
+import '../../features/payment/domain/usecase/tokenize_and_pay.dart';
+import '../../features/payment/presentation/manager/payment_cubit/payment_cubit.dart';
 import '../../features/product_details/data/repositories/similar_product_repository_imp.dart';
 import '../../features/product_details/domain/repositories/similar_product_repository.dart';
 import '../../features/products/data/repositories/product_repository_impl.dart'
@@ -212,20 +216,6 @@ Future<void> init() async {
     sl.registerLazySingleton<AddressRepository>(
         () => InMemoryAddressRepository());
   }
-  // if (!sl.isRegistered<GetAddresses>()) {
-  //   sl.registerLazySingleton<GetAddresses>(
-  //       () => GetAddresses(sl<AddressRepository>()));
-  // }
-  //  if (!sl.isRegistered<AddAddress>()) {
-  //   sl.registerLazySingleton<AddAddress>(
-  //       () => AddAddress(sl<AddressRepository>()));
-  // }
-
-  //   if (!sl.isRegistered<CheckoutCubit>()) {
-  //   sl.registerFactory<CheckoutCubit>(() => CheckoutCubit(
-  //       getAddresses: sl(),
-  //       addAddress: sl()));
-  // }
 
   if (!sl.isRegistered<GetAddressesUseCase>()) {
     sl.registerLazySingleton<GetAddressesUseCase>(
@@ -256,6 +246,22 @@ Future<void> init() async {
         setDefaultAddress: sl(),
         deleteAddress: sl()));
   }
+  // Payment registrations
+  if (!sl.isRegistered<PaymentRepository>()) {
+    sl.registerLazySingleton<PaymentRepository>(() => MockPaymentRepository());
+  }
+
+  if (!sl.isRegistered<TokenizeAndPayUseCase>()) {
+    sl.registerLazySingleton<TokenizeAndPayUseCase>(
+        () => TokenizeAndPayUseCase(sl<PaymentRepository>()));
+  }
+
+  if (!sl.isRegistered<PaymentCubit>()) {
+    sl.registerFactory<PaymentCubit>(() => PaymentCubit(
+          useCase: sl(),
+        ));
+  }
+
   // sl.registerLazySingleton(() => CartRepositoryImpl(sl()));
 
   // Use Cases

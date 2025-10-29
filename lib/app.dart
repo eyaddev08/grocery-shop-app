@@ -25,6 +25,9 @@ import 'features/checkout/presentation/screens/add_address_sscreen.dart';
 import 'features/checkout/presentation/screens/checkout_screen.dart';
 import 'features/onboarding/presentation/views/onboarding_v2_screen.dart';
 
+import 'features/payment/domain/usecase/tokenize_and_pay.dart';
+import 'features/payment/presentation/manager/payment_cubit/payment_cubit.dart';
+import 'features/payment/presentation/screens/add_card_screen.dart';
 import 'features/products/data/repositories/product_repository_impl.dart';
 import 'features/products/domain/usecases/get_products.dart';
 import 'features/products/presentation/manger/products_cubit.dart';
@@ -50,7 +53,6 @@ class GroceryShopApp extends StatelessWidget {
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
     );
-
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -84,6 +86,11 @@ class GroceryShopApp extends StatelessWidget {
             setDefaultAddress: sl<SetDefaultAddressUseCase>(),
           )..loadAddresses(),
         ),
+
+        BlocProvider(
+      create: (_) => PaymentCubit(useCase: sl<TokenizeAndPayUseCase>()),
+      
+    ),
       ],
       child: MaterialApp(
         title: 'Grocery Shop',
@@ -143,11 +150,11 @@ class GroceryShopApp extends StatelessWidget {
           builder: (context) => const AddAddressScreen(),
           settings: settings,
         );
-      //  case AppRoutes.addCard:
-      // return MaterialPageRoute(
-      //   builder: (context) => const AddCardScreen(),
-      //   settings: settings,
-      // );
+       case AppRoutes.addCard:
+      return MaterialPageRoute(
+        builder: (context) => const  AddCardScreen(amount: 37),
+        settings: settings,
+      );
       case AppRoutes.onboarding:
         return MaterialPageRoute(builder: (_) => const OnboardingV2Screen());
       default:

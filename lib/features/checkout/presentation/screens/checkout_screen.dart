@@ -115,6 +115,15 @@ class CheckoutScreen extends StatelessWidget {
                                 await NavigationService.navigateTo(
                                     AppRoutes.addAddress);
                               }),
+                              const SizedBox(height: 270),
+                              CustomButton(
+                                onTap: () async {
+                                  await NavigationService.navigateTo(
+                                      AppRoutes.addCard);
+                                },
+                                buttonText: 'Add Card',
+                                radius: 20,
+                              ),
                             ],
                           ),
                         );
@@ -125,15 +134,6 @@ class CheckoutScreen extends StatelessWidget {
                       }
                     },
                   ),
-                ),
-                const SizedBox(height: 8),
-                CustomButton(
-                  onTap: () async {
-                    const SizedBox();
-                    // await NavigationService.navigateTo(AppRoutes.addCard);
-                  },
-                  buttonText: 'Add Card',
-                  radius: 20,
                 ),
                 const SizedBox(height: 12),
               ],

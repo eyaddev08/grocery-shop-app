@@ -4,6 +4,7 @@ import 'package:grocery_shop_app/core/widgets/custom_app_bar.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/custom_themes.dart';
+import '../../../../core/widgets/custom_button_widget.dart';
 import '../../../../core/widgets/custom_dropdown_form_field.dart';
 import '../manager/checkout_cubit.dart';
 import '../widgets/custom_input_field.dart';
@@ -76,24 +77,15 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
               ),
             ),
             const Spacer(),
-            SizedBox(
-              width: double.infinity,
-              height: 56,
-              child: ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    await cubit.createAddress(
-                        label: label, details: _detailsController.text.trim());
-                    Navigator.of(context).pop();
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: kPrimaryBlue,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20))),
-                child:
-                    const Text('Save Address', style: TextStyle(fontSize: 16)),
-              ),
+            CustomButton(
+              onTap: () async {
+                if (_formKey.currentState?.validate() ?? false) {
+                  await cubit.createAddress(
+                      label: label, details: _detailsController.text.trim());
+                  Navigator.of(context).pop();
+                }
+              },
+              buttonText: 'Save Address',
             ),
           ],
         ),
