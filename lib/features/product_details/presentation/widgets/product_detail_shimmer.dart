@@ -92,14 +92,25 @@ class ShimmerProductDetail extends StatelessWidget {
             // title
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 26),
-              child: SizedBox(
-                width: 178,
-                child: Container(
-                  height: 22,
-                  decoration: BoxDecoration(
-                      color: kBaseColor,
-                      borderRadius: BorderRadius.circular(6)),
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: 178,
+                    child: Container(
+                      height: 22,
+                      decoration: BoxDecoration(
+                          color: kBaseColor,
+                          borderRadius: BorderRadius.circular(6)),
+                    ),
+                  ),
+                  Container(
+                    width: 36,
+                    height: 36,
+                    decoration: BoxDecoration(
+                        color: kBaseColor, shape: BoxShape.circle),
+                  ),
+                ],
               ),
             ),
 

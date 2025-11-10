@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_shop_app/core/constants/app_colors.dart';
+import '../../../../core/utils/custom_themes.dart';
 import '../../domain/entities/category.dart';
 
 class CategoriesCard extends StatelessWidget {
@@ -35,34 +37,26 @@ class CategoriesCard extends StatelessWidget {
                     Text(
                       category.title,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: Color(0xFF1E222B),
+                      style: titilliumBold.copyWith(
+                        color: const Color(0xFF1E222B),
                         fontSize: 18,
-                        fontFamily: 'Manrope',
-                        fontWeight: FontWeight.w700,
-                        height: 1.22,
                       ),
                     ),
                     Text(
                       category.subtitle,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: Color(0xFF61697C),
+                      style: robotoBold.copyWith(
+                        color: const Color(0xFF61697C),
                         fontSize: 16,
-                        fontFamily: 'Manrope',
                         fontWeight: FontWeight.w400,
-                        height: 1.50,
                       ),
                     ),
                     const SizedBox(height: 47),
-                    const Text(
+                    Text(
                       'Starting from',
-                      style: TextStyle(
-                        color: Color(0xFF8791A5),
-                        fontSize: 14,
-                        fontFamily: 'Manrope',
+                      style: textMedium.copyWith(
+                        color: const Color(0xFF8791A5),
                         fontWeight: FontWeight.w400,
-                        height: 1.43,
                       ),
                     ),
                     Text.rich(
@@ -70,22 +64,17 @@ class CategoriesCard extends StatelessWidget {
                         children: [
                           TextSpan(
                             text: '\$${category.price}',
-                            style: const TextStyle(
-                              color: Color(0xFF2A4BA0),
-                              fontSize: 16,
-                              fontFamily: 'Manrope',
-                              fontWeight: FontWeight.w700,
-                              height: 1.50,
+                            style: robotoBold.copyWith(
+                              color: kPrimaryBlue,
+                              fontSize: 17,
                             ),
                           ),
-                          const TextSpan(
+                          TextSpan(
                             text: '/KG',
-                            style: TextStyle(
-                              color: Color(0xFF2A4BA0),
+                            style: robotoBold.copyWith(
+                              color: kPrimaryBlue,
                               fontSize: 16,
-                              fontFamily: 'Manrope',
                               fontWeight: FontWeight.w400,
-                              height: 1.50,
                             ),
                           ),
                         ],

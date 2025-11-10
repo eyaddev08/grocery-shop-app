@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../cart/presentation/manager/cart_cubit.dart';
 
 class TopBar extends StatelessWidget {
   const TopBar({super.key});
@@ -61,18 +63,22 @@ class TopBar extends StatelessWidget {
                           border:
                               Border.all(color: Colors.white, width: 2 * scale),
                         ),
-                        child: Center(
-                          child: Text(
-                            '3',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12 * scale,
-                              fontWeight: FontWeight.w600,
-                              fontFamily: 'Poppins',
-                              height: 1,
-                            ),
-                          ),
-                        ),
+                        child: Center(child: BlocBuilder<CartCubit, CartState>(
+                          builder: (context, state) {
+                            int count = 0;
+                            if (state is CartLoaded) count = state.items.length;
+
+                            return Center(
+                                child: Text(count.toString(),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12 * scale,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: 'Poppins',
+                                      height: 1,
+                                    )));
+                          },
+                        )),
                       ),
                     ),
                   ],

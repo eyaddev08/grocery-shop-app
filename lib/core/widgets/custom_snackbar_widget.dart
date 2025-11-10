@@ -36,9 +36,8 @@ void showCustomToast(
       msg: message,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
       backgroundColor:
-          isSuccess ? successColor : Theme.of(context).colorScheme.error,
+          isSuccess ? kPrimaryBlue : Theme.of(context).colorScheme.error,
       textColor: Colors.white,
       fontSize: Dimensions.fontSizeDefault);
 }

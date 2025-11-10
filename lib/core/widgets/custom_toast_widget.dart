@@ -51,7 +51,8 @@ class CustomToast extends StatelessWidget {
                               ? Images.snackbarWarning
                               : Images.snackbarError,
                       width: 17,
-                      height: 17),
+                      height: 17
+                      ),
                   const SizedBox(width: Dimensions.paddingSizeSmall),
                   Flexible(
                       child: Text(text,

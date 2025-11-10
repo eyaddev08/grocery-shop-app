@@ -69,7 +69,7 @@ class _ImageCarouselState extends State<ImageCarousel> {
                         child: Center(
                           child: isNetwork
                               ? Image.network(img, fit: BoxFit.contain)
-                              : SvgPicture.asset(img),
+                              : SvgPicture.asset('assets/svg/empty_image.svg'),
                         ),
                       ),
                     );

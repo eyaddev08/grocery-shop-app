@@ -64,6 +64,11 @@ import '../../features/cart/domain/usecases/remove_from_cart.dart'
 import '../../features/cart/domain/usecases/update_quantity.dart'
     as cart_update_uc;
 import '../../features/cart/presentation/manager/cart_cubit.dart' as cart_cubit;
+import '../../features/wishlist/data/repositories/in_memory_wishlist_repository.dart';
+import '../../features/wishlist/domain/repositories/wishlist_repository.dart';
+import '../../features/wishlist/domain/usecases/get_wishlist.dart';
+import '../../features/wishlist/domain/usecases/remove_from_wishlist.dart';
+import '../../features/wishlist/presentation/manager/cubit/wishlist_cubit.dart';
 // import 'package:grocery_shop_app/features/cart/data/repositories/cart_repository_impl.dart';
 
 // Use Cases
@@ -259,6 +264,26 @@ Future<void> init() async {
   if (!sl.isRegistered<PaymentCubit>()) {
     sl.registerFactory<PaymentCubit>(() => PaymentCubit(
           useCase: sl(),
+        ));
+  }
+   if (!sl.isRegistered<WishlistRepository>()) {
+    sl.registerLazySingleton<WishlistRepository>(() => InMemoryWishlistRepository());
+  }
+
+  if (!sl.isRegistered<GetWishlist>()) {
+    sl.registerLazySingleton<GetWishlist>(
+        () => GetWishlist(sl<WishlistRepository>()));
+  }
+    if (!sl.isRegistered<RemoveFromWishlist>()) {
+    sl.registerLazySingleton<RemoveFromWishlist>(
+        () => RemoveFromWishlist(sl<WishlistRepository>()));
+  }
+
+  if (!sl.isRegistered<WishlistCubit>()) {
+    sl.registerFactory<WishlistCubit>(() => WishlistCubit(
+          getWishlist: sl<GetWishlist>(),
+          removeFromWishlist: sl<RemoveFromWishlist>(),
+          repository: sl<WishlistRepository>(),
         ));
   }
 
