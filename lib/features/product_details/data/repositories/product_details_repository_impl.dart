@@ -8,8 +8,7 @@ class ProductDetailsRepositoryImpl implements ProductDetailsRepository {
   @override
   Future<Either<Failure, ProductDetails>> getProductDetails(String id) async {
     try {
-      // simulate network delay
-      await Future<void>.delayed(const Duration(seconds: 5));
+      await Future<void>.delayed(const Duration(milliseconds: 1500));
 
       final details = ProductDetails(
         id: id,
@@ -33,18 +32,15 @@ class ProductDetailsRepositoryImpl implements ProductDetailsRepository {
     }
   }
 
-   Future<Either<Failure, SimilarProduct>> getSimilarProduct(String id) async {
+  Future<Either<Failure, SimilarProduct>> getSimilarProduct(String id) async {
     try {
-      // simulate network delay
-      await Future<void>.delayed(const Duration(seconds: 5));
+      await Future<void>.delayed(const Duration(milliseconds: 1500));
 
       final similar = SimilarProduct(
         id: id,
         title: 'Fresh Apples',
         price: '3.49',
-        image: 
-          'assets/svg/empty_image.svg',
-       
+        image: 'assets/svg/empty_image.svg',
       );
 
       return Right(similar);

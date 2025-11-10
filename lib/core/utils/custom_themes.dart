@@ -39,10 +39,16 @@ const textRegular = TextStyle(
   fontSize: 14,
 );
 
-const textMedium =
-    TextStyle(fontFamily: 'Poppins', fontSize: 14, color: kTextDark, fontWeight: FontWeight.w500);
-const textBold =
-    TextStyle(fontFamily: 'Poppins', fontSize: 14, fontWeight: FontWeight.w600);
+const textMedium = TextStyle(
+    fontFamily: 'Poppins',
+    fontSize: 14,
+    color: kTextDark,
+    fontWeight: FontWeight.w500);
+const textBold = TextStyle(
+    fontFamily: 'Poppins',
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: kTextDark);
 
 const robotoBold = TextStyle(
   fontFamily: 'Poppins',

@@ -81,21 +81,9 @@ class ProductCard extends StatelessWidget {
                 onTap: () => Navigator.push<void>(
                     context,
                     MaterialPageRoute<void>(
-                        builder: (builder) => MultiBlocProvider(
-                              providers: [
-                                BlocProvider(
-                                  create: (context) => ProductDetailsCubit(
-                                      getProductDetails:
-                                          sl<GetProductDetails>()),
-                                ),
-                                BlocProvider(
-                                  create: (context) => SimilarProductCubit(
-                                      getSimilarProduct:
-                                          sl<GetSimilarProduct>()),
-                                ),
-                              ],
-                              child: ProductDetailsScreen(productId: p!.id),
-                            ))),
+                      builder: (builder) =>
+                          ProductDetailsScreen(productId: p!.id),
+                    )),
                 child: SizedBox(
                   height: 194,
                   child: Container(
@@ -145,8 +133,9 @@ class ProductCard extends StatelessWidget {
                                       image: p.image);
                                   cubit.addItem(item);
                                 }
-                                      showCustomSnackBarWidget(
-                                          'The product has been successfully added to your basket!', context);
+                                showCustomSnackBarWidget(
+                                    'The product has been successfully added to your basket!',
+                                    context);
                               },
                               child: Container(
                                 width: 32,

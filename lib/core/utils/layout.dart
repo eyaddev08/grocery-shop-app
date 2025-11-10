@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../features/Home/presentation/views/home_screen.dart';
 import '../../features/categories/presentation/screens/categories_screen.dart';
+import '../../features/wishlist/presentation/screens/wishlist_screen.dart';
 import '../constants/app_colors.dart';
 import '../widgets/bottom_nav_item.dart';
 import 'functions/show_exit_dialog.dart';
@@ -18,7 +19,7 @@ class _LayoutState extends State<Layout> {
   final _pages = [
     const HomeScreen(),
     const CategoriesScreen(),
-    const SizedBox(),
+    const WishlistScreen(),
     const SizedBox(),
   ];
 
@@ -46,10 +47,10 @@ class _LayoutState extends State<Layout> {
           bottomNavigationBar: Container(
             padding: const EdgeInsets.symmetric(
                 horizontal: 12 * 1.0, vertical: 10 * 1.0),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 color: Colors.white,
                 // borderRadius: BorderRadius.circular(18 * 1.0),
-                boxShadow: const [
+                boxShadow: [
                   BoxShadow(
                       color: Color(0x0A000000),
                       blurRadius: 14,

@@ -15,7 +15,7 @@ class AppExitCard extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 20, top: 15),
           margin: const EdgeInsets.symmetric(horizontal: 40),
           decoration: const BoxDecoration(
-              color: Color(0xFF142F74),
+              color: const Color(0xFFF7F8FA),
               borderRadius: BorderRadius.all(
                   Radius.circular(Dimensions.paddingSizeDefault))),
           child: Column(
@@ -58,10 +58,7 @@ class AppExitCard extends StatelessWidget {
                         Expanded(
                             child: CustomButton(
                           buttonText: 'Cancel',
-                          backgroundColor: Theme.of(context)
-                              .colorScheme
-                              .tertiaryContainer
-                              .withOpacity(.5),
+                          backgroundColor: kPrimaryBlue,
                           textColor:
                               Theme.of(context).textTheme.bodyLarge?.color,
                           onTap: () => Navigator.pop(context),

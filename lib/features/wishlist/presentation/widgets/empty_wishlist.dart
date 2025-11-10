@@ -1,0 +1,38 @@
+import 'package:flutter/material.dart';
+import 'package:grocery_shop_app/core/constants/app_colors.dart';
+import 'package:grocery_shop_app/core/utils/custom_themes.dart';
+
+import '../../../../core/widgets/custom_button_widget.dart';
+
+class EmptyWishlist extends StatelessWidget {
+  const EmptyWishlist({super.key, required this.onBrowse});
+  final VoidCallback onBrowse;
+
+  @override
+  Widget build(BuildContext context) => Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 34),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.shopping_cart_outlined,
+                  size: 72, color: kAccentYellow),
+              const SizedBox(height: 18),
+              Text('Your wishlist is empty',
+                  style: textBold.copyWith(color: kTextDark, fontSize: 18)),
+              const SizedBox(height: 8),
+              Text('Browse products and save them for later',
+                  style: textBold.copyWith(color: kTextDark),
+                  textAlign: TextAlign.center),
+              const SizedBox(height: 18),
+              CustomButton(
+                onTap: onBrowse,
+                buttonText: 'Browse Products',
+                radius: 20,
+                buttonWidth: 200,
+              ),
+            ],
+          ),
+        ),
+      );
+}

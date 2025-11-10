@@ -28,8 +28,12 @@ import '../../features/checkout/domain/usecases/delete_address.dart';
 import '../../features/checkout/domain/usecases/get_addresses.dart';
 import '../../features/checkout/domain/usecases/set_default_address.dart';
 import '../../features/checkout/domain/usecases/update_address.dart';
-import '../../features/checkout/presentation/manager/address_cubit.dart';
+import '../../features/checkout/presentation/manager/checkout_cubit.dart';
 
+import '../../features/payment/data/repositories/mock_payment_repository.dart';
+import '../../features/payment/domain/repositories/payment_repository.dart';
+import '../../features/payment/domain/usecase/tokenize_and_pay.dart';
+import '../../features/payment/presentation/manager/payment_cubit/payment_cubit.dart';
 import '../../features/product_details/data/repositories/similar_product_repository_imp.dart';
 import '../../features/product_details/domain/repositories/similar_product_repository.dart';
 import '../../features/products/data/repositories/product_repository_impl.dart'
@@ -60,6 +64,11 @@ import '../../features/cart/domain/usecases/remove_from_cart.dart'
 import '../../features/cart/domain/usecases/update_quantity.dart'
     as cart_update_uc;
 import '../../features/cart/presentation/manager/cart_cubit.dart' as cart_cubit;
+import '../../features/wishlist/data/repositories/in_memory_wishlist_repository.dart';
+import '../../features/wishlist/domain/repositories/wishlist_repository.dart';
+import '../../features/wishlist/domain/usecases/get_wishlist.dart';
+import '../../features/wishlist/domain/usecases/remove_from_wishlist.dart';
+import '../../features/wishlist/presentation/manager/cubit/wishlist_cubit.dart';
 // import 'package:grocery_shop_app/features/cart/data/repositories/cart_repository_impl.dart';
 
 // Use Cases
@@ -207,57 +216,77 @@ Future<void> init() async {
         updateQuantityUsecase: sl()));
   }
 
-
-
-
-   // Checkout registrations
+  // Checkout registrations
   if (!sl.isRegistered<AddressRepository>()) {
     sl.registerLazySingleton<AddressRepository>(
         () => InMemoryAddressRepository());
   }
-  // if (!sl.isRegistered<GetAddresses>()) {
-  //   sl.registerLazySingleton<GetAddresses>(
-  //       () => GetAddresses(sl<AddressRepository>()));
-  // }
-  //  if (!sl.isRegistered<AddAddress>()) {
-  //   sl.registerLazySingleton<AddAddress>(
-  //       () => AddAddress(sl<AddressRepository>()));
-  // }
 
-   
-   
-  //   if (!sl.isRegistered<CheckoutCubit>()) {
-  //   sl.registerFactory<CheckoutCubit>(() => CheckoutCubit(
-  //       getAddresses: sl(),
-  //       addAddress: sl()));
-  // }
-
-   if (!sl.isRegistered<GetAddressesUseCase>()) {
+  if (!sl.isRegistered<GetAddressesUseCase>()) {
     sl.registerLazySingleton<GetAddressesUseCase>(
         () => GetAddressesUseCase(sl<AddressRepository>()));
   }
-   if (!sl.isRegistered<AddAddressUseCase>()) {
+  if (!sl.isRegistered<AddAddressUseCase>()) {
     sl.registerLazySingleton<AddAddressUseCase>(
         () => AddAddressUseCase(sl<AddressRepository>()));
   }
-    if (!sl.isRegistered<UpdateAddressUseCase>()) {
+  if (!sl.isRegistered<UpdateAddressUseCase>()) {
     sl.registerLazySingleton<UpdateAddressUseCase>(
         () => UpdateAddressUseCase(sl<AddressRepository>()));
   }
-   if (!sl.isRegistered<SetDefaultAddressUseCase>()) {
+  if (!sl.isRegistered<SetDefaultAddressUseCase>()) {
     sl.registerLazySingleton<SetDefaultAddressUseCase>(
         () => SetDefaultAddressUseCase(sl<AddressRepository>()));
   }
-    if (!sl.isRegistered<DeleteAddressUseCase>()) {
+  if (!sl.isRegistered<DeleteAddressUseCase>()) {
     sl.registerLazySingleton<DeleteAddressUseCase>(
         () => DeleteAddressUseCase(sl<AddressRepository>()));
   }
 
- if (!sl.isRegistered<AddressCubit>()) {
-    sl.registerFactory<AddressCubit>(() => AddressCubit(
+  if (!sl.isRegistered<CheckoutCubit>()) {
+    sl.registerFactory<CheckoutCubit>(() => CheckoutCubit(
         getAddresses: sl(),
-        addAddress: sl(), updateAddress: sl(), setDefaultAddress: sl(), deleteAddress: sl()));
+        addAddress: sl(),
+        updateAddress: sl(),
+        setDefaultAddress: sl(),
+        deleteAddress: sl()));
   }
+  // Payment registrations
+  if (!sl.isRegistered<PaymentRepository>()) {
+    sl.registerLazySingleton<PaymentRepository>(() => MockPaymentRepository());
+  }
+
+  if (!sl.isRegistered<TokenizeAndPayUseCase>()) {
+    sl.registerLazySingleton<TokenizeAndPayUseCase>(
+        () => TokenizeAndPayUseCase(sl<PaymentRepository>()));
+  }
+
+  if (!sl.isRegistered<PaymentCubit>()) {
+    sl.registerFactory<PaymentCubit>(() => PaymentCubit(
+          useCase: sl(),
+        ));
+  }
+   if (!sl.isRegistered<WishlistRepository>()) {
+    sl.registerLazySingleton<WishlistRepository>(() => InMemoryWishlistRepository());
+  }
+
+  if (!sl.isRegistered<GetWishlist>()) {
+    sl.registerLazySingleton<GetWishlist>(
+        () => GetWishlist(sl<WishlistRepository>()));
+  }
+    if (!sl.isRegistered<RemoveFromWishlist>()) {
+    sl.registerLazySingleton<RemoveFromWishlist>(
+        () => RemoveFromWishlist(sl<WishlistRepository>()));
+  }
+
+  if (!sl.isRegistered<WishlistCubit>()) {
+    sl.registerFactory<WishlistCubit>(() => WishlistCubit(
+          getWishlist: sl<GetWishlist>(),
+          removeFromWishlist: sl<RemoveFromWishlist>(),
+          repository: sl<WishlistRepository>(),
+        ));
+  }
+
   // sl.registerLazySingleton(() => CartRepositoryImpl(sl()));
 
   // Use Cases

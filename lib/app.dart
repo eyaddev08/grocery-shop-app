@@ -20,11 +20,18 @@ import 'features/checkout/domain/usecases/delete_address.dart';
 import 'features/checkout/domain/usecases/get_addresses.dart';
 import 'features/checkout/domain/usecases/set_default_address.dart';
 import 'features/checkout/domain/usecases/update_address.dart';
-import 'features/checkout/presentation/manager/address_cubit.dart';
+import 'features/checkout/presentation/manager/checkout_cubit.dart';
 import 'features/checkout/presentation/screens/add_address_sscreen.dart';
 import 'features/checkout/presentation/screens/checkout_screen.dart';
 import 'features/onboarding/presentation/views/onboarding_v2_screen.dart';
 
+import 'features/payment/domain/usecase/tokenize_and_pay.dart';
+import 'features/payment/presentation/manager/payment_cubit/payment_cubit.dart';
+import 'features/payment/presentation/screens/add_card_screen.dart';
+import 'features/product_details/domain/usecases/get_product_details.dart';
+import 'features/product_details/domain/usecases/get_similar_product.dart';
+import 'features/product_details/presentation/manager/product_details/product_details_cubit.dart';
+import 'features/product_details/presentation/manager/similar_product/similar_product_cubit.dart';
 import 'features/products/data/repositories/product_repository_impl.dart';
 import 'features/products/domain/usecases/get_products.dart';
 import 'features/products/presentation/manger/products_cubit.dart';
@@ -32,6 +39,11 @@ import 'features/products/presentation/screens/products_screen.dart';
 import 'features/cart/presentation/screens/cart_screen.dart';
 import 'features/cart/domain/usecases/get_cart.dart';
 import 'features/splash/presentation/screens/splash_screen.dart';
+import 'features/wishlist/domain/repositories/wishlist_repository.dart';
+import 'features/wishlist/domain/usecases/get_wishlist.dart';
+import 'features/wishlist/domain/usecases/remove_from_wishlist.dart';
+import 'features/wishlist/presentation/manager/cubit/wishlist_cubit.dart';
+import 'features/wishlist/presentation/screens/wishlist_screen.dart';
 
 class GroceryShopApp extends StatelessWidget {
   const GroceryShopApp({super.key});
@@ -50,7 +62,7 @@ class GroceryShopApp extends StatelessWidget {
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
     );
-
+ 
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -69,20 +81,32 @@ class GroceryShopApp extends StatelessWidget {
             updateQuantityUsecase: sl<UpdateQuantity>(),
           )..load(),
         ),
-        // BlocProvider(
-        //   create: (context) => CheckoutCubit(
-        //     getAddresses: sl<GetAddresses>(),
-        //     addAddress: sl<AddAddress>(),
-        //   )..load(),
-        // ),
         BlocProvider(
-          create: (context) => AddressCubit(
+                      create: (context) => ProductDetailsCubit(
+                          getProductDetails: sl<GetProductDetails>())),
+        BlocProvider(
+          create: (context) => SimilarProductCubit(getSimilarProduct: sl<GetSimilarProduct>())
+        ),
+        BlocProvider(
+          create: (context) => CheckoutCubit(
             getAddresses: sl<GetAddressesUseCase>(),
             addAddress: sl<AddAddressUseCase>(),
             deleteAddress: sl<DeleteAddressUseCase>(),
             updateAddress: sl<UpdateAddressUseCase>(),
             setDefaultAddress: sl<SetDefaultAddressUseCase>(),
           )..loadAddresses(),
+        ),
+
+        BlocProvider(
+          create: (_) => PaymentCubit(useCase: sl<TokenizeAndPayUseCase>()),
+        ),
+        BlocProvider(
+          create: (_) => WishlistCubit(
+          getWishlist: sl<GetWishlist>(),
+          removeFromWishlist: sl<RemoveFromWishlist>(),
+          repository: sl<WishlistRepository>(),
+        )
+            ..loadWishlist(),
         ),
       ],
       child: MaterialApp(
@@ -143,11 +167,16 @@ class GroceryShopApp extends StatelessWidget {
           builder: (context) => const AddAddressScreen(),
           settings: settings,
         );
-      //  case AppRoutes.addCard:
-      // return MaterialPageRoute(
-      //   builder: (context) => const AddCardScreen(),
-      //   settings: settings,
-      // );
+      case AppRoutes.addCard:
+        return MaterialPageRoute(
+          builder: (context) => const AddCardScreen(amount: 37),
+          settings: settings,
+        );
+      case AppRoutes.favorites:
+        return MaterialPageRoute(
+          builder: (context) => const WishlistScreen(),
+          settings: settings,
+        );
       case AppRoutes.onboarding:
         return MaterialPageRoute(builder: (_) => const OnboardingV2Screen());
       default:
