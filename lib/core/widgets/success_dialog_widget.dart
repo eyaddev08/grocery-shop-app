@@ -14,14 +14,17 @@ class SuccessDialog extends StatelessWidget {
       required this.title,
       required this.description,
       required this.onRemov,
-      required this.onCancle});
+      required this.onCancle,
+      this.titleButton = 'remove'});
   final bool isFailed;
   final double rotateAngle;
   final IconData icon;
   final String? title;
+  final String? titleButton;
+
   final String? description;
   final VoidCallback onRemov;
-    final VoidCallback onCancle;
+  final VoidCallback onCancle;
 
   @override
   Widget build(BuildContext context) => Dialog(
@@ -40,7 +43,7 @@ class SuccessDialog extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: isFailed
                         ? Theme.of(context).colorScheme.error
-                        : Theme.of(context).primaryColor,
+                        : kPrimaryBlue,
                     shape: BoxShape.circle),
                 child: Transform.rotate(
                     angle: rotateAngle,
@@ -68,20 +71,19 @@ class SuccessDialog extends StatelessWidget {
                       SizedBox(
                           width: 100,
                           child: CustomButton(
-                            buttonText: 'cancel',
-                            buttonHeight: 44,
-                            fontSize: 13,
-                            backgroundColor: kPrimaryBlue,
-                            textColor: kSoftBg,
-                            onTap: onCancle
-                          )),
+                              buttonText: 'cancel',
+                              buttonHeight: 44,
+                              fontSize: 13,
+                              backgroundColor: kPrimaryBlue,
+                              textColor: kSoftBg,
+                              onTap: onCancle)),
                       const SizedBox(
                         width: Dimensions.paddingSizeDefault,
                       ),
                       SizedBox(
                           width: 100,
                           child: CustomButton(
-                            buttonText: 'remove',
+                            buttonText: titleButton,
                             buttonHeight: 44,
                             fontSize: 13,
                             backgroundColor:

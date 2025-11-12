@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grocery_shop_app/core/widgets/custom_app_bar.dart';
-
-import '../../../../core/constants/app_colors.dart';
+import '../../../../core/services/navigation_service.dart';
 import '../../../../core/utils/custom_themes.dart';
 import '../../../../core/widgets/custom_button_widget.dart';
 import '../../../../core/widgets/custom_dropdown_form_field.dart';
@@ -82,7 +81,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                 if (_formKey.currentState?.validate() ?? false) {
                   await cubit.createAddress(
                       label: label, details: _detailsController.text.trim());
-                  Navigator.of(context).pop();
+                  NavigationService.goBack();
                 }
               },
               buttonText: 'Save Address',

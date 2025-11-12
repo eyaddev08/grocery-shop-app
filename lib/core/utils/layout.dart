@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:grocery_shop_app/core/utils/images.dart';
 import '../../features/Home/presentation/views/home_screen.dart';
 import '../../features/categories/presentation/screens/categories_screen.dart';
+import '../../features/more/presentation/screens/more_screen.dart';
 import '../../features/wishlist/presentation/screens/wishlist_screen.dart';
 import '../constants/app_colors.dart';
 import '../widgets/bottom_nav_item.dart';
@@ -20,7 +23,7 @@ class _LayoutState extends State<Layout> {
     const HomeScreen(),
     const CategoriesScreen(),
     const WishlistScreen(),
-    const SizedBox(),
+    const MoreScreen(),
   ];
 
   void _onNav(int idx) => setState(() => _pageIndex = idx);
@@ -40,6 +43,7 @@ class _LayoutState extends State<Layout> {
         canPop: false,
         onPopInvoked: _onWillPop,
         child: Scaffold(
+          backgroundColor: Colors.white,
           body: IndexedStack(
             index: _pageIndex,
             children: _pages,
@@ -49,7 +53,9 @@ class _LayoutState extends State<Layout> {
                 horizontal: 12 * 1.0, vertical: 10 * 1.0),
             decoration: const BoxDecoration(
                 color: Colors.white,
-                // borderRadius: BorderRadius.circular(18 * 1.0),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(12),
+                    topRight: Radius.circular(12)),
                 boxShadow: [
                   BoxShadow(
                       color: Color(0x0A000000),
@@ -63,10 +69,12 @@ class _LayoutState extends State<Layout> {
                   _buildNavItem(
                     i,
                     i == 0
-                        ? Icons.home
+                        ? Images.homeIcon
                         : (i == 1
-                            ? Icons.grid_view
-                            : (i == 2 ? Icons.favorite_border : Icons.apps)),
+                            ? Images.categoryIcon
+                            : (i == 2
+                                ? Images.favouriteIcon
+                                : Images.moreIcon)),
                     i == 0
                         ? 'Home'
                         : (i == 1
@@ -80,22 +88,23 @@ class _LayoutState extends State<Layout> {
         ),
       );
 
-  // Build a nav item where the selected one uses the Home special look
-  Widget _buildNavItem(int index, IconData icon, String label, double scale) {
+  Widget _buildNavItem(int index, String icon, String label, double scale) {
     final isSelected = _pageIndex == index;
     if (isSelected) {
-      return GestureDetector(
+      return InkWell(
         onTap: () => _onNav(index),
+        borderRadius: BorderRadius.circular(12 * scale),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
               width: 48 * scale,
               height: 48 * scale,
+              padding: const EdgeInsets.all(13),
               decoration: BoxDecoration(
                   color: homeCircleDark,
                   borderRadius: BorderRadius.circular(12 * scale)),
-              child: Icon(icon, color: kYellow, size: 22 * scale),
+              child: SvgPicture.asset(icon, color: kAccentYellow),
             ),
             SizedBox(height: 6 * scale),
             const SizedBox.shrink(),

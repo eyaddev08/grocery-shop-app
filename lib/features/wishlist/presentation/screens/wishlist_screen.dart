@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../config/routes/app_routes.dart';
+import '../../../../core/services/navigation_service.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_snackbar_widget.dart';
 import '../../../../core/widgets/success_dialog_widget.dart';
@@ -33,9 +35,10 @@ class WishlistScreen extends StatelessWidget {
                     itemBuilder: (_, __) => const ShimmerWishlistCard(),
                   );
                 } else if (state is WishlistEmpty) {
-                  return EmptyWishlist(onBrowse: () {
-                    Navigator.of(context).pop();
-                  });
+                  return EmptyWishlist(
+                    onBrowse: () =>
+                        NavigationService.navigateTo(AppRoutes.layout),
+                  );
                 } else if (state is WishlistLoaded) {
                   final items = state.items;
                   return ListView.separated(
