@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:grocery_shop_app/core/constants/app_colors.dart';
+import '../services/navigation_service.dart';
 import '../utils/custom_themes.dart';
 import '../utils/dimensions.dart';
 import 'custom_button_widget.dart';
@@ -61,7 +62,7 @@ class AppExitCard extends StatelessWidget {
                           backgroundColor: kPrimaryBlue,
                           textColor:
                               Theme.of(context).textTheme.bodyLarge?.color,
-                          onTap: () => Navigator.pop(context),
+                          onTap:  NavigationService.goBack,
                         )),
                         const SizedBox(
                           width: Dimensions.paddingSizeDefault,

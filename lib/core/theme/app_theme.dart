@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
@@ -43,6 +44,7 @@ class AppTheme {
 
         // App Bar Theme
         appBarTheme: AppBarTheme(
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
           backgroundColor: primaryColor,
           foregroundColor: textOnPrimaryColor,
           elevation: 0,

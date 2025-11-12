@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_shop_app/core/constants/app_colors.dart';
 import 'package:grocery_shop_app/core/utils/custom_themes.dart';
+import 'package:grocery_shop_app/core/utils/images.dart';
 
 import '../../../../core/widgets/custom_button_widget.dart';
 
@@ -15,8 +16,7 @@ class EmptyWishlist extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.shopping_cart_outlined,
-                  size: 72, color: kAccentYellow),
+              Image.asset(Images.wishlist, height: 72, color: kAccentYellow),
               const SizedBox(height: 18),
               Text('Your wishlist is empty',
                   style: textBold.copyWith(color: kTextDark, fontSize: 18)),
