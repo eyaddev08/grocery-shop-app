@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/utils/dimensions.dart';
 import '../../../../core/utils/images.dart';
 import '../../../cart/presentation/screens/cart_screen.dart';
+import '../../../orders/presentation/screens/orders_screen.dart';
 import 'square_item_widget.dart';
 
 class MoreHorizontalSection extends StatelessWidget {
@@ -51,7 +52,7 @@ class MoreHorizontalSection extends StatelessWidget {
             SquareButtonWidget(
               image: Images.orderIcon,
               title: 'Orders',
-              navigateTo: CartScreen(),
+              navigateTo: OrdersScreen(),
               count: 1,
               hasCount: false,
               isWallet: true,

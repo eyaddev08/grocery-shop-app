@@ -12,6 +12,7 @@ class Images {
   static const String noCoupon = 'assets/svg/no_coupon.svg';
   static const String noAddress = 'assets/svg/no_address.svg';
   static const String noNotification = 'assets/svg/no_notification.svg';
+  static const String emptyImage = 'assets/svg/empty_image.svg';
 
   static const String snackbarError = 'assets/images/sanckbar_error.png';
   static const String snackbarWarning = 'assets/images/snackbar_warning.png';
@@ -36,4 +37,5 @@ class Images {
   static const String offerIcon = 'assets/images/offer_icon.png';
   static const String walletIcon = 'assets/images/wallet.png';
   static const String orderIcon = 'assets/images/order.png';
+  static const String deliveryImage = 'assets/images/delivery_image.png';
 }

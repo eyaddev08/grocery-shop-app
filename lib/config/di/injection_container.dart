@@ -69,6 +69,10 @@ import '../../features/wishlist/domain/repositories/wishlist_repository.dart';
 import '../../features/wishlist/domain/usecases/get_wishlist.dart';
 import '../../features/wishlist/domain/usecases/remove_from_wishlist.dart';
 import '../../features/wishlist/presentation/manager/cubit/wishlist_cubit.dart';
+import '../../features/orders/data/repositories/order_repository_impl.dart';
+import '../../features/orders/domain/repositories/order_repository.dart';
+import '../../features/orders/domain/usecases/get_orders.dart';
+import '../../features/orders/presentation/manager/orders_cubit.dart';
 // import 'package:grocery_shop_app/features/cart/data/repositories/cart_repository_impl.dart';
 
 // Use Cases
@@ -266,15 +270,16 @@ Future<void> init() async {
           useCase: sl(),
         ));
   }
-   if (!sl.isRegistered<WishlistRepository>()) {
-    sl.registerLazySingleton<WishlistRepository>(() => InMemoryWishlistRepository());
+  if (!sl.isRegistered<WishlistRepository>()) {
+    sl.registerLazySingleton<WishlistRepository>(
+        () => InMemoryWishlistRepository());
   }
 
   if (!sl.isRegistered<GetWishlist>()) {
     sl.registerLazySingleton<GetWishlist>(
         () => GetWishlist(sl<WishlistRepository>()));
   }
-    if (!sl.isRegistered<RemoveFromWishlist>()) {
+  if (!sl.isRegistered<RemoveFromWishlist>()) {
     sl.registerLazySingleton<RemoveFromWishlist>(
         () => RemoveFromWishlist(sl<WishlistRepository>()));
   }
@@ -285,6 +290,20 @@ Future<void> init() async {
           removeFromWishlist: sl<RemoveFromWishlist>(),
           repository: sl<WishlistRepository>(),
         ));
+  }
+
+  // Orders registrations
+  if (!sl.isRegistered<OrderRepository>()) {
+    sl.registerLazySingleton<OrderRepository>(() => OrderRepositoryImpl());
+  }
+
+  if (!sl.isRegistered<GetOrders>()) {
+    sl.registerLazySingleton<GetOrders>(() => GetOrders(sl<OrderRepository>()));
+  }
+
+  if (!sl.isRegistered<OrdersCubit>()) {
+    sl.registerFactory<OrdersCubit>(
+        () => OrdersCubit(getOrdersUseCase: sl<GetOrders>()));
   }
 
   // sl.registerLazySingleton(() => CartRepositoryImpl(sl()));
