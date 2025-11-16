@@ -44,6 +44,8 @@ import 'features/wishlist/domain/usecases/get_wishlist.dart';
 import 'features/wishlist/domain/usecases/remove_from_wishlist.dart';
 import 'features/wishlist/presentation/manager/cubit/wishlist_cubit.dart';
 import 'features/wishlist/presentation/screens/wishlist_screen.dart';
+import 'features/orders/presentation/manager/orders_cubit.dart';
+import 'features/orders/presentation/screens/orders_screen.dart';
 
 class GroceryShopApp extends StatelessWidget {
   const GroceryShopApp({super.key});
@@ -62,7 +64,7 @@ class GroceryShopApp extends StatelessWidget {
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
     );
- 
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -82,11 +84,11 @@ class GroceryShopApp extends StatelessWidget {
           )..load(),
         ),
         BlocProvider(
-                      create: (context) => ProductDetailsCubit(
-                          getProductDetails: sl<GetProductDetails>())),
+            create: (context) => ProductDetailsCubit(
+                getProductDetails: sl<GetProductDetails>())),
         BlocProvider(
-          create: (context) => SimilarProductCubit(getSimilarProduct: sl<GetSimilarProduct>())
-        ),
+            create: (context) => SimilarProductCubit(
+                getSimilarProduct: sl<GetSimilarProduct>())),
         BlocProvider(
           create: (context) => CheckoutCubit(
             getAddresses: sl<GetAddressesUseCase>(),
@@ -96,17 +98,18 @@ class GroceryShopApp extends StatelessWidget {
             setDefaultAddress: sl<SetDefaultAddressUseCase>(),
           )..loadAddresses(),
         ),
-
         BlocProvider(
           create: (_) => PaymentCubit(useCase: sl<TokenizeAndPayUseCase>()),
         ),
         BlocProvider(
           create: (_) => WishlistCubit(
-          getWishlist: sl<GetWishlist>(),
-          removeFromWishlist: sl<RemoveFromWishlist>(),
-          repository: sl<WishlistRepository>(),
-        )
-            ..loadWishlist(),
+            getWishlist: sl<GetWishlist>(),
+            removeFromWishlist: sl<RemoveFromWishlist>(),
+            repository: sl<WishlistRepository>(),
+          )..loadWishlist(),
+        ),
+        BlocProvider(
+          create: (_) => OrdersCubit(getOrdersUseCase: sl())..loadOrders(),
         ),
       ],
       child: MaterialApp(
@@ -175,6 +178,11 @@ class GroceryShopApp extends StatelessWidget {
       case AppRoutes.favorites:
         return MaterialPageRoute(
           builder: (context) => const WishlistScreen(),
+          settings: settings,
+        );
+      case AppRoutes.orders:
+        return MaterialPageRoute(
+          builder: (context) => const OrdersScreen(),
           settings: settings,
         );
       case AppRoutes.onboarding:
