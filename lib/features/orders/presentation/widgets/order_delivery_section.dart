@@ -3,7 +3,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/custom_themes.dart';
 import '../../../../core/utils/images.dart';
 import '../../../../core/widgets/custom_button_widget.dart';
-import 'order_rider_avatar.dart';
+import '../../../../core/widgets/order_rider_avatar_widget.dart';
 
 class OrderDeliverySection extends StatelessWidget {
   const OrderDeliverySection({

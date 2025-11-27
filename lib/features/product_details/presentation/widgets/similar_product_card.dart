@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../../config/di/injection_container.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/utils/custom_themes.dart';
 import '../../domain/entities/similar_product.dart';
 import '../../domain/usecases/get_product_details.dart';
 
@@ -19,7 +20,7 @@ class SimilarProductCard extends StatelessWidget {
         onTap: () {
           Navigator.push(
               context,
-              MaterialPageRoute(
+              MaterialPageRoute<void>(
                   builder: (builder) => BlocProvider(
                         create: (context) => ProductDetailsCubit(
                             getProductDetails: sl<GetProductDetails>()),
@@ -59,21 +60,14 @@ class SimilarProductCard extends StatelessWidget {
                       item.title,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF1E222B)),
+                      style: textBold.copyWith(fontSize: 13),
                     ),
                     const SizedBox(height: 6),
                     Row(
                       children: [
                         Text(
                           item.price,
-                          style: const TextStyle(
-                            fontFamily: 'Poppins',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
+                          style: titilliumBold.copyWith(
                             color: kPrimaryBlue,
                           ),
                         ),

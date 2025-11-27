@@ -77,9 +77,11 @@ class _MoreScreenState extends State<MoreScreen> {
                 padding: const EdgeInsets.all(Dimensions.paddingSizeDefault),
                 child: CustomContainerWidget(
                   child: Column(children: [
-                    const MenuButtonWidget(
-                      image: Images.trackOrder, title: 'Track Order',
-                      // navigateTo: const GuestTrackOrderScreen(),
+                    MenuButtonWidget(
+                      image: Images.trackOrder,
+                      title: 'Track Order',
+                      onTap: () =>
+                          NavigationService.navigateTo(AppRoutes.trackOrder),
                     ),
                     const MenuButtonWidget(
                       image: Images.personIcon, title: 'Profile',

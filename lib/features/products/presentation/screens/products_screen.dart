@@ -23,7 +23,7 @@ class ProductsScreen extends StatelessWidget {
             labelSize: 16,
             labelColor: Color(0xFF1E222B),
             backgroundColor: Colors.white,
-            automaticallyImplyLeading: true,
+            isBackButtonExist: true,
           ),
         ),
         body: BlocBuilder<ProductsCubit, ProductsState>(

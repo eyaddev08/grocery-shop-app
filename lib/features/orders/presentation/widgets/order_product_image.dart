@@ -17,7 +17,6 @@ class OrderProductImage extends StatelessWidget {
         width: size,
         height: size,
         decoration: BoxDecoration(
-          color: Colors.grey.shade200,
           borderRadius: BorderRadius.circular(8),
         ),
         child: imageUrl != null

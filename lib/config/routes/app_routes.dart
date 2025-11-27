@@ -15,12 +15,13 @@ class AppRoutes {
   static const String search = '/search';
   static const String cart = '/cart';
   static const String checkout = '/checkout';
-    static const String addAddress = '/add_address';
-     static const String editAddress = '/edit_address';
-      static const String addCard = '/add_Card';
+  static const String addAddress = '/add_address';
+  static const String editAddress = '/edit_address';
+  static const String addCard = '/add_Card';
   static const String profile = '/profile';
   static const String orders = '/orders';
   static const String orderDetails = '/order-details';
+  static const String trackOrder = '/track-order';
   static const String favorites = '/favorites';
   static const String settings = '/settings';
   static const String notifications = '/notifications';
@@ -54,10 +55,10 @@ class AppRoutes {
     addAddress: 'Add Address',
     editAddress: 'Edit Address',
     addCard: 'Add Card',
-
     profile: 'Profile',
     orders: 'Orders',
     orderDetails: 'Order Details',
+    trackOrder: 'Track Order',
     favorites: 'Favorites',
     settings: 'Settings',
     notifications: 'Notifications',
@@ -75,92 +76,92 @@ class AppRoutes {
 
   // Check if route is authentication route
   static bool isAuthRoute(String route) => [
-      login,
-      register,
-      forgotPassword,
-      resetPassword,
-    ].contains(route);
+        login,
+        register,
+        forgotPassword,
+        resetPassword,
+      ].contains(route);
 
   // Check if route is main app route
   static bool isMainAppRoute(String route) => [
-      layout,
-      home,
-      categories,
-      products,
-      productDetails,
-      search,
-      cart,
-      checkout,
-      addAddress,
-      editAddress,
-      addAddress,
-      profile,
-      orders,
-      orderDetails,
-      favorites,
-      settings,
-      notifications,
-      help,
-      about,
-      contact,
-    ].contains(route);
+        layout,
+        home,
+        categories,
+        products,
+        productDetails,
+        search,
+        cart,
+        checkout,
+        addAddress,
+        editAddress,
+        addAddress,
+        profile,
+        orders,
+        orderDetails,
+        favorites,
+        settings,
+        notifications,
+        help,
+        about,
+        contact,
+      ].contains(route);
 
   // Check if route is onboarding route
   static bool isOnboardingRoute(String route) => [
-      onboarding,
-      welcome,
-    ].contains(route);
+        onboarding,
+        welcome,
+      ].contains(route);
 
   // Check if route is error route
   static bool isErrorRoute(String route) => [
-      notFound,
-      error,
-    ].contains(route);
+        notFound,
+        error,
+      ].contains(route);
 
   // Get all routes
   static List<String> getAllRoutes() => routeNames.keys.toList();
 
   // Get auth routes
   static List<String> getAuthRoutes() => [
-      login,
-      register,
-      forgotPassword,
-      resetPassword,
-    ];
+        login,
+        register,
+        forgotPassword,
+        resetPassword,
+      ];
 
   // Get main app routes
   static List<String> getMainAppRoutes() => [
-      layout,
-      home,
-      categories,
-      products,
-      productDetails,
-      search,
-      cart,
-      checkout,
-      addAddress,
-      editAddress,
-      addAddress,
-      profile,
-      orders,
-      orderDetails,
-      favorites,
-      settings,
-      notifications,
-      help,
-      about,
-      contact,
-    ];
+        layout,
+        home,
+        categories,
+        products,
+        productDetails,
+        search,
+        cart,
+        checkout,
+        addAddress,
+        editAddress,
+        addAddress,
+        profile,
+        orders,
+        orderDetails,
+        favorites,
+        settings,
+        notifications,
+        help,
+        about,
+        contact,
+      ];
 
   // Get onboarding routes
   static List<String> getOnboardingRoutes() => [
-      onboarding,
-      welcome,
-    ];
+        onboarding,
+        welcome,
+      ];
 
   // Get error routes
   static List<String> getErrorRoutes() => [
-      notFound,
-      error,
-    ];
+        notFound,
+        error,
+      ];
 }

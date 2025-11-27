@@ -5,6 +5,7 @@ import '../../../../core/constants/app_constants.dart';
 import '../../../../core/utils/custom_themes.dart';
 import '../../../../core/utils/dimensions.dart';
 import '../../../../core/services/navigation_service.dart';
+import '../../../../core/utils/images.dart';
 import '../../../../core/widgets/bouncy_widget.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -46,10 +47,10 @@ class SplashScreenState extends State<SplashScreen> {
                 pause: 0.25,
                 child: SizedBox(
                   width: 150,
-                  child: SvgPicture.asset(
-                    'assets/svg/logo_image.svg',
+                  child: Image.asset(
+                    Images.logo,
                     width: 150,
-                    color: kAccentYellow,
+                    height: 150,
                   ),
                 )),
             Text(AppConstants.appName,

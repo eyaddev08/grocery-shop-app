@@ -73,6 +73,10 @@ import '../../features/orders/data/repositories/order_repository_impl.dart';
 import '../../features/orders/domain/repositories/order_repository.dart';
 import '../../features/orders/domain/usecases/get_orders.dart';
 import '../../features/orders/presentation/manager/orders_cubit.dart';
+import '../../features/track_order/data/repositories/track_order_repository_impl.dart';
+import '../../features/track_order/domain/repositories/track_order_repository.dart';
+import '../../features/track_order/domain/usecases/get_track_order.dart';
+import '../../features/track_order/presentation/manager/track_order_cubit.dart';
 // import 'package:grocery_shop_app/features/cart/data/repositories/cart_repository_impl.dart';
 
 // Use Cases
@@ -304,6 +308,22 @@ Future<void> init() async {
   if (!sl.isRegistered<OrdersCubit>()) {
     sl.registerFactory<OrdersCubit>(
         () => OrdersCubit(getOrdersUseCase: sl<GetOrders>()));
+  }
+
+  // Track Order registrations
+  if (!sl.isRegistered<TrackOrderRepository>()) {
+    sl.registerLazySingleton<TrackOrderRepository>(
+        () => TrackOrderRepositoryImpl());
+  }
+
+  if (!sl.isRegistered<GetTrackOrder>()) {
+    sl.registerLazySingleton<GetTrackOrder>(
+        () => GetTrackOrder(sl<TrackOrderRepository>()));
+  }
+
+  if (!sl.isRegistered<TrackOrderCubit>()) {
+    sl.registerFactory<TrackOrderCubit>(
+        () => TrackOrderCubit(getTrackOrderUseCase: sl<GetTrackOrder>()));
   }
 
   // sl.registerLazySingleton(() => CartRepositoryImpl(sl()));
