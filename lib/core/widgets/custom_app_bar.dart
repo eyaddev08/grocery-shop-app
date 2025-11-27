@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../constants/app_colors.dart';
+import '../utils/custom_themes.dart';
+import '../utils/images.dart';
+import 'custom_asset_image_widget.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({
@@ -23,8 +25,8 @@ class CustomAppBar extends StatelessWidget {
                     color: kTextDark.withOpacity(0.06), shape: BoxShape.circle),
                 child: IconButton(
                     padding: EdgeInsets.zero,
-                    icon: SvgPicture.asset(
-                      'assets/svg/arr_icon.svg',
+                    icon: CustomAssetImageWidget(
+                      Images.arrIcon,
                       height: 12,
                       width: 12,
                       color: kTextDark.withOpacity(0.8),
@@ -34,12 +36,10 @@ class CustomAppBar extends StatelessWidget {
               const SizedBox(width: 12),
               Text(
                 title,
-                style: TextStyle(
+                style: titleHeader.copyWith(
                   color: kTextDark.withOpacity(0.8),
                   fontSize: 19,
-                  fontFamily: 'Poppins',
                   fontWeight: FontWeight.w400,
-                  height: 1.50,
                 ),
               ),
             ],

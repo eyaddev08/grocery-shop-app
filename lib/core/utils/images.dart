@@ -6,6 +6,11 @@ class Images {
   static const String searchIcon = 'assets/svg/search_icon.svg';
   static const String bagIcon = 'assets/svg/bag_icon.svg';
   static const String arrIcon = 'assets/svg/arr_icon.svg';
+  static const String locationIcon = 'assets/svg/location-icon1.svg';
+  static const String timeIcon = 'assets/svg/time-circle.svg';
+  static const chatIcon = 'assets/svg/chat-icon1.svg';
+  static const mapImage = 'assets/svg/map-image.svg';
+
   static const String noWishlist = 'assets/svg/no_wishlist.svg';
   static const String noOrder = 'assets/svg/no_order.svg';
   static const String noProduct = 'assets/svg/no_product.svg';
@@ -14,6 +19,7 @@ class Images {
   static const String noNotification = 'assets/svg/no_notification.svg';
   static const String emptyImage = 'assets/svg/empty_image.svg';
 
+  static const String logo = 'assets/images/logo.png';
   static const String snackbarError = 'assets/images/sanckbar_error.png';
   static const String snackbarWarning = 'assets/images/snackbar_warning.png';
   static const String snackbarTickmark = 'assets/images/snackbar_tickmark.png';

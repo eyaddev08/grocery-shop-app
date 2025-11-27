@@ -46,6 +46,9 @@ import 'features/wishlist/presentation/manager/cubit/wishlist_cubit.dart';
 import 'features/wishlist/presentation/screens/wishlist_screen.dart';
 import 'features/orders/presentation/manager/orders_cubit.dart';
 import 'features/orders/presentation/screens/orders_screen.dart';
+import 'features/track_order/domain/usecases/get_track_order.dart';
+import 'features/track_order/presentation/manager/track_order_cubit.dart';
+import 'features/track_order/presentation/screens/track_order_screen.dart';
 
 class GroceryShopApp extends StatelessWidget {
   const GroceryShopApp({super.key});
@@ -185,6 +188,17 @@ class GroceryShopApp extends StatelessWidget {
           builder: (context) => const OrdersScreen(),
           settings: settings,
         );
+      // case AppRoutes.trackOrder:
+      //   final orderId = settings.arguments as String? ?? '765433';
+      //   return MaterialPageRoute(
+      //     builder: (context) => BlocProvider(
+      //       create: (context) => TrackOrderCubit(
+      //         getTrackOrderUseCase: sl<GetTrackOrder>(),
+      //       )..loadTrackOrder(orderId),
+      //       child: TrackOrderScreen(orderId: orderId),
+      //     ),
+      //     settings: settings,
+      //   );
       case AppRoutes.onboarding:
         return MaterialPageRoute(builder: (_) => const OnboardingV2Screen());
       default:
@@ -206,11 +220,13 @@ class LoginScreen extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Login'),
         ),
-        body: Center(
-          child: Column(
-            children: [
-              const Text('Login Screen - To be implemented'),
-              SizedBox(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            const Text('Login Screen - To be implemented'),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: SizedBox(
                 width: double.infinity,
                 height: 54,
                 child: ElevatedButton(
@@ -237,8 +253,8 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
 }

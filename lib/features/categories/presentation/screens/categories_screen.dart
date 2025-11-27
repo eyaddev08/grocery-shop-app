@@ -29,7 +29,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       extendBodyBehindAppBar: true,
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(50),
-        child: CustomAppBarWidget(),
+        child: CustomAppBarWidget(showSearchIcon: false),
       ),
       body: BlocBuilder<CategoriesCubit, CategoriesState>(
         builder: (context, state) {

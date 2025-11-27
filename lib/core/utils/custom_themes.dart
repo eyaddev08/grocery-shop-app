@@ -18,7 +18,7 @@ const titleHeader = TextStyle(
 );
 const titilliumSemiBold = TextStyle(
   fontFamily: 'Poppins',
-  fontSize: 12,
+  fontSize: 11,
   fontWeight: FontWeight.w600,
 );
 

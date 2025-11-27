@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../config/routes/app_routes.dart';
 import '../../features/cart/presentation/manager/cart_cubit.dart';
 import '../constants/app_colors.dart';
 import '../services/navigation_service.dart';
+import '../utils/custom_themes.dart';
+import '../utils/images.dart';
+import 'custom_asset_image_widget.dart';
 
 class CustomAppBarWidget extends StatelessWidget {
   const CustomAppBarWidget({
@@ -16,8 +17,10 @@ class CustomAppBarWidget extends StatelessWidget {
     this.titleSpacing = 18,
     this.centerTitle = false,
     this.labelSize = 22,
-    this.automaticallyImplyLeading = false,
     this.labelColor = Colors.white,
+    this.isBackButtonExist = false,
+    this.showSearchIcon = true,
+    this.onBackPressed,
   });
   final String label;
   final Color backgroundColor;
@@ -25,7 +28,10 @@ class CustomAppBarWidget extends StatelessWidget {
   final int labelSize;
   final Color labelColor;
   final bool centerTitle;
-  final bool automaticallyImplyLeading;
+  final bool isBackButtonExist;
+  final bool showSearchIcon;
+
+  final VoidCallback? onBackPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -36,21 +42,44 @@ class CustomAppBarWidget extends StatelessWidget {
         scrolledUnderElevation: 0,
         iconTheme: const IconThemeData(color: Color(0xFF1E222B)),
         surfaceTintColor: Colors.transparent,
-        automaticallyImplyLeading: automaticallyImplyLeading,
+        automaticallyImplyLeading: false,
         backgroundColor: backgroundColor,
         centerTitle: centerTitle,
         titleSpacing: 18,
         excludeHeaderSemantics: true,
         clipBehavior: Clip.none,
+        leading: isBackButtonExist
+            ? Container(
+                width: 40,
+                height: 40,
+                margin: const EdgeInsets.symmetric(horizontal: 8),
+                decoration: BoxDecoration(
+                    color: kTextDark.withOpacity(0.06), shape: BoxShape.circle),
+                child: IconButton(
+                    padding: EdgeInsets.zero,
+                    icon: CustomAssetImageWidget(
+                      Images.arrIcon,
+                      height: 12,
+                      width: 12,
+                      color: kTextDark.withOpacity(0.8),
+                    ),
+                    onPressed: () => onBackPressed != null
+                        ? onBackPressed!()
+                        : Navigator.pop(context)),
+              )
+            : null,
         title: Text(label,
-            style: TextStyle(
-                color: labelColor,
-                fontSize: labelSize * scale,
-                fontWeight: FontWeight.w600)),
+            style: textBold.copyWith(
+              color: labelColor,
+              fontSize: labelSize * scale,
+            )),
         actions: [
-          SvgPicture.asset('assets/svg/search_icon.svg',
-              color: labelColor, height: 22 * scale),
-          const SizedBox(width: 12),
+          if (showSearchIcon)
+            CustomAssetImageWidget(Images.searchIcon,
+                color: labelColor, height: 22 * scale)
+          else
+            const SizedBox.shrink(),
+          const SizedBox(width: 8),
           Stack(
             clipBehavior: Clip.none,
             children: [
@@ -58,14 +87,17 @@ class CustomAppBarWidget extends StatelessWidget {
                 onPressed: () {
                   NavigationService.navigateTo(AppRoutes.cart);
                 },
-                icon: SvgPicture.asset(
-                  'assets/svg/bag_icon.svg',
-                  height: 22,
-                  color: labelColor,
+                icon: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: CustomAssetImageWidget(
+                    Images.bagIcon,
+                    height: 22,
+                    color: labelColor,
+                  ),
                 ),
               ),
               Positioned(
-                right: 8 * scale,
+                right: 14 * scale,
                 top: 6 * scale,
                 child: Container(
                     width: 22 * scale,
@@ -82,11 +114,10 @@ class CustomAppBarWidget extends StatelessWidget {
 
                         return Center(
                             child: Text(count.toString(),
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12 * scale,
-                                    fontWeight: FontWeight.w600,
-                                    height: 1)));
+                                style: textBold.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 12 * scale,
+                                )));
                       },
                     )),
               )

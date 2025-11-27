@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../core/constants/app_colors.dart';
-import '../../../../core/utils/custom_themes.dart';
+import '../constants/app_colors.dart';
+import '../utils/custom_themes.dart';
 
 class OrderIdWidget extends StatelessWidget {
   const OrderIdWidget({
