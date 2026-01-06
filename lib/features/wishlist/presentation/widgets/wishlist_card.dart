@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:grocery_shop_app/core/utils/custom_themes.dart';
+import 'package:grocery_shop_app/core/utils/styles.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/widgets/custom_like_button_widget.dart';
 import '../../../../core/widgets/custom_snackbar_widget.dart';

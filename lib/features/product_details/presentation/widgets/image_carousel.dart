@@ -1,8 +1,7 @@
-// ----------------- IMAGE CAROUSEL (swipe + dots) -----------------
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/widgets/custom_image_widget.dart';
 
 class ImageCarousel extends StatefulWidget {
   const ImageCarousel({
@@ -10,7 +9,7 @@ class ImageCarousel extends StatefulWidget {
     required this.images,
     this.height = 241,
   });
-  final List<String> images; // asset paths or network URLs
+  final List<String> images;
   final double height;
 
   @override
@@ -24,7 +23,7 @@ class _ImageCarouselState extends State<ImageCarousel> {
   @override
   void initState() {
     super.initState();
-    _controller = PageController(viewportFraction: 1, initialPage: 0);
+    _controller = PageController(initialPage: 0);
   }
 
   @override
@@ -33,13 +32,6 @@ class _ImageCarouselState extends State<ImageCarousel> {
     super.dispose();
   }
 
-  void _animateTo(int page) {
-    _controller.animateToPage(
-      page,
-      duration: const Duration(milliseconds: 360),
-      curve: Curves.easeInOut,
-    );
-  }
 
   @override
   Widget build(BuildContext context) => Column(
@@ -56,8 +48,7 @@ class _ImageCarouselState extends State<ImageCarousel> {
                   onPageChanged: (p) => setState(() => _current = p),
                   itemBuilder: (context, index) {
                     final img = widget.images[index];
-                    // detect if asset or network (simple heuristic)
-                    final isNetwork = img.startsWith('http');
+                    
                     return Center(
                       child: Container(
                         width: 241,
@@ -67,61 +58,15 @@ class _ImageCarouselState extends State<ImageCarousel> {
                           borderRadius: BorderRadius.circular(180),
                         ),
                         child: Center(
-                          child: isNetwork
-                              ? Image.network(img, fit: BoxFit.contain)
-                              : SvgPicture.asset('assets/svg/empty_image.svg'),
+                          child: CustomImageWidget(image: img),
                         ),
                       ),
                     );
                   },
                 ),
-
-                // left / right small arrows (optional; tap to change)
-                // Positioned(
-                //   left: 6,
-                //   child: GestureDetector(
-                //     onTap: () {
-                //       final prev =
-                //           (_current - 1).clamp(0, widget.images.length - 1);
-                //       _animateTo(prev);
-                //     },
-                //     child: Container(
-                //       width: 36,
-                //       height: 36,
-                //       decoration: BoxDecoration(
-                //         color: Colors.white.withOpacity(0.7),
-                //         shape: BoxShape.circle,
-                //       ),
-                //       child: const Icon(Icons.chevron_left,
-                //           size: 22, color: Colors.black54),
-                //     ),
-                //   ),
-                // ),
-                // Positioned(
-                //   right: 6,
-                //   child: GestureDetector(
-                //     onTap: () {
-                //       final next =
-                //           (_current + 1).clamp(0, widget.images.length - 1);
-                //       _animateTo(next);
-                //     },
-                //     child: Container(
-                //       width: 36,
-                //       height: 36,
-                //       decoration: BoxDecoration(
-                //         color: Colors.white.withOpacity(0.7),
-                //         shape: BoxShape.circle,
-                //       ),
-                //       child: const Icon(Icons.chevron_right,
-                //           size: 22, color: Colors.black54),
-                //     ),
-                //   ),
-                // ),
               ],
             ),
           ),
-
-          // dots indicator (animated)
           const SizedBox(height: 6),
           Row(
             mainAxisSize: MainAxisSize.min,

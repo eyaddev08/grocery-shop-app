@@ -1,14 +1,15 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/error/failure.dart';
-import '../../../domain/entities/similar_product.dart';
+import '../../../../products/domain/entities/product_entity.dart';
 import '../../../domain/usecases/get_similar_product.dart';
 
 part 'similar_product_state.dart';
 
+
 class SimilarProductCubit extends Cubit<SimilarProductState> {
-  SimilarProductCubit({required this.getSimilarProduct}) : super(SimilarProductInitial());
+  SimilarProductCubit({required this.getSimilarProduct})
+      : super(SimilarProductInitial());
   final GetSimilarProduct getSimilarProduct;
 
   void _safeEmit(SimilarProductState state) {
@@ -16,11 +17,15 @@ class SimilarProductCubit extends Cubit<SimilarProductState> {
     emit(state);
   }
 
-  Future<void> load(String id) async {
+  Future<void> load(String id, {int limit = 6}) async {
     _safeEmit(SimilarProductLoading());
-    final result = await getSimilarProduct.call(id);
+    final result = await getSimilarProduct.call(id, limit: limit);
+
     if (isClosed) return;
-    result.fold((Failure f) => _safeEmit(SimilarProductError(f.message)),
-        (similar) => _safeEmit(SimilarProductLoaded(similar)));
+
+    result.fold(
+      (f) => _safeEmit(SimilarProductError(f.message)),
+      (similar) => _safeEmit(SimilarProductLoaded(similar)),
+    );
   }
 }

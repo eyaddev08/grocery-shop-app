@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-
 import '../../../../config/di/injection_container.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/utils/custom_themes.dart';
-import '../../domain/entities/similar_product.dart';
+import '../../../../core/utils/styles.dart';
+import '../../../../core/widgets/custom_image_widget.dart';
+import '../../../products/domain/entities/product_entity.dart';
 import '../../domain/usecases/get_product_details.dart';
 
 import '../manager/product_details/product_details_cubit.dart';
 import '../screens/product_details_screen.dart';
 
 class SimilarProductCard extends StatelessWidget {
-  const SimilarProductCard({super.key, required this.item});
-  final SimilarProduct item;
+  const SimilarProductCard({super.key, required this.product});
+  final ProductEntity product;
 
   @override
   Widget build(BuildContext context) => InkWell(
@@ -23,8 +22,8 @@ class SimilarProductCard extends StatelessWidget {
               MaterialPageRoute<void>(
                   builder: (builder) => BlocProvider(
                         create: (context) => ProductDetailsCubit(
-                            getProductDetails: sl<GetProductDetails>()),
-                        child: ProductDetailsScreen(productId: item.id),
+                            sl<GetProductDetails>()),
+                        child: ProductDetailsScreen(productId: product.id),
                       )));
         },
         child: Container(
@@ -46,7 +45,7 @@ class SimilarProductCard extends StatelessWidget {
                   child: Center(
                     child: Padding(
                       padding: const EdgeInsets.all(10),
-                      child: SvgPicture.asset(item.image),
+                      child: CustomImageWidget(image:  product.thumbnail ?? ''),
                     ),
                   ),
                 ),
@@ -57,7 +56,7 @@ class SimilarProductCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      item.title,
+                      product.name,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: textBold.copyWith(fontSize: 13),
@@ -66,7 +65,7 @@ class SimilarProductCard extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          item.price,
+                         '${ product.price}',
                           style: titilliumBold.copyWith(
                             color: kPrimaryBlue,
                           ),

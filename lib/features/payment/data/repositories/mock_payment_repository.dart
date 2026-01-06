@@ -8,7 +8,7 @@ class MockPaymentRepository implements PaymentRepository {
   @override
   Future<Either<Failure, PaymentResult>> tokenizeAndPay(CardInfo card, double amount) async {
     // emulate network latency
-    await Future.delayed(const Duration(seconds: 1));
+    await Future<void>.delayed(const Duration(seconds: 1));
 
     // simple validation logic (server-side should validate in real world)
     final digits = card.number.replaceAll(' ', '');
@@ -18,8 +18,7 @@ class MockPaymentRepository implements PaymentRepository {
     if (parts.length != 2) return left(Failure('Invalid expiry'));
 
     // emulate tokenization & payment processing
-    await Future.delayed(const Duration(seconds: 1));
-
+  await Future<void>.delayed(const Duration(seconds: 1));
     // success
     final result = PaymentResult(transactionId: 'tx_${DateTime.now().millisecondsSinceEpoch}', amount: amount);
     return right(result);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/utils/custom_themes.dart';
+import '../../../../core/utils/styles.dart';
 import '../../../../core/utils/images.dart';
 import '../../../../core/widgets/custom_button_widget.dart';
 import '../../../../core/widgets/order_rider_avatar_widget.dart';

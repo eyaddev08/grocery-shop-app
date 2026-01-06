@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
-import '../../domain/entities/product_details.dart';
+import '../../../products/domain/entities/product_entity.dart';
 
 class ProductPriceRow extends StatelessWidget {
   const ProductPriceRow({super.key, required this.details});
-  final ProductDetails details;
+  final ProductEntity details;
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -55,7 +55,7 @@ class ProductPriceRow extends StatelessWidget {
           ),
           const Spacer(),
            Text(
-        '\$${details.regularPrice}',  //   r'Reg: $56.70 USD',
+        '\$${details.originalPrice}',  //   r'Reg: $56.70 USD',
             style: const TextStyle(
               fontFamily: 'Poppins',
               fontSize: 14,

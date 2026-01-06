@@ -7,8 +7,10 @@ import 'config/routes/app_routes.dart';
 import 'core/services/navigation_service.dart';
 import 'core/theme/app_theme.dart';
 import 'core/utils/layout.dart';
-import 'features/Home/domain/usecases/get_products_usecase.dart';
-import 'features/Home/presentation/manger/cubit/grocery_cubit.dart';
+import 'features/Home/domain/usecases/get_deal_products.dart';
+import 'features/Home/domain/usecases/get_recommended_products.dart';
+import 'features/Home/presentation/manager/deal_product/deal_product_cubit.dart';
+import 'features/Home/presentation/manager/recommended/recommended_cubit.dart';
 import 'features/cart/domain/usecases/add_to_cart.dart';
 import 'features/cart/domain/usecases/remove_from_cart.dart';
 import 'features/cart/domain/usecases/update_quantity.dart';
@@ -46,9 +48,7 @@ import 'features/wishlist/presentation/manager/cubit/wishlist_cubit.dart';
 import 'features/wishlist/presentation/screens/wishlist_screen.dart';
 import 'features/orders/presentation/manager/orders_cubit.dart';
 import 'features/orders/presentation/screens/orders_screen.dart';
-import 'features/track_order/domain/usecases/get_track_order.dart';
-import 'features/track_order/presentation/manager/track_order_cubit.dart';
-import 'features/track_order/presentation/screens/track_order_screen.dart';
+
 
 class GroceryShopApp extends StatelessWidget {
   const GroceryShopApp({super.key});
@@ -71,7 +71,9 @@ class GroceryShopApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-            create: (context) => GroceryCubit(sl<GetProductsUseCase>())),
+            create: (context) => DealProductCubit(sl<GetDealProductsUseCase>())),
+         BlocProvider(
+            create: (context) => RecommendedCubit(sl<GetRecommendedProducts>())),
         BlocProvider(
             create: (context) => CategoriesCubit(sl<GetCategories>())..load()),
         BlocProvider(
@@ -88,7 +90,7 @@ class GroceryShopApp extends StatelessWidget {
         ),
         BlocProvider(
             create: (context) => ProductDetailsCubit(
-                getProductDetails: sl<GetProductDetails>())),
+               sl<GetProductDetails>())),
         BlocProvider(
             create: (context) => SimilarProductCubit(
                 getSimilarProduct: sl<GetSimilarProduct>())),

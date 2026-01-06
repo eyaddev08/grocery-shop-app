@@ -74,7 +74,7 @@ class CheckoutScreen extends StatelessWidget {
                                         .chooseDefault(a.id),
                                     onEdit: () async {
                                       await Navigator.of(context).push(
-                                          MaterialPageRoute(
+                                          MaterialPageRoute<void>(
                                               builder: (_) =>
                                                   BlocProvider.value(
                                                     value: context

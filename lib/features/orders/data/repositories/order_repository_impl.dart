@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart' hide Order;
 import 'package:grocery_shop_app/core/error/failure.dart';
+import '../../../../core/constants/images_constants.dart';
 import '../../domain/entities/order.dart';
 import '../../domain/repositories/order_repository.dart';
 
@@ -9,7 +10,7 @@ class OrderRepositoryImpl implements OrderRepository {
       id: '754634',
       productName: 'Fresh Orange',
       price: 7.90,
-      imageUrl: null,
+      imageUrl: ImagesConstants.orangePixabay,
       date: '02/5/2021',
       status: OrderStatus.active,
       riderName: 'Rakib',
@@ -19,7 +20,7 @@ class OrderRepositoryImpl implements OrderRepository {
       id: '754635',
       productName: 'Bananas',
       price: 7.90,
-      imageUrl: null,
+      imageUrl: ImagesConstants.bananaPixabay,
       date: '01/3/2021',
       status: OrderStatus.active,
     ),
@@ -27,7 +28,7 @@ class OrderRepositoryImpl implements OrderRepository {
       id: '754636',
       productName: 'Orange',
       price: 7.90,
-      imageUrl: null,
+      imageUrl: ImagesConstants.orangeCutout,
       date: '07/1/2021',
       status: OrderStatus.success,
     ),
@@ -35,7 +36,7 @@ class OrderRepositoryImpl implements OrderRepository {
       id: '754637',
       productName: 'Apple',
       price: 7.90,
-      imageUrl: null,
+      imageUrl: ImagesConstants.applePixabay,
       date: '02/5/2021',
       status: OrderStatus.success,
     ),

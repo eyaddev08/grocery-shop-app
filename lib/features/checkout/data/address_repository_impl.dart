@@ -6,13 +6,13 @@ class InMemoryAddressRepository implements AddressRepository {
 
   @override
   Future<List<Address>> getAddresses() async {
-    await Future.delayed(const Duration(milliseconds: 250));
+    await Future<void>.delayed(const Duration(milliseconds: 250));
     return List<Address>.from(_storage);
   }
 
   @override
   Future<void> addAddress(Address address) async {
-    await Future.delayed(const Duration(milliseconds: 150));
+    await Future<void>.delayed(const Duration(milliseconds: 150));
     final isFirst = _storage.isEmpty;
     final toSave =
         address.copyWith(isDefault: isFirst ? true : address.isDefault);
@@ -25,7 +25,7 @@ class InMemoryAddressRepository implements AddressRepository {
     if (idx >= 0) {
       _storage[idx] = address;
     }
-    await Future.delayed(const Duration(milliseconds: 120));
+    await Future<void>.delayed(const Duration(milliseconds: 120));
   }
 
   @override
@@ -37,7 +37,7 @@ class InMemoryAddressRepository implements AddressRepository {
         _storage[i] = _storage[i].copyWith(isDefault: false);
       }
     }
-    await Future.delayed(const Duration(milliseconds: 120));
+    await Future<void>.delayed(const Duration(milliseconds: 120));
   }
 
   @override
@@ -47,7 +47,7 @@ class InMemoryAddressRepository implements AddressRepository {
     if (_storage.isNotEmpty && !_storage.any((a) => a.isDefault)) {
       _storage[0] = _storage[0].copyWith(isDefault: true);
     }
-    await Future.delayed(const Duration(milliseconds: 120));
+    await Future<void>.delayed(const Duration(milliseconds: 120));
   }
 }
 

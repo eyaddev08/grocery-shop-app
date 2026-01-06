@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/utils/custom_themes.dart';
+import '../../../../core/utils/styles.dart';
 import '../../../../features/orders/domain/entities/order.dart';
 import '../../../../core/widgets/order_id_widget.dart';
 import '../../../../core/widgets/order_status_badge_widget.dart';

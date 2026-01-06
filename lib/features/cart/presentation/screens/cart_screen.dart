@@ -114,14 +114,15 @@ class CartScreen extends StatelessWidget {
                             );
                           }
                           return CartSummarySection(
-                              subtotal: subtotal,
-                              delivery: shipping,
-                              total: total,
-                              button:  CustomButton(
-              buttonText: 'Proceed To checkout',
-              onTap: () => NavigationService.navigateTo(AppRoutes.checkout),
-             
-            ),);
+                            subtotal: subtotal,
+                            delivery: shipping,
+                            total: total,
+                            button: CustomButton(
+                              buttonText: 'Proceed To checkout',
+                              onTap: () => NavigationService.navigateTo(
+                                  AppRoutes.checkout),
+                            ),
+                          );
                         },
                       ),
                     ),

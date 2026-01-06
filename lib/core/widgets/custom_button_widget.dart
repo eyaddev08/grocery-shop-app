@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_shop_app/core/constants/app_colors.dart';
 
-import '../utils/custom_themes.dart';
+import '../utils/styles.dart';
 import '../utils/dimensions.dart';
 
 class CustomButton extends StatelessWidget {

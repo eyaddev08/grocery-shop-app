@@ -3,9 +3,10 @@ import 'package:grocery_shop_app/features/product_details/domain/usecases/get_si
 import 'package:grocery_shop_app/features/product_details/presentation/manager/similar_product/similar_product_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../features/Home/data/repositories/product_repository_impl.dart';
-import '../../features/Home/domain/usecases/get_products_usecase.dart';
-import '../../features/Home/presentation/manger/cubit/grocery_cubit.dart';
+// import '../../features/Home/data/repositories/deal_product_repository_impl.dart';
+import '../../features/Home/data/repositories/deal_product_repository_impl.dart';
+// import '../../features/Home/domain/usecases/get_deals_products_usecase.dart';
+import '../../features/Home/domain/usecases/get_deal_products.dart';
 
 // Services
 // import 'package:grocery_shop_app/core/services/api_service.dart';
@@ -16,7 +17,12 @@ import '../../features/Home/presentation/manger/cubit/grocery_cubit.dart';
 
 // Repositories
 // import 'package:grocery_shop_app/features/auth/data/repositories/auth_repository_impl.dart';
-import '../../features/Home/domain/repositories/product_repository.dart';
+import '../../features/Home/domain/repositories/deal_product_repository.dart';
+import '../../features/Home/data/repositories/recommended_repository_impl.dart';
+import '../../features/Home/domain/repositories/recommended_repository.dart';
+import '../../features/Home/domain/usecases/get_recommended_products.dart';
+import '../../features/Home/presentation/manager/deal_product/deal_product_cubit.dart';
+import '../../features/Home/presentation/manager/recommended/recommended_cubit.dart';
 import '../../features/categories/data/repositories/category_repository_impl.dart';
 import '../../features/categories/domain/repositories/category_repository.dart';
 import '../../features/categories/domain/usecases/get_categories.dart';
@@ -108,20 +114,37 @@ Future<void> init() async {
   // Repositories
   // sl.registerLazySingleton(() => AuthRepositoryImpl(sl(), sl()));
   // sl.registerLazySingleton(() => ProductRepositoryImpl());
-  if (!sl.isRegistered<ProductRepository>()) {
-    sl.registerLazySingleton<ProductRepository>(() => ProductRepositoryImpl());
+  if (!sl.isRegistered<DealProductRepository>()) {
+    sl.registerLazySingleton<DealProductRepository>(
+        () => DealProductRepositoryImpl());
   }
 
   // register usecase
-  if (!sl.isRegistered<GetProductsUseCase>()) {
-    sl.registerLazySingleton<GetProductsUseCase>(
-        () => GetProductsUseCase(sl<ProductRepository>()));
+  if (!sl.isRegistered<GetDealProductsUseCase>()) {
+    sl.registerLazySingleton<GetDealProductsUseCase>(
+        () => GetDealProductsUseCase(sl<DealProductRepository>()));
+  }
+
+  // recommended registrations
+  if (!sl.isRegistered<RecommendedRepository>()) {
+    sl.registerLazySingleton<RecommendedRepository>(
+        () => RecommendedRepositoryImpl());
+  }
+
+  if (!sl.isRegistered<GetRecommendedProducts>()) {
+    sl.registerLazySingleton<GetRecommendedProducts>(
+        () => GetRecommendedProducts(sl<RecommendedRepository>()));
+  }
+
+  if (!sl.isRegistered<RecommendedCubit>()) {
+    sl.registerFactory<RecommendedCubit>(
+        () => RecommendedCubit(sl<GetRecommendedProducts>()));
   }
 
   // register cubit/bloc
-  if (!sl.isRegistered<GroceryCubit>()) {
-    sl.registerFactory<GroceryCubit>(
-        () => GroceryCubit(sl<GetProductsUseCase>()));
+  if (!sl.isRegistered<DealProductCubit>()) {
+    sl.registerFactory<DealProductCubit>(
+        () => DealProductCubit(sl<GetDealProductsUseCase>()));
   }
 
   // Categories registrations
@@ -148,8 +171,9 @@ Future<void> init() async {
 
   // product details registrations
   if (!sl.isRegistered<pd_repo.ProductDetailsRepository>()) {
-    sl.registerLazySingleton<pd_repo.ProductDetailsRepository>(
-        () => pd_impl.ProductDetailsRepositoryImpl());
+    sl.registerLazySingleton<pd_repo.ProductDetailsRepository>(() =>
+        pd_impl.ProductDetailsRepositoryImpl(
+            sl<products_repo.ProductRepository>()));
   }
 
   if (!sl.isRegistered<pd_uc.GetProductDetails>()) {
@@ -159,13 +183,14 @@ Future<void> init() async {
 
   if (!sl.isRegistered<pd_cubit.ProductDetailsCubit>()) {
     sl.registerFactory<pd_cubit.ProductDetailsCubit>(
-        () => pd_cubit.ProductDetailsCubit(getProductDetails: sl()));
+        () => pd_cubit.ProductDetailsCubit( sl()));
   }
 
   // similar product registrations
   if (!sl.isRegistered<SimilarProductRepository>()) {
-    sl.registerLazySingleton<SimilarProductRepository>(
-        () => SimilarProductRepositoryImpl());
+    sl.registerLazySingleton<SimilarProductRepository>(() =>
+        SimilarProductRepositoryImpl( sl<products_repo.ProductRepository>()
+          ));
   }
 
   if (!sl.isRegistered<GetSimilarProduct>()) {

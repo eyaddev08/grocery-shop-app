@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../../domain/entities/product.dart';
+import '../../domain/entities/product_entity.dart';
 import 'product_card.dart';
 
 class ProductGridView extends StatelessWidget {
@@ -10,7 +10,7 @@ class ProductGridView extends StatelessWidget {
     required this.products,
   });
 
-  final List<Product> products;
+  final List<ProductEntity> products;
 
   @override
   Widget build(BuildContext context) => Padding(

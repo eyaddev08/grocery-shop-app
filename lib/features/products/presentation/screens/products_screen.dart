@@ -6,7 +6,7 @@ import '../../../../core/widgets/filter_list_view_widget.dart';
 import '../../../../core/widgets/filter_shimmer_list_view_widget.dart';
 import '../manger/products_cubit.dart';
 import '../manger/products_state.dart';
-import '../../domain/entities/product.dart';
+import '../../domain/entities/product_entity.dart';
 import '../widgets/product_grid_view.dart';
 import '../widgets/product_shimmer_grid_view.dart';
 
@@ -49,8 +49,8 @@ class ProductsScreen extends StatelessWidget {
             return Center(child: Text(state.message));
           }
 
-          final List<Product> products =
-              state is ProductsLoaded ? state.products : <Product>[];
+          final List<ProductEntity> products =
+              state is ProductsLoaded ? state.products : <ProductEntity>[];
           final filters = cubit.filters;
 
           return SingleChildScrollView(

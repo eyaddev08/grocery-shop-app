@@ -3,7 +3,7 @@ import '../../domain/usecases/get_products.dart';
 import 'products_state.dart';
 import 'package:dartz/dartz.dart';
 import '../../../../core/error/failure.dart';
-import '../../domain/entities/product.dart';
+import '../../domain/entities/product_entity.dart';
 
 class ProductsCubit extends Cubit<ProductsState> {
   ProductsCubit(this.getProducts) : super(ProductsInitial());
@@ -11,18 +11,18 @@ class ProductsCubit extends Cubit<ProductsState> {
 
   Future<void> load() async {
     _safeEmit(ProductsLoading());
-    final Either<Failure, List<Product>> res = await getProducts();
+    final Either<Failure, List<ProductEntity>> res = await getProducts();
     if (isClosed) return;
     res.fold((l) => _safeEmit(ProductsError(l.message)), (r) {
-      _allProducts = List<Product>.from(r);
+      _allProducts = List<ProductEntity>.from(r);
       filterIndex = 0;
-      _safeEmit(ProductsLoaded(List<Product>.from(_allProducts)));
+      _safeEmit(ProductsLoaded(List<ProductEntity>.from(_allProducts)));
     });
   }
 
   int filterIndex = 0;
 
-  List<Product> _allProducts = [];
+  List<ProductEntity> _allProducts = [];
 
   List<String> get filters {
     final List<String> labels = [];
@@ -41,7 +41,7 @@ class ProductsCubit extends Cubit<ProductsState> {
     filterIndex = idx;
     final label = available[idx];
     if (label == 'All') {
-      _safeEmit(ProductsLoaded(List<Product>.from(_allProducts)));
+      _safeEmit(ProductsLoaded(List<ProductEntity>.from(_allProducts)));
       return;
     }
     final filtered =

@@ -44,6 +44,7 @@ const textMedium = TextStyle(
     fontSize: 14,
     color: kTextDark,
     fontWeight: FontWeight.w500);
+
 const textBold = TextStyle(
     fontFamily: 'Poppins',
     fontSize: 14,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_shop_app/core/constants/app_colors.dart';
-import '../../../../core/utils/custom_themes.dart';
+import '../../../../core/utils/styles.dart';
+import '../../../../core/widgets/custom_image_widget.dart';
 import '../../domain/entities/category.dart';
 
 class CategoriesCard extends StatelessWidget {
@@ -27,6 +28,10 @@ class CategoriesCard extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
+                  ),
+                  child: Center(
+                    child: CustomImageWidget(
+                        image: category.image ?? '', fit: BoxFit.contain),
                   ),
                 ),
                 const SizedBox(width: 15),

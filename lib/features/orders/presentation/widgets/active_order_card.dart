@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import '../../../../core/utils/images.dart';
+import '../../../../core/widgets/custom_image_widget.dart';
 import '../../domain/entities/order.dart';
 import 'order_delivery_section.dart';
 import '../../../../core/widgets/order_id_widget.dart';
-import 'order_product_image.dart';
 import 'order_product_info.dart';
 
 class ActiveOrderCard extends StatelessWidget {
@@ -36,7 +37,11 @@ class ActiveOrderCard extends StatelessWidget {
   Widget _buildProductInfoRow() => Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          OrderProductImage(imageUrl: order.imageUrl),
+          CustomImageWidget(
+              image: order.imageUrl ?? Images.emptyImage,
+              height: 48,
+              width: 48,
+              fit: BoxFit.contain),
           const SizedBox(width: 18),
           Expanded(
             child: OrderProductInfo(

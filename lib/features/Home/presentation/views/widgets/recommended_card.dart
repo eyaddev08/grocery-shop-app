@@ -1,66 +1,83 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_shop_app/core/utils/images.dart';
 
 import '../../../../../core/constants/app_colors.dart';
+import '../../../../../core/utils/styles.dart';
+import '../../../../../core/widgets/add_card_widget.dart';
+import '../../../../../core/widgets/custom_image_widget.dart';
+import '../../../domain/entities/recommended_product.dart';
 
 class RecommendedCard extends StatelessWidget {
   const RecommendedCard(
       {super.key,
       required this.width,
-      required this.name,
-      required this.tag,
-      required this.unit,
-      required this.scale});
+      required this.scale,
+      required this.product});
+  final RecommendedProduct product;
   final double width;
-  final String name;
-  final String tag;
-  final String unit;
+
   final double scale;
 
   @override
-  Widget build(BuildContext context) => Container(
+  Widget build(BuildContext context)  => Container(
         width: width,
-        // height: 94 * scale,
+        margin: EdgeInsets.symmetric(horizontal: 8 * scale),
         decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12 * scale),
-            boxShadow: const [
-              BoxShadow(
-                  color: Color(0x0A000000),
-                  blurRadius: 10,
-                  offset: Offset(0, 4)),
-            ]),
+          color: const Color(0xFFF7F8FA),
+          borderRadius: BorderRadius.circular(12 * scale),
+        ),
         padding: EdgeInsets.all(10 * scale),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          SizedBox(height: 10 * scale),
           Container(
-            height: 64 * scale,
+            height: 54 * scale,
             width: width,
             decoration: BoxDecoration(
-                color: const Color(0xFFF2F5F8),
+                // color: const Color(0xFFF2F5F8),
                 borderRadius: BorderRadius.circular(8 * scale)),
-            child: Icon(Icons.image,
-                size: 28 * scale, color: const Color(0xFF9CA3AF)),
+            child: CustomImageWidget(
+                image: product.thumbnail ?? '', fit: BoxFit.contain),
           ),
-          SizedBox(height: 8 * scale),
-          Text(name,
+          SizedBox(height: 20 * scale),
+          Divider(
+            color: kMuted.withOpacity(0.2),
+            thickness: 1.5,
+          ),
+          SizedBox(height: 12 * scale),
+          Text(product.title,
               style: TextStyle(
                   fontSize: 13 * scale,
                   fontWeight: FontWeight.w600,
                   color: kTextDark)),
-          SizedBox(height: 4 * scale),
-          Row(children: [
-            Text(tag, style: TextStyle(fontSize: 11 * scale, color: kMuted)),
-            const Spacer(),
-            Container(
-              width: 26 * scale,
-              height: 26 * scale,
-              decoration: BoxDecoration(
-                  color: kPrimaryBlue,
-                  borderRadius: BorderRadius.circular(13 * scale)),
-              child: Icon(Icons.add, color: Colors.white, size: 16 * scale),
-            ),
-          ]),
-          SizedBox(height: 6 * scale),
-          Text(unit, style: TextStyle(fontSize: 11 * scale, color: kMuted)),
+          Text(product.slug!,
+              style: TextStyle(fontSize: 11 * scale, color: kMuted)),
+          SizedBox(height: 8 * scale),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12 * scale),
+                boxShadow: const [
+                  BoxShadow(
+                      color: Color(0x0A000000),
+                      blurRadius: 10,
+                      offset: Offset(0, 4)),
+                ]),
+            child: Row(children: [
+              Text(product.unit!,
+                  style:
+                      textBold.copyWith(fontSize: 11 * scale, color: kMuted)),
+              const Spacer(),
+              AddCardWidget(
+                  id: product.id,
+                  title: product.title,
+                  price: product.price,
+                  regularPrice: product.originalPrice,
+                  image: product.thumbnail ?? Images.emptyImage,
+                  sizeContainer: 26,
+                  sizeIcon: 14),
+            ]),
+          ),
         ]),
       );
 }
