@@ -13,7 +13,7 @@ class ProductDetailsLoading extends ProductDetailsState {}
 
 class ProductDetailsLoaded extends ProductDetailsState {
   const ProductDetailsLoaded(this.details);
-  final ProductDetails details;
+  final ProductEntity details;
 }
 
 class ProductDetailsError extends ProductDetailsState {

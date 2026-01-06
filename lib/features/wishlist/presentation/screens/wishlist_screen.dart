@@ -36,8 +36,8 @@ class WishlistScreen extends StatelessWidget {
                   );
                 } else if (state is WishlistEmpty) {
                   return EmptyWishlist(
-                    onBrowse: () =>
-                        NavigationService.navigateTo(AppRoutes.layout),
+                    onBrowse: () => NavigationService.navigateAndClearStack(
+                        AppRoutes.layout),
                   );
                 } else if (state is WishlistLoaded) {
                   final items = state.items;

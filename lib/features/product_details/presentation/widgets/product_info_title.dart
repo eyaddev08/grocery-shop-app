@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../../../../core/widgets/custom_like_button_widget.dart';
 
 class ProductInfoTitle extends StatelessWidget {
-  const ProductInfoTitle({super.key, required this.title, required this.isFav});
+  const ProductInfoTitle({super.key, required this.title, required this.isLiked});
   final String title;
 
-  final bool isFav;
+  final bool isLiked;
 
   @override
   Widget build(BuildContext context) => Padding(

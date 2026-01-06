@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
@@ -7,7 +6,7 @@ import 'package:grocery_shop_app/core/widgets/success_dialog_widget.dart';
 
 import '../../../../config/routes/app_routes.dart';
 import '../../../../core/services/navigation_service.dart';
-import '../../../../core/utils/custom_themes.dart';
+import '../../../../core/utils/styles.dart';
 import '../../../../core/utils/dimensions.dart';
 import '../../../../core/utils/images.dart';
 import '../../../../core/widgets/sliver_delegate_widget.dart';

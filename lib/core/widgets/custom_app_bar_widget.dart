@@ -5,7 +5,7 @@ import '../../config/routes/app_routes.dart';
 import '../../features/cart/presentation/manager/cart_cubit.dart';
 import '../constants/app_colors.dart';
 import '../services/navigation_service.dart';
-import '../utils/custom_themes.dart';
+import '../utils/styles.dart';
 import '../utils/images.dart';
 import 'custom_asset_image_widget.dart';
 

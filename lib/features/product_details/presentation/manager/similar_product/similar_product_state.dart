@@ -13,7 +13,7 @@ class SimilarProductLoading extends SimilarProductState {}
 
 class SimilarProductLoaded extends SimilarProductState {
   const SimilarProductLoaded(this.products);
-  final List<SimilarProduct> products;
+  final List<ProductEntity> products;
 }
 
 class SimilarProductError extends SimilarProductState {

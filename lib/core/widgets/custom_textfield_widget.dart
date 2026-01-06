@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:grocery_shop_app/core/constants/app_colors.dart';
 
-import '../utils/custom_themes.dart';
+import '../utils/styles.dart';
 import '../utils/dimensions.dart';
 
 class CustomTextFieldWidget extends StatefulWidget {
@@ -113,10 +113,10 @@ class _CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
   }
 
   Future showAndCloseTooltip(var key) async {
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future<void>.delayed(const Duration(milliseconds: 10));
     final dynamic tooltip = key.currentState;
     tooltip?.ensureTooltipVisible();
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future<void>.delayed(const Duration(milliseconds: 10));
     tooltip?.deactivate();
   }
 

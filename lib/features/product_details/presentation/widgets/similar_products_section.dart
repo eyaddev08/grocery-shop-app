@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grocery_shop_app/features/product_details/presentation/manager/similar_product/similar_product_cubit.dart';
-import '../../domain/entities/similar_product.dart';
 
 import 'similar_product_card.dart';
 import 'similar_product_shimmer.dart';
 
 class SimilarProductsSection extends StatelessWidget {
-  const SimilarProductsSection({super.key, required this.items});
-  final List<SimilarProduct> items;
+  const SimilarProductsSection({super.key});
+  // final List<SimilarProduct> items;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -39,19 +38,20 @@ class SimilarProductsSection extends StatelessWidget {
             }
 
             if (state is SimilarProductLoaded) {
+              final item = state.products;
               return SizedBox(
                 height: 156,
                 child: ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 18),
                   scrollDirection: Axis.horizontal,
+                  itemCount: item.length,
                   itemBuilder: (context, index) {
-                    final product = items[index];
+                    final product = item[index];
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: SimilarProductCard(item: product),
+                      child: SimilarProductCard(product: product),
                     );
                   },
-                  itemCount: items.length,
                 ),
               );
             }
@@ -60,4 +60,3 @@ class SimilarProductsSection extends StatelessWidget {
         ],
       );
 }
-

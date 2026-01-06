@@ -1,51 +1,52 @@
+// data/repositories/product_details_repository_impl.dart
 import 'package:dartz/dartz.dart';
 import '../../../../core/error/failure.dart';
-import '../../domain/entities/product_details.dart';
-import '../../domain/entities/similar_product.dart';
+
 import '../../domain/repositories/product_details_repository.dart';
+import '../../../products/domain/repositories/product_repository.dart';
+import '../../../products/domain/entities/product_entity.dart';
 
 class ProductDetailsRepositoryImpl implements ProductDetailsRepository {
+
+  ProductDetailsRepositoryImpl(this.productRepository);
+  final ProductRepository productRepository;
+
   @override
-  Future<Either<Failure, ProductDetails>> getProductDetails(String id) async {
+  Future<Either<Failure, ProductEntity>> getProductDetails(String id) async {
     try {
-      await Future<void>.delayed(const Duration(milliseconds: 1500));
+      // 1) إن كان ProductRepository يوفر getProductById افتحها أولاً (أسرع)
+      if (productRepository is ProductRepositoryWithById) {
+        final res = await (productRepository as ProductRepositoryWithById).getProductById(id);
+        if (res.isRight()) return res;
+        // إذا فشل (مثلاً لم يجده) لنعود للخطوة التالية
+      }
 
-      final details = ProductDetails(
-        id: id,
-        title: 'Fresh Apples',
-        description:
-            'Crisp, sweet and juicy apples. Perfect for snacks and baking.',
-        price: 3.49,
-        regularPrice: 4.99,
-        image: [
-          'assets/svg/empty_image.svg',
-          'assets/svg/empty_image.svg',
-          'assets/svg/empty_image.svg',
-        ],
-        nutritionLines: ['Calories 95', 'Fat 0g', 'Carbs 25g', 'Protein 0g'],
-        reviewCount: 128,
+      // 2) جلب كل المنتجات والبحث محليًا (fallback)
+      final eitherAll = await productRepository.getProducts();
+      return eitherAll.fold(
+        (failure) => Left(failure),
+        (list) {
+          final ProductEntity? found = _findById(list, id);
+          if (found == null) {
+            return Left(ServerFailure(message: 'Product not found'));
+          }
+          return Right(found);
+        },
       );
-
-      return Right(details);
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
   }
 
-  Future<Either<Failure, SimilarProduct>> getSimilarProduct(String id) async {
-    try {
-      await Future<void>.delayed(const Duration(milliseconds: 1500));
-
-      final similar = SimilarProduct(
-        id: id,
-        title: 'Fresh Apples',
-        price: '3.49',
-        image: 'assets/svg/empty_image.svg',
-      );
-
-      return Right(similar);
-    } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
+  ProductEntity? _findById(List<ProductEntity> list, String id) {
+    for (final p in list) {
+      if (p.id.toString() == id.toString()) return p;
     }
+    return null;
   }
+}
+
+/// optional: واجهة توسيعية إن أردت ProductRepository يدعم الاستعلام حسب id مباشرة
+abstract class ProductRepositoryWithById implements ProductRepository {
+  Future<Either<Failure, ProductEntity>> getProductById(String id);
 }

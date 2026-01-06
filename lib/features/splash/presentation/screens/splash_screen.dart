@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_constants.dart';
-import '../../../../core/utils/custom_themes.dart';
+import '../../../../core/utils/styles.dart';
 import '../../../../core/utils/dimensions.dart';
 import '../../../../core/services/navigation_service.dart';
 import '../../../../core/utils/images.dart';

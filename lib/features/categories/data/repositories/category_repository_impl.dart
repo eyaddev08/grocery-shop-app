@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/constants/images_constants.dart';
 import '../../domain/entities/category.dart';
 import '../../domain/repositories/category_repository.dart';
 import '../../../../core/error/failure.dart';
@@ -13,7 +14,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
       title: 'Big & Small Fishes',
       subtitle: 'Fresh from sea',
       filterName: 'Meats & Fishes',
-      image: null,
+      image: ImagesConstants.freshBassWhiteBg,
       price: '36',
       color: Color(0xFFFFC3BB),
     ),
@@ -21,8 +22,8 @@ class CategoryRepositoryImpl implements CategoryRepository {
       id: '2',
       title: 'Halal Meats',
       subtitle: 'Organics & Fresh',
-      filterName: 'Vegetables',
-      image: null,
+      filterName: 'Meats',
+      image: ImagesConstants.rawMeatAssortment,
       price: '90',
       color: Color(0xFFFFDC82),
     ),
@@ -30,8 +31,8 @@ class CategoryRepositoryImpl implements CategoryRepository {
         id: '3',
         title: 'Meats',
         subtitle: 'Organic',
-        filterName: 'Fruits',
-        image: null,
+        filterName: 'Meats',
+        image: ImagesConstants.freshBeefCubes,
         price: '36',
         color: Color(0xFFEFFAC5)),
     Category(

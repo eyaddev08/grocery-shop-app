@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grocery_shop_app/core/constants/app_colors.dart';
-import '../../domain/entities/similar_product.dart';
-
+import '../../../products/domain/entities/product_entity.dart';
 import '../manager/product_details/product_details_cubit.dart';
 import '../manager/similar_product/similar_product_cubit.dart';
 import '../widgets/action_buttons_row.dart';
@@ -18,8 +17,9 @@ import '../widgets/product_detail_shimmer.dart';
 import '../widgets/top_bar.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
-  const ProductDetailsScreen({super.key, required this.productId});
-  final String productId;
+  const ProductDetailsScreen({super.key, this.productId, this.initialProduct});
+  final String? productId;
+  final ProductEntity? initialProduct;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,8 @@ class ProductDetailsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: BlocProvider.value(
-        value: BlocProvider.of<ProductDetailsCubit>(context)..load(productId),
+        value: BlocProvider.of<ProductDetailsCubit>(context)
+          ..load(id: productId, initialProduct: initialProduct),
         child: SafeArea(child: ProductDetailBody(designW: designW)),
       ),
     );
@@ -78,9 +79,11 @@ class ProductDetailBody extends StatelessWidget {
                   children: [
                     const TopBar(),
                     const SizedBox(height: 6),
-                    ImageCarousel(images: state.details.image!),
+                    ImageCarousel(images: state.details.images),
                     const SizedBox(height: 8),
-                    ProductInfoTitle(title: state.details.title, isFav: true),
+                    ProductInfoTitle(
+                        title: state.details.name,
+                        isLiked: state.details.inWishlist),
                     const SizedBox(height: 12),
                     ProductPriceRow(details: state.details),
                     const SizedBox(height: 12),
@@ -88,7 +91,8 @@ class ProductDetailBody extends StatelessWidget {
                     const SizedBox(height: 18),
                     ActionButtonsRow(details: state.details),
                     const SizedBox(height: 20),
-                    ProductInfoSection(desc: state.details.description),
+                    ProductInfoSection(
+                        desc: state.details.shortDescription ?? ''),
                     const SizedBox(height: 18),
                     ProductNutritionalInfo(
                         nutrition: state.details.nutritionLines),
@@ -103,8 +107,7 @@ class ProductDetailBody extends StatelessWidget {
                     BlocProvider.value(
                       value: BlocProvider.of<SimilarProductCubit>(context)
                         ..load(state.details.id),
-                      child: const SimilarProductsSection(
-                          items: sampleSimilarItems),
+                      child: const SimilarProductsSection(),
                     ),
                     const SizedBox(height: 24),
                   ],

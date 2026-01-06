@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/utils/custom_themes.dart';
+import '../../../../core/utils/styles.dart';
 
 class OrderProductInfo extends StatelessWidget {
   const OrderProductInfo({

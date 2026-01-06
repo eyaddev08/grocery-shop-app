@@ -1,12 +1,22 @@
-import 'package:grocery_shop_app/features/product_details/domain/entities/similar_product.dart';
 
 import '../../../../core/error/failure.dart';
-import 'package:dartz/dartz.dart';import '../repositories/similar_product_repository.dart';
+import 'package:dartz/dartz.dart';
+import '../../../products/domain/entities/product_entity.dart';
+import '../repositories/similar_product_repository.dart';
+
+// class GetSimilarProduct {
+//   GetSimilarProduct(this.repository);
+//   final SimilarProductRepository repository;
+
+//   Future<Either<Failure, List<ProductEntity>>> call(String id,  {int limit = 6}) async =>
+//       await repository.getSimilarProduct(id);
+// }
 
 class GetSimilarProduct {
-
   GetSimilarProduct(this.repository);
   final SimilarProductRepository repository;
 
-  Future<Either<Failure, List<SimilarProduct>>> call(String id) async => await repository.getSimilarProduct(id);
+  Future<Either<Failure, List<ProductEntity>>> call(String id, {int limit = 6}) {
+    return repository.getSimilarProducts(id, limit: limit);
+  }
 }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../core/constants/app_colors.dart';
+import '../../../../../core/utils/styles.dart';
+
 class SavingsCard extends StatelessWidget {
   const SavingsCard(
       {super.key, required this.background,
@@ -35,13 +38,13 @@ class SavingsCard extends StatelessWidget {
                       style: const TextStyle(
                           fontSize: 26,
                           fontWeight: FontWeight.w800,
-                          color: Color(0xFF1E222B))),
+                          color: kTextDark)),
                   TextSpan(
                       text: unit,
-                      style: const TextStyle(
+                      style:  textBold.copyWith(
                           fontSize: 26,
                           fontWeight: FontWeight.w400,
-                          color: Color(0xFF1E222B))),
+                          color: kTextDark)),
                 ],
                
               ),

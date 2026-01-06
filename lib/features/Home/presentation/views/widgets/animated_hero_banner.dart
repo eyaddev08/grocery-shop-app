@@ -1,8 +1,51 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+
 import '../../../../../core/constants/app_colors.dart';
+import '../../../../../core/constants/images_constants.dart';
 import 'promo_card.dart';
+
+class PromoBanner {
+  const PromoBanner({
+    required this.image,
+    required this.background,
+    required this.title,
+    required this.bigText,
+    required this.subtitle,
+  });
+
+  final String image;
+  final Color background;
+  final String title;
+  final String bigText;
+  final String subtitle;
+}
+
+const List<PromoBanner> _promoBanners = <PromoBanner>[
+  PromoBanner(
+    image: ImagesConstants.seasonalFruitsArranged,
+    background: kYellow,
+    title: 'Get',
+    bigText: '50% OFF',
+    subtitle: 'On first 03 order',
+  ),
+  PromoBanner(
+    image: ImagesConstants.fruitBasket,
+    background: kBeige,
+    title: 'New',
+    bigText: 'Deals',
+    subtitle: 'Limited time',
+  ),
+  PromoBanner(
+    image: ImagesConstants.brightColorfulFruits,
+    background: kNavInactive,
+    title: 'Get',
+    bigText: '40% OFF',
+    subtitle: 'On first 04 order',
+  ),
+];
 
 class AnimatedHeroBanner extends StatefulWidget {
   const AnimatedHeroBanner({
@@ -11,6 +54,7 @@ class AnimatedHeroBanner extends StatefulWidget {
     this.autoPlayInterval = const Duration(seconds: 4),
     this.animationDuration = const Duration(milliseconds: 550),
   });
+
   final bool autoPlay;
   final Duration autoPlayInterval;
   final Duration animationDuration;
@@ -25,38 +69,14 @@ class _AnimatedHeroBannerState extends State<AnimatedHeroBanner> {
   Timer? _autoTimer;
   bool _userInteracting = false;
 
-  final promos = [
-    {
-      'image': 'assets/svg/logo_image.svg',
-      'bg': kYellow,
-      'title': 'Get',
-      'big': '50% OFF',
-      'sub': 'On first 03 order'
-    },
-    {
-      'image': 'assets/svg/logo_image.svg',
-      'bg': kBeige,
-      'title': 'New',
-      'big': 'Deals',
-      'sub': 'Limited time'
-    },
-    {
-      'image': 'assets/svg/logo_image.svg',
-      'bg': kNavInactive,
-      'title': 'Get',
-      'big': '40% OFF',
-      'sub': 'On first 04 order'
-    },
-  ];
-
   @override
   void initState() {
     super.initState();
-    _controller = PageController(initialPage: 0, viewportFraction: 1.0);
+    _controller = PageController();
 
     // Start autoplay only after first frame so PageView has dimensions.
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.autoPlay && promos.length > 1) {
+      if (widget.autoPlay && _promoBanners.length > 1) {
         _startAutoPlay();
       }
     });
@@ -66,10 +86,13 @@ class _AnimatedHeroBannerState extends State<AnimatedHeroBanner> {
     _autoTimer?.cancel();
     _autoTimer = Timer.periodic(widget.autoPlayInterval, (_) {
       if (_userInteracting) return;
-      final next = (_currentPage + 1) % promos.length;
+      final int next = (_currentPage + 1) % _promoBanners.length;
       if (mounted) {
-        _controller.animateToPage(next,
-            duration: widget.animationDuration, curve: Curves.easeOutCubic);
+        _controller.animateToPage(
+          next,
+          duration: widget.animationDuration,
+          curve: Curves.easeOutCubic,
+        );
       }
     });
   }
@@ -86,19 +109,15 @@ class _AnimatedHeroBannerState extends State<AnimatedHeroBanner> {
     super.dispose();
   }
 
-  bool _isNetwork(String src) => src.startsWith('http');
-
   @override
-  Widget build(BuildContext context) =>
-      // final images = widget.images;
-      SizedBox(
+  Widget build(BuildContext context) => SizedBox(
         height: 190,
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
             NotificationListener<UserScrollNotification>(
               onNotification: (notification) {
-                // detect user interaction to pause autoplay
+                // Detect user interaction to pause autoplay.
                 if (notification.direction == ScrollDirection.idle) {
                   _userInteracting = false;
                   if (widget.autoPlay) _startAutoPlay();
@@ -110,26 +129,26 @@ class _AnimatedHeroBannerState extends State<AnimatedHeroBanner> {
               },
               child: PageView.builder(
                 controller: _controller,
-                itemCount: promos.length,
-                onPageChanged: (i) => setState(() => _currentPage = i),
+                itemCount: _promoBanners.length,
+                onPageChanged: (index) => setState(() => _currentPage = index),
                 itemBuilder: (context, index) {
-                  final p = promos[index];
+                  final PromoBanner banner = _promoBanners[index];
                   return AnimatedBuilder(
                     animation: _controller,
                     builder: (context, child) {
-                      // SAFEGUARD: page value only when controller has clients and dimensions are ready.
+                      // SAFEGUARD: page value only when controller has clients
+                      // and dimensions are ready.
                       final double page;
                       if (_controller.hasClients &&
                           _controller.position.haveDimensions) {
-                        // safe to use .page
                         page = _controller.page ??
                             _controller.initialPage.toDouble();
                       } else {
-                        // fallback until dimensions are available
+                        // Fallback until dimensions are available.
                         page = _controller.initialPage.toDouble();
                       }
 
-                      final double delta = (index - page);
+                      final double delta = index - page;
                       final double translateX = (delta * 24).clamp(-40.0, 40.0);
                       final double scale =
                           (1 - delta.abs() * 0.08).clamp(0.88, 1.0);
@@ -138,7 +157,6 @@ class _AnimatedHeroBannerState extends State<AnimatedHeroBanner> {
                         offset: Offset(translateX, 0),
                         child: Transform.scale(
                           scale: scale,
-                          alignment: Alignment.center,
                           child: child,
                         ),
                       );
@@ -146,35 +164,15 @@ class _AnimatedHeroBannerState extends State<AnimatedHeroBanner> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: Column(
-                        // fit: StackFit.expand,
                         children: [
-                          // _isNetwork(images[index])
-                          //     ? Image.network(images[index], fit: BoxFit.cover)
-                          //     : Image.asset(images[index], fit: BoxFit.cover),
-                          // Container(
-                          //   decoration: BoxDecoration(
-                          //     gradient: LinearGradient(
-                          //       begin: Alignment.bottomCenter,
-                          //       end: Alignment.topCenter,
-                          //       colors: [
-                          //         Colors.black.withOpacity(0.6),
-                          //         Colors.black.withOpacity(0.15),
-                          //         Colors.transparent
-                          //       ],
-                          //       stops: const [0.0, 0.45, 1.0],
-                          //     ),
-                          //   ),
-                          // ),
-                          // Replace center texts with a PromoCard overlay.
-                          // PromoCard shows an image (network/asset) if provided, otherwise an icon.
                           PromoCard(
                             width: double.infinity,
-                            background: p['bg'] as Color,
-                            title: p['title'] as String,
-                            bigText: p['big'] as String,
-                            subtitle: p['sub'] as String,
-                            scale: 1.0,
-                            imageSrc: p['image'] as String,
+                            background: banner.background,
+                            title: banner.title,
+                            bigText: banner.bigText,
+                            subtitle: banner.subtitle,
+                            scale: 1,
+                            imageSrc: banner.image,
                           ),
                         ],
                       ),
@@ -187,22 +185,23 @@ class _AnimatedHeroBannerState extends State<AnimatedHeroBanner> {
             // Dots
             Row(
               mainAxisSize: MainAxisSize.min,
-              children: List.generate(promos.length, (i) {
-                final bool active = i == _currentPage;
+              children: List.generate(_promoBanners.length, (int index) {
+                final bool isActive = index == _currentPage;
                 return AnimatedContainer(
                   duration: const Duration(milliseconds: 350),
                   margin: const EdgeInsets.symmetric(horizontal: 6),
-                  width: active ? 20 : 8,
+                  width: isActive ? 20 : 8,
                   height: 8,
                   decoration: BoxDecoration(
-                    color: active ? Colors.white : const Color(0xFFCECCD2),
+                    color: isActive ? Colors.white : const Color(0xFFCECCD2),
                     borderRadius: BorderRadius.circular(10),
-                    boxShadow: active
+                    boxShadow: isActive
                         ? [
                             BoxShadow(
-                                color: Colors.white.withOpacity(0.22),
-                                blurRadius: 6,
-                                offset: const Offset(0, 2))
+                              color: Colors.white.withOpacity(0.22),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
+                            )
                           ]
                         : null,
                   ),

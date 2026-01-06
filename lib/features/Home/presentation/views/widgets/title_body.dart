@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../core/constants/app_colors.dart';
+import '../../../../../core/utils/styles.dart';
 
 class TitleBody extends StatelessWidget {
   const TitleBody({
@@ -19,16 +20,16 @@ class TitleBody extends StatelessWidget {
           EdgeInsets.symmetric(horizontal: 16 * scale, vertical: 12 * scale),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Text(title,
-            style: TextStyle(
+            style: titleRegular.copyWith(
                 fontSize: 18 * scale,
                 fontWeight: FontWeight.w600,
                 color: kTextDark)),
-        InkWell(
-            onTap: onTap,
-            child: const Text('View all',
-                style: TextStyle(
-                    color: Color(0xFF5E596E),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500)))
+        // InkWell(
+        //     onTap: onTap,
+        //     child:  Text('View all',
+        //         style: textBold.copyWith(
+        //             color: const Color(0xFF5E596E),
+        //             fontSize: 12,
+        //             )))
       ]));
 }

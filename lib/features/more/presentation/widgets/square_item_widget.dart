@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:grocery_shop_app/core/constants/app_colors.dart';
 
 import '../../../../core/helpers/price_converter.dart';
-import '../../../../core/utils/custom_themes.dart';
+import '../../../../core/utils/styles.dart';
 import '../../../../core/utils/dimensions.dart';
 
 class SquareButtonWidget extends StatelessWidget {

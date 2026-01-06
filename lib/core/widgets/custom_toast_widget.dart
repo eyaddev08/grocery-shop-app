@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants/app_colors.dart';
-import '../utils/custom_themes.dart';
+import '../utils/styles.dart';
 import '../utils/dimensions.dart';
 import '../utils/images.dart';
 import 'custom_snackbar_widget.dart';

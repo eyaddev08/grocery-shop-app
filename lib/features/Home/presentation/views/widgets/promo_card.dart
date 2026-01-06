@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../../../core/utils/styles.dart';
 
-/// Promo card widget used by the hero banner. Shows an image when available,
-/// otherwise shows a fallback icon. Visual style matches the requested design.
-class PromoCard extends StatelessWidget { // optional: if provided, show image inside the small box
+class PromoCard extends StatelessWidget {
 
   const PromoCard({
     super.key,
@@ -64,7 +63,7 @@ class PromoCard extends StatelessWidget { // optional: if provided, show image i
             children: [
               Text(title,
                   textAlign: TextAlign.start,
-                  style: TextStyle(
+                  style: titleRegular.copyWith(
                       color: Colors.white70,
                       fontSize: 20 * scale,
                       fontWeight: FontWeight.w500)),
@@ -78,7 +77,7 @@ class PromoCard extends StatelessWidget { // optional: if provided, show image i
               Text(subtitle,
                   textAlign: TextAlign.start,
                   style:
-                      TextStyle(color: Colors.white70, fontSize: 16 * scale)),
+                      textBold.copyWith(color: Colors.white70, fontSize: 16 * scale)),
             ],
           )
         ]),
