@@ -48,31 +48,28 @@ class DealsProduct {
   final double? shippingCost;
   final int status;
 
-
-
-
   // in deals_product_model.dart
-ProductEntity toEntity() => ProductEntity(
-  id: id.toString(),
-  name: title,
-  price: price,
-  originalPrice: originalPrice,
-  thumbnail: thumbnail,
-  images: images,
-  discount: discount,
-  discountType: discountType,
-  rating: rating,
-  reviewCount: reviewCount,
-  shortDescription: shortDescription,
-  inWishlist: inWishlist,
-  nutritionLines: nutritionLines,
-  status: status,
-  currentStock: currentStock,
-  shippingCost: shippingCost,
-  minOrderQty: minOrderQty,
-  slug: slug,
-  brand: brand,
-  unit: unit,
-  categoryIds: categoryIds,
-);
+  ProductEntity toEntity() => ProductEntity(
+        id: id.toString(),
+        name: title,
+        price: price,
+        originalPrice: originalPrice,
+        thumbnail: thumbnail,
+        images: images,
+        discount: discount,
+        discountType: discountType,
+        rating: rating,
+        reviewCount: reviewCount,
+        shortDescription: shortDescription,
+        inWishlist: inWishlist,
+        nutritionLines: nutritionLines,
+        status: status,
+        currentStock: currentStock,
+        shippingCost: shippingCost,
+        minOrderQty: minOrderQty,
+        tag: slug,
+        brand: brand,
+        unit: unit,
+        categoryIds: categoryIds,
+      );
 }

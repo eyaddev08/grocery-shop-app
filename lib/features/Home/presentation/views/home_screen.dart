@@ -4,7 +4,9 @@ import '../../../../core/utils/functions/show_address_menu.dart';
 import '../../../../core/utils/functions/show_within_menu.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/sliver_delegate_widget.dart';
+import '../../../search/presentation/screens/search_screen.dart';
 import '../manager/deal_product/deal_product_cubit.dart';
+
 import 'widgets/content_section.dart';
 import 'widgets/header_section.dart';
 
@@ -61,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
               selectedWithin: selectedWithin,
               onSearchTap: () =>
                   Navigator.of(context).push<Widget>(MaterialPageRoute<Widget>(
-                builder: (_) => const SizedBox(),
+                builder: (_) => const SearchScreen(),
               )),
               onAddressTap: () => showAddressMenu(context, _addressKey,
                   selectedAddress, (fn) => setState(() {})),

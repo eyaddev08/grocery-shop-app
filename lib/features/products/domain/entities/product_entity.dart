@@ -3,7 +3,7 @@ class ProductEntity {
     required this.id,
     required this.name,
     this.filterLabel,
-    this.slug,
+    this.tag,
     this.unit,
     required this.price,
     this.originalPrice,
@@ -26,7 +26,7 @@ class ProductEntity {
   final String id;
   final String name;
   final String? filterLabel;
-  final String? slug;
+  final String? tag;
   final String? unit;
   final double price; // current/unit price shown in UI
   final double? originalPrice; // optional old price to show discount badge

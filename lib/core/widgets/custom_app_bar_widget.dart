@@ -61,7 +61,7 @@ class CustomAppBarWidget extends StatelessWidget {
                       Images.arrIcon,
                       height: 12,
                       width: 12,
-                      color: kTextDark.withOpacity(0.8),
+                      color: labelColor,
                     ),
                     onPressed: () => onBackPressed != null
                         ? onBackPressed!()
