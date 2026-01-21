@@ -8,7 +8,7 @@ class ProductModel {
     required this.id,
     required this.name,
     this.filterLabel,
-    this.slug,
+    this.tag,
     this.unit,
     required this.price,
     this.originalPrice,
@@ -36,7 +36,7 @@ class ProductModel {
   // parse filterLabel — حاول مفاتيح مختلفة حسب API
     final filterLabel = (json['filter_label'] ?? json['filterLabel'])?.toString();
 
-    final slug = json['slug']?.toString();
+    final tag = json['tag']?.toString();
     final unit = json['unit']?.toString();
 
     // price parsing with fallbacks
@@ -122,7 +122,7 @@ class ProductModel {
       id: id,
       name: name,
       filterLabel: filterLabel,
-      slug: slug,
+      tag: tag,
       unit: unit,
       price: price,
       originalPrice: originalPrice,
@@ -146,7 +146,7 @@ class ProductModel {
   final String id;
   final String name;
    final String? filterLabel;
-  final String? slug;
+  final String? tag;
   final String? unit;
   final double price;
   final double? originalPrice;
@@ -169,7 +169,7 @@ class ProductModel {
   Map<String, dynamic> toJson() => {
       'id': id,
       'name': name,
-      'slug': slug,
+      'tag': tag,
       'unit': unit,
       'price': price,
       'original_price': originalPrice,
@@ -194,7 +194,7 @@ class ProductModel {
   ProductEntity toEntity() => ProductEntity(
       id: id,
       name: name,
-      slug: slug,
+      tag: tag,
       unit: unit,
       price: price,
       originalPrice: originalPrice,

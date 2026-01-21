@@ -10,3 +10,11 @@ class Failure {
 class ServerFailure extends Failure {
   ServerFailure({required String message}) : super(message);
 }
+
+class CacheFailure extends Failure {
+  CacheFailure({required String message}) : super(message);
+}
+
+class NetworkFailure extends Failure {
+  NetworkFailure({required String message}) : super(message);
+}

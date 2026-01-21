@@ -31,7 +31,7 @@ class ProductCard extends StatelessWidget {
                     context,
                     MaterialPageRoute<void>(
                       builder: (builder) =>
-                          ProductDetailsScreen(productId: p.id),
+                          ProductDetailsScreen(productId: p.id, initialProduct: p),
                     )),
                 child: SizedBox(
                   height: 194,

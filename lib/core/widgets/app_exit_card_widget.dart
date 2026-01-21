@@ -38,20 +38,17 @@ class AppExitCard extends StatelessWidget {
               Text(
                 'Close App',
                 style: textBold.copyWith(
-                    fontSize: Dimensions.fontSizeLarge,
-                    color: Theme.of(context).textTheme.bodyLarge?.color),
+                    fontSize: Dimensions.fontSizeLarge, color: kPrimaryBlue),
               ),
               Padding(
                   padding: const EdgeInsets.only(
                       top: Dimensions.paddingSizeSmall,
                       bottom: Dimensions.paddingSizeSmall),
                   child: Text('Do you want to close and exit app',
-                      style: textRegular.copyWith(
-                          color:
-                              Theme.of(context).textTheme.bodyLarge?.color))),
+                      style: textRegular.copyWith(color: kTextDark))),
               const SizedBox(height: Dimensions.paddingSizeDefault),
-              Padding(
-                  padding: const EdgeInsets.symmetric(
+              const Padding(
+                  padding: EdgeInsets.symmetric(
                       horizontal: Dimensions.paddingSizeOverLarge),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -59,15 +56,12 @@ class AppExitCard extends StatelessWidget {
                         Expanded(
                             child: CustomButton(
                           buttonText: 'Cancel',
-                          backgroundColor: kPrimaryBlue,
-                          textColor:
-                              Theme.of(context).textTheme.bodyLarge?.color,
-                          onTap:  NavigationService.goBack,
+                          onTap: NavigationService.goBack,
                         )),
-                        const SizedBox(
+                        SizedBox(
                           width: Dimensions.paddingSizeDefault,
                         ),
-                        const Expanded(
+                        Expanded(
                             child: CustomButton(
                                 backgroundColor: kYellow,
                                 buttonText: 'Exit',

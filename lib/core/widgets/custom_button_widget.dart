@@ -10,7 +10,7 @@ class CustomButton extends StatelessWidget {
     required this.buttonText,
     this.isBuy = false,
     this.isBorder = false,
-    this.backgroundColor,
+    this.backgroundColor = kPrimaryBlue,
     this.radius,
     this.textColor,
     this.fontSize,
@@ -27,7 +27,7 @@ class CustomButton extends StatelessWidget {
   final String? buttonText;
   final bool isBuy;
   final bool isBorder;
-  final Color? backgroundColor;
+  final Color backgroundColor;
   final Color? textColor;
   final Color? borderColor;
   final Color? loadingColor;
@@ -40,9 +40,14 @@ class CustomButton extends StatelessWidget {
   final double buttonWidth;
 
   @override
-  Widget build(BuildContext context) => TextButton(
+  Widget build(BuildContext context) => ElevatedButton(
         onPressed: isLoading ? null : onTap as void Function()?,
-        style: TextButton.styleFrom(padding: const EdgeInsets.all(0)),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: onTap == null ? kMuted : backgroundColor,
+          padding: const EdgeInsets.all(0),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
         child: Container(
           width: buttonWidth,
           height: buttonHeight,
@@ -52,7 +57,7 @@ class CustomButton extends StatelessWidget {
                   ? Border.all(color: kPrimaryBlue, width: borderWidth ?? 1)
                   : null,
               color: onTap == null
-                  ? Theme.of(context).disabledColor
+                  ? kMuted
                   : backgroundColor ??
                       (isBuy ? const Color(0xffFE961C) : kPrimaryBlue),
               borderRadius: BorderRadius.circular(radius != null
@@ -88,8 +93,8 @@ class CustomButton extends StatelessWidget {
                       child: Text(buttonText ?? '',
                           style: titilliumSemiBold.copyWith(
                               fontSize: fontSize ?? 16,
-                              color: Colors.white,
-                              fontFamily: 'Poppins')),
+                              color: textColor),
+                              ),
                     ),
                   ],
                 ),

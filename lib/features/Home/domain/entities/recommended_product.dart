@@ -67,7 +67,7 @@ class RecommendedProduct {
         currentStock: currentStock,
         shippingCost: shippingCost,
         minOrderQty: minOrderQty,
-        slug: slug,
+        tag: slug,
         brand: brand,
         unit: unit,
         categoryIds: categoryIds,
