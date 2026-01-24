@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grocery_shop_app/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:grocery_shop_app/features/auth/presentation/pages/register_page.dart';
+import 'package:grocery_shop_app/features/auth/presentation/pages/verify_code_page.dart';
 import 'config/di/injection_container.dart';
 import 'config/routes/app_routes.dart';
 import 'core/services/navigation_service.dart';
@@ -10,6 +13,9 @@ import 'features/Home/domain/usecases/get_deal_products.dart';
 import 'features/Home/domain/usecases/get_recommended_products.dart';
 import 'features/Home/presentation/manager/deal_product/deal_product_cubit.dart';
 import 'features/Home/presentation/manager/recommended/recommended_cubit.dart';
+import 'features/auth/presentation/pages/forgot_password_page.dart';
+import 'features/auth/presentation/pages/login_page.dart';
+import 'features/auth/presentation/pages/reset_password_page.dart';
 import 'features/cart/presentation/manager/cart_cubit.dart';
 import 'features/categories/domain/usecases/get_categories.dart';
 import 'features/categories/presentation/manger/categories_cubit.dart';
@@ -90,6 +96,9 @@ class GroceryShopApp extends StatelessWidget {
         BlocProvider(
           create: (_) => sl<SearchCubit>()..loadSuggestions(''),
         ),
+        BlocProvider(
+          create: (_) => sl<AuthCubit>(),
+        ),
       ],
       child: MaterialApp(
         title: 'Grocery Shop',
@@ -124,6 +133,26 @@ class GroceryShopApp extends StatelessWidget {
           builder: (context) => const LoginScreen(),
           settings: settings,
         );
+      case AppRoutes.forgotPassword:
+        return MaterialPageRoute(
+          builder: (context) => const ForgotPasswordPage(),
+          settings: settings,
+        );
+      case AppRoutes.register:
+        return MaterialPageRoute(
+          builder: (context) => const RegisterPage(),
+          settings: settings,
+        );
+      case AppRoutes.resetPassword:
+      return MaterialPageRoute(
+        builder: (context) =>  const ResetPasswordPage(token: 'fake_token_123456'),
+        settings: settings,
+      );
+            case AppRoutes.verifyCode:
+      return MaterialPageRoute(
+        builder: (context) =>  const VerifyCodePage(email: 'eyaddev08@gmail.com'),
+        settings: settings,
+      );
       case AppRoutes.layout:
         return MaterialPageRoute(
           builder: (context) => const Layout(),
@@ -193,52 +222,52 @@ class GroceryShopApp extends StatelessWidget {
 
 // Placeholder screens - these will be implemented in the features folder
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+// class LoginScreen extends StatelessWidget {
+//   const LoginScreen({super.key});
 
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: const Text('Login'),
-        ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            const Text('Login Screen - To be implemented'),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: SizedBox(
-                width: double.infinity,
-                height: 54,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2E4482),
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    elevation: 0,
-                  ),
-                  onPressed: () {
-                    NavigationService.navigateTo(AppRoutes.layout);
-                  },
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('Go To Home',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w500)),
-                      SizedBox(width: 8),
-                      Icon(Icons.arrow_forward, size: 22),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-}
+//   @override
+//   Widget build(BuildContext context) => Scaffold(
+//         appBar: AppBar(
+//           title: const Text('Login'),
+//         ),
+//         body: Column(
+//           mainAxisAlignment: MainAxisAlignment.spaceAround,
+//           children: [
+//             const Text('Login Screen - To be implemented'),
+//             Padding(
+//               padding: const EdgeInsets.symmetric(horizontal: 16),
+//               child: SizedBox(
+//                 width: double.infinity,
+//                 height: 54,
+//                 child: ElevatedButton(
+//                   style: ElevatedButton.styleFrom(
+//                     backgroundColor: const Color(0xFF2E4482),
+//                     foregroundColor: Colors.white,
+//                     shape: RoundedRectangleBorder(
+//                       borderRadius: BorderRadius.circular(16),
+//                     ),
+//                     elevation: 0,
+//                   ),
+//                   onPressed: () {
+//                     NavigationService.navigateTo(AppRoutes.layout);
+//                   },
+//                   child: const Row(
+//                     mainAxisAlignment: MainAxisAlignment.center,
+//                     children: [
+//                       Text('Go To Home',
+//                           style: TextStyle(
+//                               fontSize: 16, fontWeight: FontWeight.w500)),
+//                       SizedBox(width: 8),
+//                       Icon(Icons.arrow_forward, size: 22),
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       );
+// }
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

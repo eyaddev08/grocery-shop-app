@@ -36,7 +36,9 @@ class CustomToast extends StatelessWidget {
                     ? kAccentYellow //  const Color(0xE608AE61)
                     : sanckBarType == SnackBarType.warning
                         ? const Color(0xE6334257)
-                        : const Color(0xE6334257),
+                        : sanckBarType == SnackBarType.error
+                            ? errorColor
+                            : kPrimaryBlue,
                 borderRadius: BorderRadius.circular(borderRadius),
               ),
               padding: padding,
@@ -51,8 +53,7 @@ class CustomToast extends StatelessWidget {
                               ? Images.snackbarWarning
                               : Images.snackbarError,
                       width: 17,
-                      height: 17
-                      ),
+                      height: 17),
                   const SizedBox(width: Dimensions.paddingSizeSmall),
                   Flexible(
                       child: Text(text,

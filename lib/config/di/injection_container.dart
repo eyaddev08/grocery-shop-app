@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Home / Deals
+import '../../core/network/api_client.dart';
 import '../../features/Home/data/repositories/deal_product_repository_impl.dart';
 import '../../features/Home/domain/repositories/deal_product_repository.dart';
 import '../../features/Home/domain/usecases/get_deal_products.dart';
@@ -16,6 +18,20 @@ import '../../features/Home/domain/usecases/get_recommended_products.dart';
 import '../../features/Home/presentation/manager/recommended/recommended_cubit.dart';
 
 // Categories
+import '../../features/auth/data/datasources/auth_local_data_source.dart';
+import '../../features/auth/data/datasources/auth_local_data_source_impl.dart';
+import '../../features/auth/data/datasources/auth_remote_data_source.dart';
+import '../../features/auth/data/datasources/auth_remote_data_source_impl.dart';
+import '../../features/auth/data/repositories/auth_repository_impl.dart';
+import '../../features/auth/domain/repositories/auth_repository.dart';
+import '../../features/auth/domain/usecases/login.dart';
+import '../../features/auth/domain/usecases/refresh_token.dart';
+import '../../features/auth/domain/usecases/register.dart';
+import '../../features/auth/domain/usecases/request_password_reset.dart';
+import '../../features/auth/domain/usecases/reset_password.dart';
+import '../../features/auth/domain/usecases/verify_reset_code.dart';
+import '../../features/auth/presentation/cubit/auth_cubit.dart';
+import '../../core/services/dio_auth_interceptor.dart';
 import '../../features/categories/data/repositories/category_repository_impl.dart';
 import '../../features/categories/domain/repositories/category_repository.dart';
 import '../../features/categories/domain/usecases/get_categories.dart';
@@ -108,6 +124,10 @@ import '../../features/search/domain/repositories/search_repository.dart';
 import '../../features/search/domain/usecases/get_search_suggestions.dart';
 import '../../features/search/domain/usecases/search_products.dart';
 import '../../features/search/presentation/manager/search_cubit.dart';
+
+// // Auth
+// import '../../features/auth/di/auth_module.dart' show initAuthModule;
+// import '../env/app_config.dart';
 
 // ...
 
@@ -395,6 +415,101 @@ Future<void> init() async {
   if (!sl.isRegistered<TrackOrderCubit>()) {
     sl.registerFactory<TrackOrderCubit>(
         () => TrackOrderCubit(getTrackOrderUseCase: sl<GetTrackOrder>()));
+  }
+
+  // -----------------------------
+  // Auth
+  // -----------------------------
+
+  // FlutterSecureStorage
+  if (!sl.isRegistered<FlutterSecureStorage>()) {
+    sl.registerLazySingleton<FlutterSecureStorage>(
+        () => const FlutterSecureStorage());
+  }
+
+  // Dio with auth interceptor
+  if (!sl.isRegistered<Dio>(instanceName: 'authDio')) {
+    final dio = Dio();
+    ApiClient(dio);
+   
+    final storage = sl<FlutterSecureStorage>();
+    dio.interceptors.add(DioAuthInterceptor(storage: storage, dio: dio));
+    sl.registerLazySingleton<Dio>(() => dio, instanceName: 'authDio');
+  }
+
+  // Data Sources
+  if (!sl.isRegistered<AuthRemoteDataSource>()) {
+    sl.registerLazySingleton<AuthRemoteDataSource>(
+      () => AuthRemoteDataSourceImpl(client: sl<Dio>(instanceName: 'authDio')),
+    );
+  }
+
+  if (!sl.isRegistered<AuthLocalDataSource>()) {
+    sl.registerLazySingleton<AuthLocalDataSource>(
+      () => AuthLocalDataSourceImpl(storage: sl<FlutterSecureStorage>()),
+    );
+  }
+
+  // Interceptor (requires data sources)
+  sl<Dio>().interceptors.add(
+        DioAuthInterceptor(
+          storage: sl<FlutterSecureStorage>(),
+          dio: sl<Dio>(),
+        ),
+      );
+
+  // Repository
+  if (!sl.isRegistered<AuthRepository>()) {
+    sl.registerLazySingleton<AuthRepository>(
+      () => AuthRepositoryImpl(
+        remoteDataSource: sl<AuthRemoteDataSource>(),
+        localDataSource: sl<AuthLocalDataSource>(),
+      ),
+    );
+  }
+
+  // Use Cases
+  if (!sl.isRegistered<Login>()) {
+    sl.registerLazySingleton<Login>(() => Login(sl<AuthRepository>()));
+  }
+
+  if (!sl.isRegistered<Register>()) {
+    sl.registerLazySingleton<Register>(() => Register(sl<AuthRepository>()));
+  }
+
+  if (!sl.isRegistered<RequestPasswordReset>()) {
+    sl.registerLazySingleton<RequestPasswordReset>(
+        () => RequestPasswordReset(sl<AuthRepository>()));
+  }
+
+  if (!sl.isRegistered<VerifyResetCode>()) {
+    sl.registerLazySingleton<VerifyResetCode>(
+        () => VerifyResetCode(sl<AuthRepository>()));
+  }
+
+  if (!sl.isRegistered<ResetPassword>()) {
+    sl.registerLazySingleton<ResetPassword>(
+        () => ResetPassword(sl<AuthRepository>()));
+  }
+
+  if (!sl.isRegistered<RefreshToken>()) {
+    sl.registerLazySingleton<RefreshToken>(
+        () => RefreshToken(sl<AuthRepository>()));
+  }
+
+  // Cubit
+  if (!sl.isRegistered<AuthCubit>()) {
+    sl.registerFactory<AuthCubit>(
+      () => AuthCubit(
+        loginUseCase: sl<Login>(),
+        registerUseCase: sl<Register>(),
+        requestPasswordResetUseCase: sl<RequestPasswordReset>(),
+        verifyResetCodeUseCase: sl<VerifyResetCode>(),
+        resetPasswordUseCase: sl<ResetPassword>(),
+        refreshTokenUseCase: sl<RefreshToken>(),
+        repository: sl<AuthRepository>(),
+      ),
+    );
   }
 }
 

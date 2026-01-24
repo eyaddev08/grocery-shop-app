@@ -1,0 +1,100 @@
+{
+  "login": {
+    "endpoint": "POST /api/auth/login",
+    "request": {
+      "email": "user@example.com",
+      "password": "P@ssw0rd!"
+    },
+    "success_response_200": {
+      "status": "success",
+      "data": {
+        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+        "refresh_token": "rt_xxx123456789",
+        "expires_in": 3600,
+        "token_type": "bearer",
+        "user": {
+          "id": "u1",
+          "name": "John Doe",
+          "email": "user@example.com"
+        }
+      }
+    },
+    "error_response_401": {
+      "status": "error",
+      "message": "Invalid credentials"
+    }
+  },
+  "register": {
+    "endpoint": "POST /api/auth/register",
+    "request": {
+      "name": "John Doe",
+      "email": "user@example.com",
+      "password": "P@ssw0rd!",
+      "password_confirmation": "P@ssw0rd!"
+    },
+    "success_response_201": {
+      "status": "success",
+      "data": {
+        "id": "u1",
+        "name": "John Doe",
+        "email": "user@example.com"
+      },
+      "message": "Account created. Verification email sent."
+    },
+    "error_response_422": {
+      "status": "error",
+      "errors": {
+        "email": ["already taken"],
+        "password": ["too weak"]
+      }
+    }
+  },
+  "forgot_password": {
+    "endpoint": "POST /api/auth/forgot",
+    "request": {
+      "email": "user@example.com"
+    },
+    "success_response_200": {
+      "status": "success",
+      "message": "OTP sent"
+    }
+  },
+  "verify_reset_code": {
+    "endpoint": "POST /api/auth/verify-reset",
+    "request": {
+      "email": "user@example.com",
+      "code": "123456"
+    },
+    "success_response_200": {
+      "status": "success",
+      "token": "reset_token_abc123"
+    }
+  },
+  "reset_password": {
+    "endpoint": "POST /api/auth/reset",
+    "request": {
+      "token": "reset_token_abc123",
+      "password": "NewP@ss1",
+      "password_confirmation": "NewP@ss1"
+    },
+    "success_response_200": {
+      "status": "success",
+      "message": "Password reset"
+    }
+  },
+  "refresh_token": {
+    "endpoint": "POST /api/auth/refresh",
+    "request": {
+      "refresh_token": "rt_xxx123456789"
+    },
+    "success_response_200": {
+      "status": "success",
+      "data": {
+        "access_token": "new_eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+        "refresh_token": "new_rt_xxx987654321",
+        "expires_in": 3600
+      }
+    }
+  }
+}
+

@@ -30,6 +30,7 @@ dependencies:
   
   # Local Storage
   shared_preferences: ^2.2.2
+  flutter_secure_storage: ^9.0.0
 
   
   # Networking
@@ -75,6 +76,7 @@ flutter:
     - assets/svg/
     - assets/icons/
     - assets/animations/
+    - assets/mock_api/
   
   fonts:
     - family: Poppins

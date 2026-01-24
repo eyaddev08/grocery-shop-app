@@ -1,2 +1,20 @@
-class ServerException implements Exception {}
-class CacheException implements Exception {}
+// استثناءات النظام الأساسية
+class ServerException implements Exception {
+  final String? message;
+  ServerException([this.message]);
+}
+
+class CacheException implements Exception {
+  final String? message;
+  CacheException([this.message]);
+}
+
+class NetworkException implements Exception {
+  final String? message;
+  NetworkException([this.message]);
+}
+
+class ValidationException implements Exception {
+  final Map<String, List<String>> errors;
+  ValidationException(this.errors);
+}
