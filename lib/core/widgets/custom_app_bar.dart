@@ -8,9 +8,10 @@ import 'custom_asset_image_widget.dart';
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({
     super.key,
-    required this.title,
+     this.title = '',  this.arrIconColor = kTextDark,
   });
-  final String title;
+  final String? title;
+  final Color arrIconColor;
 
   @override
   Widget build(BuildContext context) => SafeArea(
@@ -29,13 +30,13 @@ class CustomAppBar extends StatelessWidget {
                       Images.arrIcon,
                       height: 12,
                       width: 12,
-                      color: kTextDark.withOpacity(0.8),
+                      color: arrIconColor.withOpacity(0.8),
                     ),
                     onPressed: () => Navigator.of(context).maybePop()),
               ),
               const SizedBox(width: 12),
               Text(
-                title,
+                title!,
                 style: titleHeader.copyWith(
                   color: kTextDark.withOpacity(0.8),
                   fontSize: 19,

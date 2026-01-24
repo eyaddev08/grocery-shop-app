@@ -20,6 +20,7 @@ void showCustomSnackBarWidget(String? message, BuildContext? context,
     SnackBar(
       elevation: 0,
       backgroundColor: Colors.transparent,
+      
       padding: EdgeInsets.zero,
       content: CustomToast(text: message ?? '', sanckBarType: sanckBarType),
       duration: const Duration(seconds: 2),
@@ -36,8 +37,7 @@ void showCustomToast(
       msg: message,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
-      backgroundColor:
-          isSuccess ? kPrimaryBlue : Theme.of(context).colorScheme.error,
+      backgroundColor: isSuccess ? kPrimaryBlue : errorColor,
       textColor: Colors.white,
       fontSize: Dimensions.fontSizeDefault);
 }
