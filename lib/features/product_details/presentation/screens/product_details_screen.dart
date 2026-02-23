@@ -83,7 +83,8 @@ class ProductDetailBody extends StatelessWidget {
                     const SizedBox(height: 8),
                     ProductInfoTitle(
                         title: state.details.name,
-                        isLiked: state.details.inWishlist),
+                        isLiked: state.details.inWishlist,
+                        product: state.details),
                     const SizedBox(height: 12),
                     ProductPriceRow(details: state.details),
                     const SizedBox(height: 12),

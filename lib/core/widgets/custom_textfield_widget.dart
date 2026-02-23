@@ -140,7 +140,7 @@ class _CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
                         style: textMedium.copyWith(
                             fontWeight: FontWeight.w500,
                             fontSize: 24,
-                            color: Colors.red))
+                            color: errorColor))
                 ])),
           if (widget.titleText != null) const SizedBox(height: 8),
           TextFormField(
@@ -152,7 +152,10 @@ class _CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
               readOnly: widget.readOnly,
               onTap: widget.onTap,
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              style: textRegular.copyWith(fontSize: Dimensions.fontSizeLarge),
+              style: textMedium.copyWith(
+                fontSize: 14,
+                color: kTextDark.withOpacity(0.9),
+              ),
               textInputAction: widget.inputAction,
               keyboardType: widget.inputType,
               cursorColor: kPrimaryBlue,
@@ -209,7 +212,7 @@ class _CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(
                       color: errorColor,
-                      width: widget.showBorder ? 0 : .75,
+                      width: widget.showBorder ? 0 : 1,
                     )),
                 focusedErrorBorder: UnderlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -220,9 +223,9 @@ class _CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
 
                 floatingLabelStyle: widget.showLabelText
                     ? textRegular.copyWith(
-                        fontSize: Dimensions.fontSizeSmall,
-                        color: Theme.of(context).hintColor.withOpacity(.75))
+                        fontSize: Dimensions.fontSizeSmall, color: kMuted)
                     : null,
+                fillColor: kLightGrayBg,
                 filled: widget.filled,
                 // labelText : widget.showLabelText? widget.labelText?? widget.hintText : null,
                 labelStyle: widget.showLabelText
@@ -231,7 +234,10 @@ class _CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
                         fontSize: 25,
                       )
                     : null,
-
+                errorStyle: textBold.copyWith(
+                  color: errorColor,
+                  fontSize: 12,
+                ),
                 label: Text.rich(TextSpan(children: [
                   TextSpan(
                       text: widget.labelText ?? '',
@@ -244,8 +250,7 @@ class _CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
                     TextSpan(
                         text: ' *',
                         style: textMedium.copyWith(
-                            color: Theme.of(context).colorScheme.error,
-                            fontSize: 23))
+                            color: errorColor, fontSize: 23))
                 ])),
                 hintText: widget.hintText,
                 hintStyle: widget.showLabelText

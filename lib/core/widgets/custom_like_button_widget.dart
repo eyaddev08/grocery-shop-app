@@ -4,8 +4,13 @@ import 'package:like_button/like_button.dart';
 import '../constants/app_colors.dart';
 
 class CustomLikeButtonWidget extends StatelessWidget {
-  const CustomLikeButtonWidget({super.key, this.onTap});
+  const CustomLikeButtonWidget({
+    super.key,
+    this.onTap,
+    this.isLiked = false,
+  });
   final Future<bool?> Function(bool)? onTap;
+  final bool isLiked;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -14,7 +19,7 @@ class CustomLikeButtonWidget extends StatelessWidget {
         decoration: BoxDecoration(
             color: kTextDark.withOpacity(0.06), shape: BoxShape.circle),
         child: LikeButton(
-          isLiked: true,
+          isLiked: isLiked,
           likeCountPadding: EdgeInsets.zero,
           likeBuilder: (isLiked) => Icon(
             isLiked ? Icons.favorite : Icons.favorite_border,

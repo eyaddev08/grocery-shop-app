@@ -4,4 +4,5 @@ import '../entities/order.dart';
 
 abstract class OrderRepository {
   Future<Either<Failure, List<Order>>> getOrders();
+  Future<Either<Failure, void>> createOrder(Order order);
 }

@@ -1,6 +1,5 @@
-
-
 import 'package:flutter/material.dart';
+import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/styles.dart';
 import '../../domain/entities/suggestion.dart';
 
@@ -20,11 +19,11 @@ class SuggestionsList extends StatelessWidget {
       return ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         children: [
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           Text('Popular Tags',
               style:
                   textBold.copyWith(fontSize: 18, fontWeight: FontWeight.w600)),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
         ],
       );
     }
@@ -32,7 +31,8 @@ class SuggestionsList extends StatelessWidget {
     return ListView.separated(
       padding: const EdgeInsets.symmetric(vertical: 8),
       itemCount: suggestions.length,
-      separatorBuilder: (_, __) => const Divider(height: 1, indent: 72),
+      separatorBuilder: (_, __) => const Divider(
+          color: kMutedGray, height: 1, indent: 72, endIndent: 16),
       itemBuilder: (context, index) {
         final s = suggestions[index];
         return ListTile(
@@ -41,11 +41,12 @@ class SuggestionsList extends StatelessWidget {
           leading: CircleAvatar(
             radius: 18,
             backgroundColor: const Color(0xFFF2F5FF),
-            child: Icon(_iconFor(s.type),
-                color: const Color(0xFF0A5ED3), size: 18),
+            child: Icon(_iconFor(s.type), color: kPrimaryBlue, size: 18),
           ),
-          title: Text(s.text, style: textBold.copyWith(fontSize: 16)),
-          trailing: const Icon(Icons.north_west, size: 16, color: Colors.grey),
+          title: Text(s.text,
+              style:
+                  textBold.copyWith(fontSize: 16, fontWeight: FontWeight.w500)),
+          trailing: const Icon(Icons.north_west, size: 16, color: kTextGray),
           onTap: () => onSuggestionSelected(s.text),
         );
       },

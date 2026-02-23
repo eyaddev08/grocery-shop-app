@@ -1,28 +1,32 @@
-import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/error/failure.dart';
 import '../../../domain/entities/wishlist_product.dart';
-import '../../../domain/repositories/wishlist_repository.dart';
 import '../../../domain/usecases/get_wishlist.dart';
 import '../../../domain/usecases/remove_from_wishlist.dart';
+import '../../../domain/usecases/add_to_wishlist.dart';
+import '../../../domain/usecases/toggle_favorite.dart';
 
 part 'wishlist_state.dart';
 
-class WishlistCubit extends Cubit<WishlistState> { // used for toggleFavorite
+class WishlistCubit extends Cubit<WishlistState> {
 
   WishlistCubit({
     required GetWishlist getWishlist,
     required RemoveFromWishlist removeFromWishlist,
-    required WishlistRepository repository,
+    required AddToWishlist addToWishlist,
+    required ToggleFavorite toggleFavorite,
   })  : _getWishlist = getWishlist,
         _removeFromWishlist = removeFromWishlist,
-        _repo = repository,
+        _addToWishlist = addToWishlist,
+        _toggleFavorite = toggleFavorite,
         super(const WishlistInitial());
   final GetWishlist _getWishlist;
   final RemoveFromWishlist _removeFromWishlist;
-  final WishlistRepository _repo;
+  final AddToWishlist _addToWishlist;
+  final ToggleFavorite _toggleFavorite;
 
   Future<void> loadWishlist() async {
     emit(const WishlistLoading());
@@ -39,9 +43,25 @@ class WishlistCubit extends Cubit<WishlistState> { // used for toggleFavorite
     );
   }
 
+  Future<void> add(WishlistProduct product) async {
+    final Either<Failure, List<WishlistProduct>> res =
+        await _addToWishlist(product);
+    res.fold(
+      (f) => emit(WishlistFailure(f.message)),
+      (list) {
+        if (list.isEmpty) {
+          emit(const WishlistEmpty());
+        } else {
+          emit(WishlistLoaded(list));
+        }
+      },
+    );
+  }
+
   Future<void> remove(String productId) async {
     emit(const WishlistLoading());
-    final Either<Failure, List<WishlistProduct>> res = await _removeFromWishlist(productId);
+    final Either<Failure, List<WishlistProduct>> res =
+        await _removeFromWishlist(productId);
     res.fold(
       (f) => emit(WishlistFailure(f.message)),
       (list) {
@@ -56,7 +76,8 @@ class WishlistCubit extends Cubit<WishlistState> { // used for toggleFavorite
 
   Future<void> toggleFavorite(String productId) async {
     emit(const WishlistLoading());
-    final Either<Failure, List<WishlistProduct>> res = await _repo.toggleFavorite(productId);
+    final Either<Failure, List<WishlistProduct>> res =
+        await _toggleFavorite.call(productId);
     res.fold(
       (f) => emit(WishlistFailure(f.message)),
       (list) {
@@ -69,4 +90,3 @@ class WishlistCubit extends Cubit<WishlistState> { // used for toggleFavorite
     );
   }
 }
-

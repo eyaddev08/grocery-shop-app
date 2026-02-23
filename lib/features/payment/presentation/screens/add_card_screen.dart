@@ -16,6 +16,7 @@ import '../../../../core/widgets/custom_snackbar_widget.dart';
 import '../../../../core/widgets/custom_textfield_widget.dart';
 import '../../../cart/presentation/manager/cart_cubit.dart';
 import '../../../cart/presentation/widgets/cart_summary_section.dart';
+import '../../../cart/domain/entities/cart_item.dart';
 import '../../domain/entiites/card_info.dart';
 import '../manager/payment_cubit/payment_cubit.dart';
 
@@ -53,9 +54,15 @@ class _AddCardScreenState extends State<AddCardScreen> {
       cvc: _cvcCtrl.text.trim(),
       brand: _brand,
     );
-    context
-        .read<PaymentCubit>()
-        .tokenizeAndPay(card: card, amount: widget.amount);
+    final items = context.read<CartCubit>().state is CartLoaded
+        ? (context.read<CartCubit>().state as CartLoaded).items
+        : <CartItem>[]; // Should handle empty cart case if needed
+
+    context.read<PaymentCubit>().tokenizeAndPay(
+          card: card,
+          amount: widget.amount,
+          items: items,
+        );
   }
 
   @override
@@ -70,6 +77,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
               final tx = state.result;
               showCustomSnackBarWidget(
                   'Payment success ${tx.transactionId}', context);
+              context.read<CartCubit>().clearCart();
 
               NavigationService.navigateAndReplace(AppRoutes.layout);
             } else if (state is PaymentFailureState) {
@@ -106,17 +114,20 @@ class _AddCardScreenState extends State<AddCardScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 4),
                           child: CustomDropdownFormField<String>(
                             value: _brand,
-                            items: const [
+                            items: [
                               DropdownMenuItem(
-                                  value: 'Visa', child: Text('Visa')),
+                                  value: 'Visa',
+                                  child: Text('Visa', style: textMedium)),
                               DropdownMenuItem(
                                   value: 'Mastercard',
-                                  child: Text('Mastercard')),
+                                  child: Text('Mastercard', style: textMedium)),
                               DropdownMenuItem(
-                                  value: 'Amex', child: Text('Amex')),
+                                  value: 'Amex',
+                                  child: Text('Amex', style: textMedium)),
                             ],
-                            onChanged: (v) =>
-                                setState(() => _brand = v ?? 'Visa'),
+                            onChanged: (v) => setState(
+                              () => _brand = v ?? 'Visa',
+                            ),
                           ),
                         ),
                         const SizedBox(height: 18),

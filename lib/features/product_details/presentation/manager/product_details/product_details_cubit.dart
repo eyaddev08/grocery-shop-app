@@ -10,8 +10,6 @@ part 'product_details_state.dart';
 
 //   final GetProductDetails getProductDetails;
 
-  
-
 //   void _safeEmit(ProductDetailsState state) {
 //     if (isClosed) return;
 //     emit(state);
@@ -26,14 +24,12 @@ part 'product_details_state.dart';
 //   }
 // }
 
-
-
 class ProductDetailsCubit extends Cubit<ProductDetailsState> {
-
   ProductDetailsCubit(this.getProductDetails) : super(ProductDetailsInitial());
   final GetProductDetails getProductDetails;
 
-  Future<void> load({String? id, ProductEntity? initialProduct, bool refresh = false}) async {
+  Future<void> load(
+      {String? id, ProductEntity? initialProduct, bool refresh = false}) async {
     if (initialProduct != null && !refresh) {
       emit(ProductDetailsLoaded(initialProduct));
       return;

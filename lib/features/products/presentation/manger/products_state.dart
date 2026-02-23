@@ -25,6 +25,13 @@ class ProductsFiltered extends ProductsState {
   List<Object?> get props => [filterIndex];
 }
 
+class ProductsEmpty extends ProductsState {
+  const ProductsEmpty({this.message});
+  final String? message;
+  @override
+  List<Object?> get props => [message];
+}
+
 class ProductsError extends ProductsState {
   const ProductsError(this.message);
   final String message;

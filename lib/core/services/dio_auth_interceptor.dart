@@ -2,7 +2,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../../features/auth/presentation/cubit/auth_cubit.dart';
+import '../../features/auth/presentation/manager/auth_cubit.dart';
 import '../constants/secure_storage_keys.dart';
 
 class DioAuthInterceptor extends Interceptor {

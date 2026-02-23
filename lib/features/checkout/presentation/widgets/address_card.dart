@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../domain/entities/address.dart';
+import '../../../../core/utils/styles.dart';
 
 class AddressCard extends StatelessWidget {
   const AddressCard(
@@ -38,13 +39,11 @@ class AddressCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(address.label,
-                        style: const TextStyle(
-                            fontSize: 14, color: Color(0xFF1E222B))),
+                    Text(address.addressType,
+                        style: textBold),
                     const SizedBox(height: 16),
                     Text(address.details,
-                        style: const TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w600)),
+                        style: textBold.copyWith(color: kMuted)),
                   ],
                 ),
               ),

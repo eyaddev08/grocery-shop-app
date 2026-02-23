@@ -1,197 +1,40 @@
 import 'package:dartz/dartz.dart';
-import '../../../../core/constants/images_constants.dart';
 import '../../../../core/error/failure.dart';
 import '../../domain/entities/product_entity.dart';
 import '../../domain/repositories/product_repository.dart';
+import '../datasources/product_local_data_source.dart';
+import '../datasources/product_remote_data_source.dart';
 
 class ProductRepositoryImpl implements ProductRepository {
-  final List<ProductEntity> _sample = const [
-    ProductEntity(
-      id: 'p1',
-      name: 'Clownfish',
-      filterLabel: 'Popular',
-      tag: 'clownfish',
-      unit: 'pcs',
-      price: 89,
-      originalPrice: 112,
-      discount: 23,
-      discountType: 'amount',
-      thumbnail: ImagesConstants.clownfish,
-      images: [ImagesConstants.clownfish, ImagesConstants.clownfish],
-      rating: 4.6,
-      reviewCount: 72,
-      inWishlist: false,
-      currentStock: 24,
-      shortDescription: 'Fresh clownfish, great for saltwater tanks.',
-      categoryIds: [1, 5],
-      brand: 'SeaFarm',
-      minOrderQty: 1,
-      shippingCost: 5,
-      status: 1,
-    ),
-    ProductEntity(
-      id: 'p2',
-      name: 'Gold Fish',
-      filterLabel: 'Low Price',
-      tag: 'gold-fish',
-      unit: 'pcs',
-      price: 146,
-      originalPrice: 165,
-      discount: 19,
-      discountType: 'amount',
-      thumbnail: ImagesConstants.goldenOrangeFreshwaterFish,
-      images: [
-        ImagesConstants.goldenOrangeFreshwaterFish,
-        ImagesConstants.goldenOrangeFreshwaterFish,
-        ImagesConstants.goldenOrangeFreshwaterFish
-      ],
-      rating: 4.3,
-      reviewCount: 41,
-      inWishlist: true,
-      currentStock: 12,
-      shortDescription: 'Classic freshwater goldfish, easy to maintain.',
-      categoryIds: [2],
-      brand: 'FreshPond',
-      minOrderQty: 1,
-      shippingCost: 3,
-      status: 1,
-    ),
-    ProductEntity(
-      id: 'p3',
-      name: 'Blue Tang',
-      filterLabel: 'New',
-      tag: 'blue-tang',
-      unit: 'pcs',
-      price: 286,
-      originalPrice: null,
-      discount: null,
-      discountType: null,
-      thumbnail: ImagesConstants.blueTang,
-      images: [
-        ImagesConstants.blueTang,
-        ImagesConstants.blueTang,
-        ImagesConstants.blueTang
-      ],
-      rating: 4.8,
-      reviewCount: 120,
-      inWishlist: false,
-      currentStock: 6,
-      shortDescription: 'Large blue tang fish, vibrant color.',
-      categoryIds: [1, 3],
-      brand: 'Oceanic',
-      minOrderQty: 1,
-      shippingCost: 12,
-      status: 1,
-    ),
-    ProductEntity(
-      id: 'p4',
-      name: 'Vibrant Yellow Fish',
-      filterLabel: 'Popular',
-      tag: 'vibrant-yellow-fish',
-      unit: 'pcs',
-      price: 89,
-      originalPrice: null,
-      discount: null,
-      discountType: null,
-      thumbnail: ImagesConstants.vibrantYellowOrangeFish,
-      images: [
-        ImagesConstants.vibrantYellowOrangeFish,
-        ImagesConstants.vibrantYellowOrangeFish,
-        ImagesConstants.vibrantYellowOrangeFish
-      ],
-      rating: 4.2,
-      reviewCount: 18,
-      inWishlist: false,
-      currentStock: 30,
-      shortDescription: 'Bright yellow/orange fish, great for display.',
-      categoryIds: [4],
-      brand: 'ColorReef',
-      minOrderQty: 1,
-      shippingCost: 4,
-      status: 1,
-    ),
-    ProductEntity(
-      id: 'p5',
-      name: 'Golden Fish Profile',
-      filterLabel: 'Sale',
-      tag: 'golden-fish-profile',
-      unit: 'pcs',
-      price: 315,
-      originalPrice: 366,
-      discount: 51,
-      discountType: 'amount',
-      thumbnail: ImagesConstants.goldenFishProfile,
-      images: [
-        ImagesConstants.goldenFishProfile,
-        ImagesConstants.goldenFishProfile,
-        ImagesConstants.goldenFishProfile
-      ],
-      rating: 4.5,
-      reviewCount: 54,
-      inWishlist: true,
-      currentStock: 8,
-      shortDescription: 'Premium breed golden fish, show-quality.',
-      categoryIds: [2, 6],
-      brand: 'PremiumAqua',
-      minOrderQty: 1,
-      shippingCost: 8,
-      status: 1,
-    ),
-    ProductEntity(
-      id: 'p6',
-      name: 'Fresh Bass White',
-      filterLabel: '',
-      tag: 'fresh-bass-white',
-      unit: 'kg',
-      price: 325,
-      originalPrice: null,
-      discount: null,
-      discountType: null,
-      thumbnail: ImagesConstants.freshBassWhiteBg,
-      images: [
-        ImagesConstants.freshBassWhiteBg,
-        ImagesConstants.freshBassWhiteBg,
-        ImagesConstants.freshBassWhiteBg
-      ],
-      rating: 4.1,
-      reviewCount: 21,
-      inWishlist: false,
-      currentStock: 14,
-      shortDescription: 'Fresh white bass — suitable for cooking.',
-      categoryIds: [7],
-      brand: 'SeaHarvest',
-      minOrderQty: 1,
-      shippingCost: 10,
-      status: 1,
-    ),
-    ProductEntity(
-      id: 'p7',
-      name: 'Bundle (3 pcs)',
-      filterLabel: 'Bundle',
-      tag: 'bundle-3',
-      unit: 'bundle',
-      price: 199,
-      originalPrice: 240,
-      discount: 17,
-      discountType: 'percent',
-      thumbnail: ImagesConstants.clownfish,
-      images: [ImagesConstants.clownfish, ImagesConstants.clownfish],
-      rating: 4.4,
-      reviewCount: 33,
-      inWishlist: false,
-      currentStock: 5,
-      shortDescription: 'Value bundle — 3 assorted fishes.',
-      categoryIds: [1, 2],
-      brand: 'ValuePack',
-      minOrderQty: 1,
-      shippingCost: 7,
-      status: 1,
-    ),
-  ];
+  final ProductLocalDataSource localDataSource;
+  final ProductRemoteDataSource remoteDataSource;
+
+  ProductRepositoryImpl({
+    required this.localDataSource,
+    required this.remoteDataSource,
+  });
 
   @override
   Future<Either<Failure, List<ProductEntity>>> getProducts() async {
-    await Future<void>.delayed(const Duration(milliseconds: 900));
-    return Right(_sample);
+    try {
+      final remoteModels = await remoteDataSource.getProducts();
+
+      // Cache them
+      await localDataSource.cacheProducts(remoteModels);
+
+      // Convert to entities
+      return Right(remoteModels.map((e) => e.toEntity()).toList());
+    } catch (e) {
+      // Fallback to local
+      try {
+        final cached = await localDataSource.getLastProducts();
+        if (cached.isNotEmpty) {
+          return Right(cached.map((e) => e.toEntity()).toList());
+        }
+        return Left(ServerFailure(message: 'No internet and no cached data'));
+      } catch (e) {
+        return Left(CacheFailure(message: 'Failed to load cache'));
+      }
+    }
   }
 }

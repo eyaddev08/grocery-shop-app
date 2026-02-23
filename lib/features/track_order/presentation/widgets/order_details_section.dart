@@ -12,7 +12,7 @@ class OrderDetailsSection extends StatelessWidget {
     required this.orderId,
   });
 
-  final Order? order;
+  final Order order;
   final String orderId;
 
   @override
@@ -68,11 +68,11 @@ class OrderDetailsSection extends StatelessWidget {
                     children: [
                       _buildDetailRow(
                         'Product Name',
-                        order!.productName,
+                        order.productName,
                         Icons.shopping_bag_outlined,
                       ),
                       const SizedBox(height: 16),
-                      _buildDetailRow('Price', '${order!.price}\$',
+                      _buildDetailRow('Price', '${order.price}\$',
                           Icons.attach_money_outlined),
                     ],
                   )),
@@ -83,7 +83,7 @@ class OrderDetailsSection extends StatelessWidget {
               // Order Date
               _buildDetailRow(
                 'Order Date',
-                order!.date,
+                order.date,
                 Icons.calendar_month_outlined,
               ),
               const SizedBox(height: 16),
@@ -103,9 +103,9 @@ class OrderDetailsSection extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if (order!.status == OrderStatus.success)
+                  if (order.status == OrderStatus.success)
                     const OrderStatusBadgeWidget(statusText: 'Success')
-                  else if (order!.status == OrderStatus.active)
+                  else if (order.status == OrderStatus.active)
                     const OrderStatusBadgeWidget(
                       statusText: 'Active',
                       textColor: kAccentYellow,
@@ -120,7 +120,7 @@ class OrderDetailsSection extends StatelessWidget {
                 ],
               ),
 
-              if (order!.deliveryMessage != null) ...[
+              if (order.deliveryMessage != null) ...[
                 const SizedBox(height: 24),
                 const Divider(color: kMutedGray, height: 1),
                 const SizedBox(height: 24),
@@ -134,7 +134,7 @@ class OrderDetailsSection extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  order!.deliveryMessage!,
+                  order.deliveryMessage!,
                   style: textBold.copyWith(
                     color: kMuted,
                     fontSize: 13,

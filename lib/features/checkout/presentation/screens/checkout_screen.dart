@@ -63,53 +63,54 @@ class CheckoutScreen extends StatelessWidget {
                           }),
                         );
                       } else if (state is CheckoutLoaded) {
-                        final list = state.addresses;
+                                                        final address = state.addresses;
+
                         return SingleChildScrollView(
                           child: Column(
                             children: [
-                              ...list.map((a) => AddressCard(
-                                    address: a,
-                                    onSelect: () => context
+                               ...address.map((a) =>  AddressCard(
+                                  address: a,
+                                  onSelect: () => context
+                                      .read<CheckoutCubit>()
+                                      .chooseDefault(a.id),
+                                  onEdit: () async {
+                                    await Navigator.of(context)
+                                        .push(MaterialPageRoute<void>(
+                                            builder: (_) => BlocProvider.value(
+                                                  value: context
+                                                      .read<CheckoutCubit>(),
+                                                  child: EditAddressScreen(
+                                                      address: a),
+                                                )));
+                                    showCustomSnackBarWidget(
+                                        'Edit Address', context);
+                                    await context
                                         .read<CheckoutCubit>()
-                                        .chooseDefault(a.id),
-                                    onEdit: () async {
-                                      await Navigator.of(context).push(
-                                          MaterialPageRoute<void>(
-                                              builder: (_) =>
-                                                  BlocProvider.value(
-                                                    value: context
-                                                        .read<CheckoutCubit>(),
-                                                    child: EditAddressScreen(
-                                                        address: a),
-                                                  )));
-                                      showCustomSnackBarWidget(
-                                          'Edit Address', context);
+                                        .loadAddresses();
+                                  },
+                                  onDelete: () async {
+                                    final confirm =
+                                        await showGeneralDialog<bool>(
+                                      context: context,
+                                      barrierDismissible: true,
+                                      barrierLabel: 'Dismiss',
+                                      pageBuilder: (ctx, anim1, anim2) =>
+                                          const Center(
+                                              child:
+                                                  DeletFromAddressShowDialog()),
+                                    );
+
+                                    if (confirm == true) {
                                       await context
                                           .read<CheckoutCubit>()
-                                          .loadAddresses();
-                                    },
-                                    onDelete: () async {
-                                      final confirm =
-                                          await showGeneralDialog<bool>(
-                                        context: context,
-                                        barrierDismissible: true,
-                                        barrierLabel: 'Dismiss',
-                                        pageBuilder: (ctx, anim1, anim2) =>
-                                            const Center(
-                                                child:
-                                                    DeletFromAddressShowDialog()),
-                                      );
+                                          .removeAddress(a.id);
 
-                                      if (confirm == true) {
-                                        await context
-                                            .read<CheckoutCubit>()
-                                            .removeAddress(a.id);
-
-                                        showCustomSnackBarWidget(
-                                            'Address deleted', context);
-                                      }
-                                    },
-                                  )),
+                                      showCustomSnackBarWidget(
+                                          'Address deleted', context);
+                                    }
+                                  },
+                               )),
+                              
                               const SizedBox(height: 12),
                               AddNewAddressCard(onTap: () async {
                                 await NavigationService.navigateTo(

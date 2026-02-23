@@ -18,6 +18,9 @@ class CartLoaded extends CartState {
   List<Object?> get props => [items];
 }
 
+class CartEmpty extends CartState {}
+
+
 class CartError extends CartState {
   final String message;
   CartError(this.message);

@@ -35,7 +35,7 @@ void showCustomToast(
     required BuildContext context}) {
   Fluttertoast.showToast(
       msg: message,
-      toastLength: Toast.LENGTH_SHORT,
+      toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.BOTTOM,
       backgroundColor: isSuccess ? kPrimaryBlue : errorColor,
       textColor: Colors.white,

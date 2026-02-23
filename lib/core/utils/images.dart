@@ -7,6 +7,8 @@ class Images {
   static const String bagIcon = 'assets/svg/bag_icon.svg';
   static const String arrIcon = 'assets/svg/arr_icon.svg';
   static const String locationIcon = 'assets/svg/location-icon1.svg';
+    static const String officeIcon = 'assets/images/office.png';
+
   static const String timeIcon = 'assets/svg/time-circle.svg';
   static const chatIcon = 'assets/svg/chat-icon1.svg';
   static const mapImage = 'assets/svg/map-image.svg';
@@ -32,6 +34,7 @@ class Images {
   static const String wishlist = 'assets/images/wishlist.png';
   static const String cartImage = 'assets/images/cart.png';
   static const String address = 'assets/images/address.png';
+  static const String homeImage = 'assets/images/home.png';
 
   static const String coupon = 'assets/images/coupon.png';
   static const String faq = 'assets/images/faq.png';
