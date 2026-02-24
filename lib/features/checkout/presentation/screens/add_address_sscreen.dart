@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grocery_shop_app/core/widgets/custom_app_bar.dart';
+
 import '../../../../core/services/navigation_service.dart';
-import '../../../../core/utils/styles.dart';
 import '../../../../core/widgets/custom_button_widget.dart';
-import '../../../../core/widgets/custom_dropdown_form_field.dart';
 import '../manager/checkout_cubit.dart';
+import '../widgets/address_type_list_view_builder.dart';
 import '../widgets/custom_input_field.dart';
 
 class AddAddressScreen extends StatefulWidget {
@@ -17,13 +17,20 @@ class AddAddressScreen extends StatefulWidget {
 
 class _AddAddressScreenState extends State<AddAddressScreen> {
   final _formKey = GlobalKey<FormState>();
-  String label = 'Home';
+
   final _detailsController = TextEditingController();
 
   @override
   void dispose() {
     _detailsController.dispose();
+
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    context.read<CheckoutCubit>().getAddressTypes();
+    super.initState();
   }
 
   @override
@@ -44,23 +51,6 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
               key: _formKey,
               child: Column(
                 children: [
-                  CustomDropdownFormField<String>(
-                    value: label,
-                    items: [
-                      DropdownMenuItem(
-                          value: 'Home',
-                          child: Text('Home',
-                              style: textMedium.copyWith(
-                                  fontWeight: FontWeight.w400))),
-                      DropdownMenuItem(
-                          value: 'Office',
-                          child: Text('Office',
-                              style: textMedium.copyWith(
-                                  fontWeight: FontWeight.w400))),
-                    ],
-                    onChanged: (v) => setState(() => label = v ?? 'Home'),
-                    label: 'Label',
-                  ),
                   const SizedBox(height: 12),
                   CustomInputField(
                     controller: _detailsController,
@@ -72,6 +62,9 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 12, vertical: 14),
                   ),
+                  const SizedBox(height: 20),
+                  const AddressTypeListViewBuilder(),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
@@ -80,7 +73,11 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
               onTap: () async {
                 if (_formKey.currentState?.validate() ?? false) {
                   await cubit.createAddress(
-                      label: label, details: _detailsController.text.trim());
+                      label:
+                          cubit.addressTypeList[cubit.selectAddressIndex].title,
+                      addressType:
+                          cubit.addressTypeList[cubit.selectAddressIndex].title,
+                      details: _detailsController.text.trim());
                   NavigationService.goBack();
                 }
               },

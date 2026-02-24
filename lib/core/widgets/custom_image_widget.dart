@@ -30,6 +30,10 @@ class CustomImageWidget extends StatelessWidget {
         fit: fit ?? BoxFit.cover,
         height: height,
         width: width,
+        errorListener: (value) {
+          // Suppress or log specific image errors if needed
+          // print('Image load failed: $value');
+        },
         errorWidget: (c, o, s) => SvgPicture.asset(
             placeholder ?? Images.emptyImage,
             color: kEmptyImage,

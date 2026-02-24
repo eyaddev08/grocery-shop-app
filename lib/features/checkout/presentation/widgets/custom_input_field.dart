@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/styles.dart';
+import '../../../../core/utils/validators.dart';
 
 typedef FieldValidator = String? Function(String? value);
 
@@ -69,7 +70,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
   }
 
   void _validate(String value) {
-    final validator = widget.validator ?? _defaultValidator;
+    final validator = widget.validator ?? Validators.address;
     final newError = validator(value);
     if (newError != _errorText) {
       setState(() {
@@ -86,6 +87,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
         ),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         filled: widget.filled,
+        fillColor: kLightGrayBg,
         contentPadding: widget.contentPadding ??
             const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
         enabledBorder: OutlineInputBorder(
@@ -115,7 +117,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
   Widget build(BuildContext context) => TextFormField(
         controller: _controller,
         style: textRegular.copyWith(
-            color: kTextDark, fontSize: 15, fontWeight: FontWeight.w300),
+            color: kTextDark.withOpacity(0.9), fontSize: 15),
         minLines: widget.minLines,
         maxLines: widget.maxLines,
         focusNode: widget.enabled ? FocusNode() : null,
@@ -124,7 +126,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
         cursorColor: kPrimaryBlue,
         decoration: _decoration(),
         enabled: widget.enabled,
-        validator: widget.validator ?? _defaultValidator,
+        validator: widget.validator ?? Validators.address,
         autovalidateMode: AutovalidateMode.always,
       );
 }

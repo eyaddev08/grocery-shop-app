@@ -57,8 +57,10 @@ class CustomToast extends StatelessWidget {
                   const SizedBox(width: Dimensions.paddingSizeSmall),
                   Flexible(
                       child: Text(text,
+                      
                           style: titilliumSemiBold.copyWith(
                               fontSize: Dimensions.fontSizeDefault,
+                              
                               color: textColor),
                           maxLines: 3)),
                 ],

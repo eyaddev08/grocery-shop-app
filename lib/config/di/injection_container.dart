@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:grocery_shop_app/features/wishlist/domain/usecases/add_to_wishlist.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,14 +31,15 @@ import '../../features/auth/domain/usecases/register.dart';
 import '../../features/auth/domain/usecases/request_password_reset.dart';
 import '../../features/auth/domain/usecases/reset_password.dart';
 import '../../features/auth/domain/usecases/verify_reset_code.dart';
-import '../../features/auth/presentation/cubit/auth_cubit.dart';
+import '../../features/auth/presentation/manager/auth_cubit.dart';
 import '../../core/services/dio_auth_interceptor.dart';
 import '../../features/categories/data/repositories/category_repository_impl.dart';
 import '../../features/categories/domain/repositories/category_repository.dart';
 import '../../features/categories/domain/usecases/get_categories.dart';
-import '../../features/categories/presentation/manger/categories_cubit.dart';
+import '../../features/categories/presentation/manager/categories_cubit.dart';
 
 // Products
+import '../../features/checkout/domain/usecases/get_address_type.dart';
 import '../../features/products/data/repositories/product_repository_impl.dart'
     as products_impl;
 import '../../features/products/domain/repositories/product_repository.dart'
@@ -46,6 +48,12 @@ import '../../features/products/domain/usecases/get_products.dart'
     as products_uc;
 import '../../features/products/presentation/manger/products_cubit.dart'
     as products_cubit;
+import '../../features/products/data/datasources/product_local_data_source.dart'
+    as products_ds;
+import '../../features/products/data/models/product_model.dart'
+    as products_model;
+import '../../features/products/data/datasources/product_remote_data_source.dart'
+    as products_remote_ds;
 
 // Product Details & Similar
 import '../../features/product_details/data/repositories/product_details_repository_impl.dart'
@@ -73,7 +81,13 @@ import '../../features/cart/domain/usecases/remove_from_cart.dart'
     as cart_remove_uc;
 import '../../features/cart/domain/usecases/update_quantity.dart'
     as cart_update_uc;
+import '../../features/cart/domain/usecases/clear_cart_usecase.dart'
+    as cart_clear_uc;
 import '../../features/cart/presentation/manager/cart_cubit.dart' as cart_cubit;
+import '../../features/cart/data/datasources/cart_local_data_source.dart'
+    as cart_ds;
+import '../../features/cart/data/datasources/cart_remote_data_source.dart'
+    as cart_remote;
 
 // Checkout
 import '../../features/checkout/data/address_repository_impl.dart';
@@ -98,23 +112,33 @@ import '../../features/search/domain/usecases/remove_search_history_item.dart';
 // ... (existing imports)
 
 // Wishlist
-import '../../features/wishlist/data/repositories/in_memory_wishlist_repository.dart';
+import '../../features/wishlist/data/datasources/wishlist_local_data_source.dart';
+import '../../features/wishlist/data/datasources/wishlist_local_data_source_impl.dart';
+import '../../features/wishlist/data/repositories/wishlist_repository_impl.dart';
 import '../../features/wishlist/domain/repositories/wishlist_repository.dart';
 import '../../features/wishlist/domain/usecases/get_wishlist.dart';
 import '../../features/wishlist/domain/usecases/remove_from_wishlist.dart';
+import '../../features/wishlist/domain/usecases/toggle_favorite.dart';
 import '../../features/wishlist/presentation/manager/cubit/wishlist_cubit.dart';
 
 // Orders
 import '../../features/orders/data/repositories/order_repository_impl.dart';
 import '../../features/orders/domain/repositories/order_repository.dart';
 import '../../features/orders/domain/usecases/get_orders.dart';
+import '../../features/orders/domain/usecases/create_orders_usecase.dart'
+    as order_create_uc;
 import '../../features/orders/presentation/manager/orders_cubit.dart';
+import '../../features/orders/data/datasources/order_local_data_source.dart'
+    as order_local;
+import '../../features/orders/data/datasources/order_remote_data_source.dart'
+    as order_remote;
 
 // Track Order
 import '../../features/track_order/data/repositories/track_order_repository_impl.dart';
 import '../../features/track_order/domain/repositories/track_order_repository.dart';
 import '../../features/track_order/domain/usecases/get_track_order.dart';
 import '../../features/track_order/presentation/manager/track_order_cubit.dart';
+import '../../features/track_order/data/datasources/track_order_remote_data_source.dart';
 
 // Search
 import '../../features/search/data/datasources/search_local_data_source.dart';
@@ -198,9 +222,29 @@ Future<void> init() async {
   // -----------------------------
   // Products
   // -----------------------------
+  if (!Hive.isAdapterRegistered(1)) {
+    Hive.registerAdapter(products_model.ProductModelAdapter());
+  }
+  if (!Hive.isBoxOpen('product_cache')) {
+    await Hive.openBox<dynamic>('product_cache');
+  }
+
+  if (!sl.isRegistered<products_ds.ProductLocalDataSource>()) {
+    sl.registerLazySingleton<products_ds.ProductLocalDataSource>(() =>
+        products_ds.ProductLocalDataSourceImpl(Hive.box('product_cache')));
+  }
+
+  if (!sl.isRegistered<products_remote_ds.ProductRemoteDataSource>()) {
+    sl.registerLazySingleton<products_remote_ds.ProductRemoteDataSource>(
+        () => products_remote_ds.ProductRemoteDataSourceImpl());
+  }
+
   if (!sl.isRegistered<products_repo.ProductRepository>()) {
     sl.registerLazySingleton<products_repo.ProductRepository>(
-        () => products_impl.ProductRepositoryImpl());
+        () => products_impl.ProductRepositoryImpl(
+              localDataSource: sl(),
+              remoteDataSource: sl(),
+            ));
   }
   if (!sl.isRegistered<products_uc.GetProducts>()) {
     sl.registerLazySingleton(() => products_uc.GetProducts(sl()));
@@ -240,30 +284,54 @@ Future<void> init() async {
   // -----------------------------
   // Cart
   // -----------------------------
+  // -----------------------------
+  // Cart
+  // -----------------------------
+  if (!Hive.isBoxOpen('cached_cart')) {
+    await Hive.openBox<String>('cached_cart');
+  }
+  if (!sl.isRegistered<cart_ds.CartLocalDataSource>()) {
+    sl.registerLazySingleton<cart_ds.CartLocalDataSource>(
+        () => cart_ds.CartLocalDataSourceImpl(box: Hive.box('cached_cart')));
+  }
+  if (!sl.isRegistered<cart_remote.CartRemoteDataSource>()) {
+    sl.registerLazySingleton<cart_remote.CartRemoteDataSource>(
+        () => cart_remote.CartRemoteDataSourceImpl());
+  }
+
   if (!sl.isRegistered<cart_repo.CartRepository>()) {
     sl.registerLazySingleton<cart_repo.CartRepository>(
-        () => cart_impl.CartRepositoryImpl());
+        () => cart_impl.CartRepositoryImpl(
+              localDataSource: sl(),
+              remoteDataSource: sl(),
+            ));
   }
-  if (!sl.isRegistered<cart_get_uc.GetCart>()) {
-    sl.registerLazySingleton(() => cart_get_uc.GetCart(sl()));
+  if (!sl.isRegistered<cart_get_uc.GetCartUseCase>()) {
+    sl.registerLazySingleton(() => cart_get_uc.GetCartUseCase(sl()));
   }
-  if (!sl.isRegistered<cart_add_uc.AddToCart>()) {
-    sl.registerLazySingleton(() => cart_add_uc.AddToCart(sl()));
+  if (!sl.isRegistered<cart_add_uc.AddToCartUseCase>()) {
+    sl.registerLazySingleton(() => cart_add_uc.AddToCartUseCase(sl()));
   }
-  if (!sl.isRegistered<cart_remove_uc.RemoveFromCart>()) {
-    sl.registerLazySingleton(() => cart_remove_uc.RemoveFromCart(sl()));
+  if (!sl.isRegistered<cart_remove_uc.RemoveFromCartUseCase>()) {
+    sl.registerLazySingleton(() => cart_remove_uc.RemoveFromCartUseCase(sl()));
   }
-  if (!sl.isRegistered<cart_update_uc.UpdateQuantity>()) {
-    sl.registerLazySingleton(() => cart_update_uc.UpdateQuantity(sl()));
+  if (!sl.isRegistered<cart_update_uc.UpdateQuantityUseCase>()) {
+    sl.registerLazySingleton(() => cart_update_uc.UpdateQuantityUseCase(sl()));
+  }
+  if (!sl.isRegistered<cart_clear_uc.ClearCartUseCase>()) {
+    sl.registerLazySingleton(() => cart_clear_uc.ClearCartUseCase(sl()));
   }
   if (!sl.isRegistered<cart_cubit.CartCubit>()) {
     sl.registerFactory(() => cart_cubit.CartCubit(
           getCartUsecase: sl(),
           addToCartUsecase: sl(),
+          clearCartUsecase: sl(),
           removeFromCartUsecase: sl(),
           updateQuantityUsecase: sl(),
         ));
   }
+
+  // ... (Checkout) ...
 
   // -----------------------------
   // Checkout
@@ -274,6 +342,9 @@ Future<void> init() async {
   }
   if (!sl.isRegistered<GetAddressesUseCase>()) {
     sl.registerLazySingleton(() => GetAddressesUseCase(sl()));
+  }
+  if (!sl.isRegistered<GetAddressTypeUseCase>()) {
+    sl.registerLazySingleton(() => GetAddressTypeUseCase(sl()));
   }
   if (!sl.isRegistered<AddAddressUseCase>()) {
     sl.registerLazySingleton(() => AddAddressUseCase(sl()));
@@ -290,6 +361,7 @@ Future<void> init() async {
   if (!sl.isRegistered<CheckoutCubit>()) {
     sl.registerFactory(() => CheckoutCubit(
           getAddresses: sl(),
+          getAddressType: sl(),
           addAddress: sl(),
           updateAddress: sl(),
           setDefaultAddress: sl(),
@@ -307,9 +379,14 @@ Future<void> init() async {
     sl.registerLazySingleton(() => TokenizeAndPayUseCase(sl()));
   }
   if (!sl.isRegistered<PaymentCubit>()) {
-    sl.registerFactory(() => PaymentCubit(useCase: sl()));
+    sl.registerFactory(() => PaymentCubit(
+          useCase: sl(),
+          createOrderUseCase: sl(),
+          clearCartUseCase: sl(),
+        ));
   }
 
+  // ... (Search) ...
   // -----------------------------
   // Search
   // -----------------------------
@@ -367,9 +444,15 @@ Future<void> init() async {
   // -----------------------------
   // Wishlist
   // -----------------------------
+
+  if (!sl.isRegistered<WishlistLocalDataSource>()) {
+    sl.registerLazySingleton<WishlistLocalDataSource>(
+      () => WishlistLocalDataSourceImpl(sl<Box<dynamic>>()),
+    );
+  }
   if (!sl.isRegistered<WishlistRepository>()) {
-    sl.registerLazySingleton<WishlistRepository>(
-        () => InMemoryWishlistRepository());
+    sl.registerLazySingleton<WishlistRepository>(() =>
+        WishlistRepositoryImpl(localDataSource: sl<WishlistLocalDataSource>()));
   }
   if (!sl.isRegistered<GetWishlist>()) {
     sl.registerLazySingleton<GetWishlist>(
@@ -379,22 +462,48 @@ Future<void> init() async {
     sl.registerLazySingleton<RemoveFromWishlist>(
         () => RemoveFromWishlist(sl<WishlistRepository>()));
   }
+  if (!sl.isRegistered<AddToWishlist>()) {
+    sl.registerLazySingleton<AddToWishlist>(
+        () => AddToWishlist(sl<WishlistRepository>()));
+  }
+  if (!sl.isRegistered<ToggleFavorite>()) {
+    sl.registerLazySingleton<ToggleFavorite>(
+        () => ToggleFavorite(sl<WishlistRepository>()));
+  }
   if (!sl.isRegistered<WishlistCubit>()) {
     sl.registerFactory<WishlistCubit>(() => WishlistCubit(
           getWishlist: sl<GetWishlist>(),
           removeFromWishlist: sl<RemoveFromWishlist>(),
-          repository: sl<WishlistRepository>(),
+          addToWishlist: sl<AddToWishlist>(),
+          toggleFavorite: sl<ToggleFavorite>(),
         ));
   }
-
   // -----------------------------
   // Orders
   // -----------------------------
+  if (!Hive.isBoxOpen('cached_orders')) {
+    await Hive.openBox<String>('cached_orders');
+  }
+  if (!sl.isRegistered<order_local.OrderLocalDataSource>()) {
+    sl.registerLazySingleton<order_local.OrderLocalDataSource>(() =>
+        order_local.OrderLocalDataSourceImpl(box: Hive.box('cached_orders')));
+  }
+  if (!sl.isRegistered<order_remote.OrderRemoteDataSource>()) {
+    sl.registerLazySingleton<order_remote.OrderRemoteDataSource>(
+        () => order_remote.OrderRemoteDataSourceImpl());
+  }
+
   if (!sl.isRegistered<OrderRepository>()) {
-    sl.registerLazySingleton<OrderRepository>(() => OrderRepositoryImpl());
+    sl.registerLazySingleton<OrderRepository>(() => OrderRepositoryImpl(
+          localDataSource: sl(),
+          remoteDataSource: sl(),
+        ));
   }
   if (!sl.isRegistered<GetOrders>()) {
     sl.registerLazySingleton<GetOrders>(() => GetOrders(sl<OrderRepository>()));
+  }
+  if (!sl.isRegistered<order_create_uc.CreateOrderUseCase>()) {
+    sl.registerLazySingleton(() => order_create_uc.CreateOrderUseCase(sl()));
   }
   if (!sl.isRegistered<OrdersCubit>()) {
     sl.registerFactory<OrdersCubit>(
@@ -404,10 +513,16 @@ Future<void> init() async {
   // -----------------------------
   // Track Order
   // -----------------------------
+  if (!sl.isRegistered<TrackOrderRemoteDataSource>()) {
+    sl.registerLazySingleton<TrackOrderRemoteDataSource>(
+        () => TrackOrderRemoteDataSourceImpl());
+  }
+
   if (!sl.isRegistered<TrackOrderRepository>()) {
     sl.registerLazySingleton<TrackOrderRepository>(
-        () => TrackOrderRepositoryImpl());
+        () => TrackOrderRepositoryImpl(remoteDataSource: sl()));
   }
+
   if (!sl.isRegistered<GetTrackOrder>()) {
     sl.registerLazySingleton<GetTrackOrder>(
         () => GetTrackOrder(sl<TrackOrderRepository>()));
@@ -431,7 +546,7 @@ Future<void> init() async {
   if (!sl.isRegistered<Dio>(instanceName: 'authDio')) {
     final dio = Dio();
     ApiClient(dio);
-   
+
     final storage = sl<FlutterSecureStorage>();
     dio.interceptors.add(DioAuthInterceptor(storage: storage, dio: dio));
     sl.registerLazySingleton<Dio>(() => dio, instanceName: 'authDio');

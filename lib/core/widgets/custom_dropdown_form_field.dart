@@ -219,12 +219,14 @@ class _CustomDropdownFormFieldState<T> extends State<CustomDropdownFormField<T>>
                       color: kMuted,
                       fontSize: 18,
                     ),
+                   
                     hintStyle: textBold.copyWith(
                       color: kMuted,
                       fontSize: 16,
                     ),
                     hintText: widget.hint,
                     filled: true,
+                    fillColor: kLightGrayBg,
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 12, vertical: 14),
                     enabledBorder: OutlineInputBorder(

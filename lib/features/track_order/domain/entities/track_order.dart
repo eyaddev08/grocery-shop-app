@@ -20,7 +20,7 @@ class TrackOrder {
   final String? deliveryManImageUrl;
   final MapCoordinates? currentLocation;
   final MapCoordinates? destinationLocation;
-  final Order? order;
+  final Order order;
 }
 
 class MapCoordinates {

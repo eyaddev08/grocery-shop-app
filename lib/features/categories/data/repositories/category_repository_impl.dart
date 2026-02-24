@@ -1,67 +1,52 @@
-import 'package:flutter/material.dart';
-
-import '../../../../core/constants/images_constants.dart';
+import 'package:dartz/dartz.dart';
+import '../../../../core/data/sample_categories.dart';
 import '../../domain/entities/category.dart';
 import '../../domain/repositories/category_repository.dart';
 import '../../../../core/error/failure.dart';
-import '../../../../core/utils/either.dart';
 
 class CategoryRepositoryImpl implements CategoryRepository {
-  // simple in-memory sample data
-  final List<Category> _sample = const [
-    Category(
-      id: '1',
-      title: 'Big & Small Fishes',
-      subtitle: 'Fresh from sea',
-      filterName: 'Meats & Fishes',
-      image: ImagesConstants.freshBassWhiteBg,
-      price: '36',
-      color: Color(0xFFFFC3BB),
-    ),
-    Category(
-      id: '2',
-      title: 'Halal Meats',
-      subtitle: 'Organics & Fresh',
-      filterName: 'Meats',
-      image: ImagesConstants.rawMeatAssortment,
-      price: '90',
-      color: Color(0xFFFFDC82),
-    ),
-    Category(
-        id: '3',
-        title: 'Meats',
-        subtitle: 'Organic',
-        filterName: 'Meats',
-        image: ImagesConstants.freshBeefCubes,
-        price: '36',
-        color: Color(0xFFEFFAC5)),
-    Category(
-        id: '4',
-        title: 'Organic Eggs',
-        subtitle: 'Fresh & Organic',
-        filterName: 'Fruits',
-        image: null,
-        price: '36',
-        color: Color(0xFFEFFAC5)),
-  ];
+  // // simple in-memory sample data
+  // final List<Category> _sample = const [
+  //   Category(
+  //     id: '1',
+  //     title: 'Big & Small Fishes',
+  //     subtitle: 'Fresh from sea',
+  //     filterName: 'Meats & Fishes',
+  //     image: ImagesConstants.freshBassWhiteBg,
+  //     price: '36',
+  //     color: Color(0xFFFFC3BB),
+  //   ),
+  //   Category(
+  //     id: '2',
+  //     title: 'Halal Meats',
+  //     subtitle: 'Organics & Fresh',
+  //     filterName: 'Meats',
+  //     image: ImagesConstants.rawMeatAssortment,
+  //     price: '90',
+  //     color: Color(0xFFFFDC82),
+  //   ),
+  //   Category(
+  //       id: '3',
+  //       title: 'Meats',
+  //       subtitle: 'Organic',
+  //       filterName: 'Meats',
+  //       image: ImagesConstants.freshBeefCubes,
+  //       price: '36',
+  //       color: Color(0xFFEFFAC5)),
+  //   Category(
+  //       id: '4',
+  //       title: 'Organic Eggs',
+  //       subtitle: 'Fresh & Organic',
+  //       filterName: 'Fruits',
+  //       image: null,
+  //       price: '36',
+  //       color: Color(0xFFEFFAC5)),
+  // ];
 
   @override
   Future<Either<Failure, List<Category>>> getCategories() async {
     // simulate small delay and return Right
-    await Future<void>.delayed(const Duration(milliseconds: 150));
-    return Right(_sample);
+    await Future<void>.delayed(const Duration(milliseconds: 1500));
+    return Right(sampleCategories);
   }
 }
-
-
-
-//  final List<Category> _sample = const [
-//     Category(id: '1', title: 'Fishes', subtitle: 'From Sea', image: null),
-//     Category(id: '2', title: 'Vegetables', subtitle: 'Organic', image: null),
-//     Category(
-//         id: '3', title: 'Fruits', subtitle: 'Fresh & Organic', image: null),
-//     Category(id: '4', title: 'Meats', subtitle: 'Organic', image: null),
-//     Category(id: '5', title: 'Juices', subtitle: 'Cold-pressed', image: null),
-//     Category(
-//         id: '6', title: 'Cooking needs', subtitle: 'Essentials', image: null),
-//   ];

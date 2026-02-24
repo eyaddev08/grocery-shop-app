@@ -7,6 +7,7 @@ class Order {
   final OrderStatus status;
   final String? riderName;
   final String? deliveryMessage;
+  final int quantity;
 
   const Order({
     required this.id,
@@ -17,6 +18,7 @@ class Order {
     required this.status,
     this.riderName,
     this.deliveryMessage,
+    required this.quantity,
   });
 }
 

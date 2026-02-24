@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../config/routes/app_routes.dart';
-import '../../../../core/services/navigation_service.dart';
+import 'package:grocery_shop_app/core/utils/styles.dart';
+
+import '../../../../core/utils/layout.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_snackbar_widget.dart';
 import '../../../../core/widgets/success_dialog_widget.dart';
@@ -28,42 +29,48 @@ class WishlistScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: BlocBuilder<WishlistCubit, WishlistState>(
               builder: (context, state) {
-                if (state is WishlistLoading || state is WishlistInitial) {
+                if (state is WishlistInitial) {
+                  context.read<WishlistCubit>().loadWishlist();
+                }
+                if (state is WishlistLoading) {
                   return ListView.separated(
-                    itemCount: 4,
+                    itemCount: 5,
                     separatorBuilder: (_, __) => const SizedBox(height: 12),
                     itemBuilder: (_, __) => const ShimmerWishlistCard(),
                   );
                 } else if (state is WishlistEmpty) {
                   return EmptyWishlist(
-                    onBrowse: () => NavigationService.navigateAndClearStack(
-                        AppRoutes.layout),
-                  );
+                      onBrowse: () => Navigator.maybePop(
+                          context,
+                          MaterialPageRoute<void>(
+                              builder: (builder) => const Layout())));
                 } else if (state is WishlistLoaded) {
                   final items = state.items;
-                  return ListView.separated(
+                  return ListView.builder(
                     padding: const EdgeInsets.only(bottom: 160, top: 8),
                     itemCount: items.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 12),
                     itemBuilder: (context, idx) {
                       final WishlistProduct p = items[idx];
-                      return WishlistCard(
-                        product: p,
-                        onRemove: (id) => _confirmRemove(context, id),
-                        onToggle: (id) =>
-                            context.read<WishlistCubit>().toggleFavorite(id),
-                        onAddToCart: (id) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('Added to cart (demo)')));
-                        },
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 6),
+                        child: WishlistCard(
+                          product: p,
+                          onRemove: (id) => _confirmRemove(context, id),
+                          onToggle: (id) =>
+                              context.read<WishlistCubit>().toggleFavorite(id),
+                          onAddToCart: (id) {
+                            showCustomSnackBarWidget(
+                                'Added to cart (demo)',
+                                isError: false,
+                                context,
+                                isToaster: true);
+                          },
+                        ),
                       );
                     },
                   );
                 } else if (state is WishlistFailure) {
-                  return Center(
-                      child: Text(state.message,
-                          style: const TextStyle(color: Colors.white)));
+                  return Center(child: Text(state.message, style: textBold));
                 } else {
                   return const SizedBox.shrink();
                 }

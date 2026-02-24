@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/services/navigation_service.dart';
-import '../../../../core/utils/styles.dart';
+
 import '../../../../core/widgets/custom_app_bar.dart';
-import '../../../../core/widgets/custom_dropdown_form_field.dart';
 import '../../../../core/widgets/custom_button_widget.dart';
 import '../../domain/entities/address.dart';
 import '../manager/checkout_cubit.dart';
+import '../widgets/address_type_list_view_builder.dart';
 import '../widgets/custom_input_field.dart';
 
 class EditAddressScreen extends StatefulWidget {
@@ -20,14 +20,23 @@ class EditAddressScreen extends StatefulWidget {
 
 class _EditAddressScreenState extends State<EditAddressScreen> {
   final _formKey = GlobalKey<FormState>();
-  late String label;
   late TextEditingController _detailsController;
 
   @override
   void initState() {
     super.initState();
-    label = widget.address.label;
     _detailsController = TextEditingController(text: widget.address.details);
+
+    context.read<CheckoutCubit>().getAddressTypes();
+    final cubit = context.read<CheckoutCubit>();
+    final at = widget.address.addressType;
+    if (at == 'Home') {
+      cubit.updateAddressIndex(0, false);
+    } else if (at == 'Workplace') {
+      cubit.updateAddressIndex(1, false);
+    } else {
+      cubit.updateAddressIndex(2, false);
+    }
   }
 
   @override
@@ -53,23 +62,6 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
               key: _formKey,
               child: Column(
                 children: [
-                  CustomDropdownFormField<String>(
-                    value: label,
-                    items: [
-                      DropdownMenuItem(
-                          value: 'Home',
-                          child: Text('Home',
-                              style: textMedium.copyWith(
-                                  fontWeight: FontWeight.w400))),
-                      DropdownMenuItem(
-                          value: 'Office',
-                          child: Text('Office',
-                              style: textMedium.copyWith(
-                                  fontWeight: FontWeight.w400))),
-                    ],
-                    onChanged: (v) => setState(() => label = v ?? 'Home'),
-                    label: 'Label',
-                  ),
                   const SizedBox(height: 12),
                   CustomInputField(
                     controller: _detailsController,
@@ -81,6 +73,8 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 12, vertical: 14),
                   ),
+                  const SizedBox(height: 12),
+                  const AddressTypeListViewBuilder(),
                 ],
               ),
             ),
@@ -88,10 +82,17 @@ class _EditAddressScreenState extends State<EditAddressScreen> {
             CustomButton(
               onTap: () async {
                 if (_formKey.currentState?.validate() ?? false) {
+                  final type = (cubit.addressTypeList.isNotEmpty &&
+                          cubit.selectAddressIndex <
+                              cubit.addressTypeList.length)
+                      ? cubit.addressTypeList[cubit.selectAddressIndex].title
+                      : widget.address.addressType;
                   await cubit.editAddress(
-                      id: widget.address.id,
-                      label: label,
-                      details: _detailsController.text.trim());
+                    id: widget.address.id,
+                    label: widget.address.label,
+                    addressType: type,
+                    details: _detailsController.text.trim(),
+                  );
                   NavigationService.goBack();
                 }
               },

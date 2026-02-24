@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../../config/routes/app_routes.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/services/navigation_service.dart';
 import '../../../cart/presentation/manager/cart_cubit.dart';
 
 class TopBar extends StatelessWidget {
@@ -44,7 +46,8 @@ class TopBar extends StatelessWidget {
                   clipBehavior: Clip.none,
                   children: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () =>
+                          NavigationService.navigateTo(AppRoutes.cart),
                       icon: SvgPicture.asset(
                         'assets/svg/bag_icon.svg',
                         height: 22,

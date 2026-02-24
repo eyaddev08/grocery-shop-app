@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:grocery_shop_app/core/utils/images.dart';
-import '../../features/Home/presentation/views/home_screen.dart';
+import '../../features/Home/presentation/screens/home_screen.dart';
 import '../../features/categories/presentation/screens/categories_screen.dart';
 import '../../features/more/presentation/screens/more_screen.dart';
 import '../../features/wishlist/presentation/screens/wishlist_screen.dart';
