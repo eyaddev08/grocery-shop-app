@@ -5,7 +5,7 @@
 
     <application android:label="Grocery Shop" android:name="${applicationName}" android:icon="@mipmap/launcher_icon">
       <meta-data android:name="com.google.android.geo.API_KEY"
-               android:value="AIzaSyBw-_KXkVkRTXyaKf67Sm0puE9_eE2WwPg"/>
+               android:value=""/>
         <activity android:name=".MainActivity" android:exported="true" android:launchMode="singleTop" android:theme="@style/LaunchTheme" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" android:hardwareAccelerated="true" android:windowSoftInputMode="adjustResize">
             
             <meta-data android:name="io.flutter.embedding.android.NormalTheme" android:resource="@style/NormalTheme"/>
