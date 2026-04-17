@@ -1,4 +1,3 @@
-// ملف مسؤول عن حقل إدخال كلمة المرور مع إمكانية إظهارها وإخفائها.
 import 'dart:ui';
 
 import 'package:flutter/material.dart';

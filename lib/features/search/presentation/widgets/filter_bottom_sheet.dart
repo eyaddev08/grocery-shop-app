@@ -127,7 +127,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                     const SizedBox(width: 12),
                     Expanded(
                       child: CustomButton(
-                        onTap: () {
+                        onPressed: () {
                           widget.onApply(_filters);
                           Navigator.pop(context);
                         },

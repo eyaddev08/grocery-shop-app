@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_shop_app/core/constants/app_colors.dart';
+
+import '../utils/styles.dart';
 
 class LoadingWidget extends StatelessWidget {
 
@@ -21,7 +24,7 @@ class LoadingWidget extends StatelessWidget {
             width: size ?? 50,
             height: size ?? 50,
             child: CircularProgressIndicator(
-              color: color ?? Theme.of(context).primaryColor,
+              color: color ?? kPrimaryBlue,
               strokeWidth: 3,
             ),
           ),
@@ -29,7 +32,7 @@ class LoadingWidget extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               message!,
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: textBold,
               textAlign: TextAlign.center,
             ),
           ],

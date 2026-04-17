@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:grocery_shop_app/core/constants/app_colors.dart';
 import '../../../../core/utils/styles.dart';
 import '../../../../core/widgets/custom_image_widget.dart';
-import '../../domain/entities/category.dart';
+import '../../domain/entities/category_entity.dart';
 
 class CategoriesCard extends StatelessWidget {
   const CategoriesCard({super.key, required this.category, this.onTap});
 
-  final Category category;
+  final CategoryEntity category;
   final VoidCallback? onTap;
 
   @override
@@ -31,7 +31,7 @@ class CategoriesCard extends StatelessWidget {
                   ),
                   child: Center(
                     child: CustomImageWidget(
-                        image: category.image ?? '', fit: BoxFit.contain),
+                        image: category.thumbnail ?? '', fit: BoxFit.contain),
                   ),
                 ),
                 const SizedBox(width: 15),
@@ -40,7 +40,7 @@ class CategoriesCard extends StatelessWidget {
                   children: [
                     const SizedBox(height: 11),
                     Text(
-                      category.title,
+                      category.name,
                       textAlign: TextAlign.center,
                       style: titilliumBold.copyWith(
                         color: const Color(0xFF1E222B),
@@ -48,7 +48,7 @@ class CategoriesCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      category.subtitle,
+                      category.subName,
                       textAlign: TextAlign.center,
                       style: robotoBold.copyWith(
                         color: const Color(0xFF61697C),

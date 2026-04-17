@@ -1,13 +1,31 @@
+import 'package:dio/dio.dart';
 import '../models/order_model.dart';
 
 abstract class OrderRemoteDataSource {
-  Future<void> syncOrders(List<OrderModel> orders);
+  Future<List<OrderModel>> getOrders();
+  Future<void> createOrders(OrderModel orders);
+  Future<void> cancelOrder(String orderId);
 }
 
 class OrderRemoteDataSourceImpl implements OrderRemoteDataSource {
+  OrderRemoteDataSourceImpl({required this.client});
+
+  final Dio client;
   @override
-  Future<void> syncOrders(List<OrderModel> orders) async {
+  Future<List<OrderModel>> getOrders() async {
     await Future<void>.delayed(const Duration(seconds: 1));
-    // Implementation for syncing with backend would go here.
+    return [];
+  }
+
+  @override
+  Future<void> createOrders(OrderModel orders) async {
+    await Future<void>.delayed(const Duration(seconds: 1));
+    return;
+  }
+
+  @override
+  Future<void> cancelOrder(String orderId) async {
+    await Future<void>.delayed(const Duration(seconds: 1));
+    return;
   }
 }

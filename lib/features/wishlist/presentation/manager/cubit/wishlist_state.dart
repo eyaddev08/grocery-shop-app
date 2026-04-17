@@ -16,7 +16,7 @@ class WishlistLoading extends WishlistState {
 
 class WishlistLoaded extends WishlistState {
   const WishlistLoaded(this.items);
-  final List<WishlistProduct> items;
+  final List<WishlistProductEntity> items;
   @override
   List<Object?> get props => [items];
 }

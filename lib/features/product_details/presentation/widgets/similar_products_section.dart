@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grocery_shop_app/features/product_details/presentation/manager/similar_product/similar_product_cubit.dart';
 
+import '../../../../core/constants/app_colors.dart';
+import '../../../../core/utils/styles.dart';
 import 'similar_product_card.dart';
 import 'similar_product_shimmer.dart';
 
@@ -13,15 +15,13 @@ class SimilarProductsSection extends StatelessWidget {
   Widget build(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24),
+           Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Text(
               'Similar',
-              style: TextStyle(
-                fontFamily: 'Poppins',
+              style: robotoBold.copyWith(
                 fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: Color(0xFF1E222B),
+                color: kTextDark,
               ),
             ),
           ),

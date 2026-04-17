@@ -4,11 +4,11 @@ import '../../domain/entities/suggestion.dart';
 
 class SuggestionModel extends Suggestion {
   const SuggestionModel({
-    required String text,
-    SuggestionType type = SuggestionType.keyword,
-    String? subtitle,
-    Map<String, dynamic>? meta,
-  }) : super(text: text, type: type, subtitle: subtitle, meta: meta);
+    required super.text,
+    super.type,
+    super.subtitle,
+    super.meta,
+  });
 
   factory SuggestionModel.fromJson(dynamic json) {
     if (json == null) return const SuggestionModel(text: '');
@@ -55,6 +55,6 @@ class SuggestionModel extends Suggestion {
     }
   }
 
-  static List<SuggestionModel> fromJsonList(List<dynamic> list) => list.map((e) => SuggestionModel.fromJson(e)).toList();
+  static List<SuggestionModel> fromJsonList(List<dynamic> list) => list.map(SuggestionModel.fromJson).toList();
 }
 

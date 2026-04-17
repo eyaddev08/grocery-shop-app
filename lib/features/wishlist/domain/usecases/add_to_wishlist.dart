@@ -1,14 +1,13 @@
 import 'package:dartz/dartz.dart';
 import '../../../../core/error/failure.dart';
-import '../entities/wishlist_product.dart';
+import '../entities/wishlist_product_entity.dart';
 import '../repositories/wishlist_repository.dart';
 
-class AddToWishlist {
+class AddToWishlistUseCase {
+  AddToWishlistUseCase(this.repository);
   final WishlistRepository repository;
-  AddToWishlist(this.repository);
 
-  Future<Either<Failure, List<WishlistProduct>>> call(
-      WishlistProduct product) =>
+  Future<Either<Failure, List<WishlistProductEntity>>> call(
+          WishlistProductEntity product) =>
       repository.addToWishlist(product);
 }
-

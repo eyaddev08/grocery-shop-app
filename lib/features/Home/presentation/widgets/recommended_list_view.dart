@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../config/di/injection_container.dart';
+import '../../../../core/helpers/create_slide_fade_route.dart';
 import '../../../product_details/domain/usecases/get_product_details.dart';
 import '../../../product_details/presentation/manager/product_details/product_details_cubit.dart';
 import '../../../product_details/presentation/screens/product_details_screen.dart';
-import '../../domain/entities/recommended_product.dart';
-import '../manager/recommended/recommended_cubit.dart';
+import '../../../products/presentation/manager/product_cubit/product_cubit.dart';
+import '../../../products/presentation/manager/product_cubit/product_state.dart';
 import 'recommended_card.dart';
+import 'recommended_shimmer_card.dart';
 
 class RecommendedListView extends StatelessWidget {
   const RecommendedListView({
@@ -20,46 +22,49 @@ class RecommendedListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SizedBox(
         height: 194 * scale,
-        child: BlocBuilder<RecommendedCubit, RecommendedState>(
+        child: BlocBuilder<ProductCubit, ProductState>(
           builder: (context, state) {
-            if (state is RecommendedInitial || state is RecommendedLoading) {
-              context.read<RecommendedCubit>().load();
-              return const Center(child: CircularProgressIndicator());
-            }
+            if (state.status == ProductStatus.loading ||
+                state.status == ProductStatus.initial) {
+              return ListView.separated(
+                padding: const EdgeInsets.symmetric(horizontal: 18),
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) => const RecommendedShimmerCard(),
+                separatorBuilder: (_, __) => const SizedBox(width: 12),
+                itemCount: 5,
+              );
+            } else if (state.status == ProductStatus.error) {
+              return Center(child: Text(state.errorMessage));
+            } else if (state.status == ProductStatus.loaded) {
+              return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: state.recommendedProducts.length,
+                itemBuilder: (context, index) {
+                  final item = state.recommendedProducts[index];
 
-            if (state is RecommendedError) {
-              return Center(child: Text(state.message));
-            }
-
-            final List<RecommendedProduct> items =
-                state is RecommendedLoaded ? state.items : [];
-
-            return ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                final item = items[index];
-                final entity = item.toEntity();
-
-                return GestureDetector(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (_) => BlocProvider(
-                        create: (_) =>
-                            ProductDetailsCubit( sl<GetProductDetails>()),
-                        child: ProductDetailsScreen(initialProduct: entity),
+                  return InkWell(
+                    borderRadius: BorderRadius.circular(12),
+                    onTap: () => Navigator.push(
+                      context,
+                      createSlideFadeRoute(
+                        BlocProvider(
+                          create: (_) => ProductDetailsCubit(
+                              sl<GetProductDetailsUseCase>()),
+                          child: ProductDetailsScreen(initialProduct: item),
+                        ),
                       ),
                     ),
-                  ),
-                  child: RecommendedCard(
-                    width: 140 * scale,
-                    product: item,
-                    scale: scale,
-                  ),
-                );
-              },
-            );
+                    child: RecommendedCard(
+                      width: 140 * scale,
+                      product: item,
+                      scale: scale,
+                    ),
+                  );
+                },
+              );
+            }
+
+            return SizedBox.shrink();
           },
         ),
       );

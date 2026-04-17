@@ -1,13 +1,13 @@
 import 'package:dartz/dartz.dart';
 import '../../../../core/error/failure.dart';
-import '../entities/wishlist_product.dart';
+import '../entities/wishlist_product_entity.dart';
 
 abstract class WishlistRepository {
-  Future<Either<Failure, List<WishlistProduct>>> getWishlist();
-  Future<Either<Failure, List<WishlistProduct>>> addToWishlist(
-      WishlistProduct product);
-  Future<Either<Failure, List<WishlistProduct>>> removeFromWishlist(
+  Future<Either<Failure, List<WishlistProductEntity>>> getWishlist();
+  Future<Either<Failure, List<WishlistProductEntity>>> addToWishlist(
+      WishlistProductEntity product);
+  Future<Either<Failure, List<WishlistProductEntity>>> removeFromWishlist(
       String productId);
-  Future<Either<Failure, List<WishlistProduct>>> toggleFavorite(
+  Future<Either<Failure, List<WishlistProductEntity>>> toggleFavorite(
       String productId);
 }

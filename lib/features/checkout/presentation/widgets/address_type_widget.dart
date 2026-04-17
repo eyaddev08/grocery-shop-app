@@ -5,11 +5,11 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/dimensions.dart';
 import '../../../../core/utils/images.dart';
 import '../../../../core/utils/styles.dart';
-import '../../domain/entities/address.dart';
+import '../../domain/entities/address_entity.dart';
 
 class AddressTypeWidget extends StatelessWidget {
-  final Address? address;
   const AddressTypeWidget({super.key, required this.address});
+  final AddressEntity? address;
 
   @override
   Widget build(BuildContext context) => ListTile(

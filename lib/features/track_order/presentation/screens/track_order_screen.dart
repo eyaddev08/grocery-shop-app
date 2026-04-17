@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grocery_shop_app/core/utils/styles.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 
+import '../../../orders/domain/entities/order_entity.dart';
 import '../manager/track_order_cubit.dart';
 import '../manager/track_order_state.dart';
 import '../widgets/delivery_info_section.dart';
@@ -15,9 +16,11 @@ class TrackOrderScreen extends StatelessWidget {
   const TrackOrderScreen({
     super.key,
     required this.orderId,
+    required this.order,
   });
 
   final String orderId;
+  final OrderEntity order;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -47,7 +50,9 @@ class TrackOrderScreen extends StatelessWidget {
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
-                        context.read<TrackOrderCubit>().loadTrackOrder(orderId);
+                        context
+                            .read<TrackOrderCubit>()
+                            .loadTrackOrder(orderId, order);
                       },
                       child: const Text('Retry', style: textBold),
                     ),
@@ -60,21 +65,29 @@ class TrackOrderScreen extends StatelessWidget {
               return SingleChildScrollView(
                 child: Column(
                   children: [
-                    const SizedBox(height: 20),
-                    Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        const Positioned(child: TrackMapWidget()),
-                        Positioned(
-                          top: 400,
-                          child: DeliveryManCard(
-                            deliveryManName: state.trackOrder.deliveryManName,
-                            onChatTap: () {},
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 80),
+                    SizedBox(
+                        height: 400,
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            const TrackMapWidget(),
+                            Positioned(
+                              bottom: -40,
+                              left: 0,
+                              right: 0,
+                              child: DeliveryManCard(
+                                deliveryManName:
+                                    state.trackOrder.deliveryManName,
+                                onChatTap: () {},
+                              ),
+                            ),
+                          ],
+                        )),
+                    const SizedBox(height: 60),
+                    // OrderStatusTimeline(
+                    //   currentStatus: state.trackOrder.order.status.name,
+                    // ),
+                    // const SizedBox(height: 20),
                     DeliveryInfoSection(
                       deliveryTime: state.trackOrder.deliveryTime,
                       deliveryAddress: state.trackOrder.deliveryAddress,
@@ -82,9 +95,10 @@ class TrackOrderScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     OrderDetailsSection(
-                        orderId: state.trackOrder.orderId,
-                        order: state.trackOrder.order),
-                    const SizedBox(height: 20),
+                      orderId: state.trackOrder.orderId,
+                      order: state.trackOrder.order,
+                    ),
+                    const SizedBox(height: 30),
                   ],
                 ),
               );

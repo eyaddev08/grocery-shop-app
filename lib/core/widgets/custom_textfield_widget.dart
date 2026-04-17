@@ -4,6 +4,7 @@ import 'package:grocery_shop_app/core/constants/app_colors.dart';
 
 import '../utils/styles.dart';
 import '../utils/dimensions.dart';
+import 'custom_asset_image_widget.dart';
 
 class CustomTextFieldWidget extends StatefulWidget {
   final String? hintText;
@@ -41,7 +42,7 @@ class CustomTextFieldWidget extends StatefulWidget {
   final double prefixHeight;
   final Color borderColor;
   final List<TextInputFormatter>? inputFormatters;
-  final Function()? onCountryChanged; // CountryCode countryCode
+  final void Function()? onCountryChanged;
   final bool required;
   final Color? prefixColor;
   final Color? suffixColor;
@@ -67,7 +68,7 @@ class CustomTextFieldWidget extends StatefulWidget {
       this.onTap,
       this.prefixIcon,
       this.suffixIcon,
-      this.suffixIconSize = 12,
+      this.suffixIconSize = 24,
       this.capitalization = TextCapitalization.none,
       this.readOnly = false,
       this.isPassword = false,
@@ -108,17 +109,17 @@ class _CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
 
   @override
   void initState() {
-    widget.toolTipKey != null ? showAndCloseTooltip(widget.toolTipKey) : null;
+    // widget.toolTipKey != null ? showAndCloseTooltip(widget.toolTipKey) : null;
     super.initState();
   }
 
-  Future showAndCloseTooltip(var key) async {
-    await Future<void>.delayed(const Duration(milliseconds: 10));
-    final dynamic tooltip = key.currentState;
-    tooltip?.ensureTooltipVisible();
-    await Future<void>.delayed(const Duration(milliseconds: 10));
-    tooltip?.deactivate();
-  }
+  // Future showAndCloseTooltip(var key) async {
+  //   await Future<void>.delayed(const Duration(milliseconds: 10));
+  //   final dynamic tooltip = key.currentState;
+  //   tooltip?.ensureTooltipVisible();
+  //   await Future<void>.delayed(const Duration(milliseconds: 10));
+  //   tooltip?.deactivate();
+  // }
 
   @override
   Widget build(BuildContext context) => Column(
@@ -262,19 +263,25 @@ class _CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
                     ? InkWell(
                         onTap: widget.prefixOnTap,
                         child: Container(
-                          width: widget.prefixHeight,
-                          padding: const EdgeInsets.all(1),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(widget.borderRadius),
-                                  bottomLeft:
-                                      Radius.circular(widget.borderRadius))),
-                          // child: Center(
-                          //   child: CustomAssetImageWidget(height: 20, width: 20, widget.prefixIcon!, color: widget.prefixColor ?? Theme.of(context).primaryColor.withOpacity(.4)),
-                          // )
-                        ),
+                            width: widget.prefixHeight,
+                            padding: const EdgeInsets.all(1),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    topLeft:
+                                        Radius.circular(widget.borderRadius),
+                                    bottomLeft:
+                                        Radius.circular(widget.borderRadius))),
+                            child: Center(
+                              child: CustomAssetImageWidget(
+                                  height: widget.suffixIconSize,
+                                  width: widget.suffixIconSize,
+                                  widget.prefixIcon!,
+                                  color: widget.prefixColor ??
+                                      kPrimaryBlue.withOpacity(.4)),
+                            )),
                       )
                     : null,
+
                 suffixIcon: widget.isToolTipSuffix
                     ? Tooltip(
                         key: widget.toolTipKey,

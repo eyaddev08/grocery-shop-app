@@ -15,10 +15,9 @@ abstract class CartLocalDataSource {
 }
 
 class CartLocalDataSourceImpl implements CartLocalDataSource {
+  CartLocalDataSourceImpl({required this.box});
   final Box<String> box;
   static const String _kCartKey = 'cached_cart';
-
-  CartLocalDataSourceImpl({required this.box});
 
   @override
   Future<void> addItem(CartItemModel item) async {
@@ -27,12 +26,14 @@ class CartLocalDataSourceImpl implements CartLocalDataSource {
     if (index >= 0) {
       final existing = currentCart[index];
       currentCart[index] = CartItemModel(
-          id: existing.id,
-          title: existing.title,
-          price: existing.price,
-          image: existing.image,
-          quantity: existing.quantity + item.quantity,
-          regularPrice: existing.regularPrice);
+        id: existing.id,
+        name: existing.name,
+        price: existing.price,
+        thumbnail: existing.thumbnail,
+        quantity: existing.quantity + item.quantity,
+        originalPrice: existing.originalPrice,
+        discount: existing.discount
+      );
     } else {
       currentCart.add(item);
     }
@@ -72,12 +73,14 @@ class CartLocalDataSourceImpl implements CartLocalDataSource {
     if (index >= 0) {
       final existing = currentCart[index];
       currentCart[index] = CartItemModel(
-          id: existing.id,
-          title: existing.title,
-          price: existing.price,
-          image: existing.image,
-          quantity: quantity,
-          regularPrice: existing.regularPrice);
+        id: existing.id,
+        name: existing.name,
+        price: existing.price,
+        thumbnail: existing.thumbnail,
+        quantity: quantity,
+        originalPrice: existing.originalPrice,
+        discount: existing.discount
+      );
       await cacheCart(currentCart);
     } else {
       throw CacheException();

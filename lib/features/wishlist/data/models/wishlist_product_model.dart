@@ -1,122 +1,122 @@
-// import '../../domain/entities/wishlist_product.dart';
+import 'package:hive/hive.dart';
+import '../../domain/entities/wishlist_product_entity.dart';
+import '../mappers/wishlist_product_mapper.dart'; 
 
-// class WishlistProductModel extends WishlistProduct {
-//   const WishlistProductModel({
-//     required super.id,
-//     required super.title,
-//     required super.price,
+part 'wishlist_product_model.g.dart';
 
-//     super.oldPrice,
-//     required super.subTitle,
-//     required super.imageUrl,
-//     super.discount,
-//     super.isFavorite,
-//   });
+@HiveType(typeId: 4)
+class WishlistProductModel extends WishlistProductEntity {
+  @override @HiveField(0) final String id;
+  @override @HiveField(1) final String name;
+  @override @HiveField(2) final double price;
+  @override @HiveField(3) final double? originalPrice;
+  @HiveField(4) final String? unit;
+  @override @HiveField(5) final String subName;
+  @override @HiveField(6) final String? tag;
+  @HiveField(7) final String? slug;
+  @override @HiveField(8) final String thumbnail;
+  @override @HiveField(9) final double? discount;
+  @HiveField(10) final String? discountType;
+  @override @HiveField(11) final bool isFavorite;
+  @override @HiveField(12) final List<String> images;
+  @override @HiveField(13) final Map<String, String> nutritionLines;
+  @override @HiveField(14) final double rating;
+  @override @HiveField(15) final int reviewCount;
+  @HiveField(16) final String? brand;
+  @HiveField(17) final double? shippingCost;
+  @override @HiveField(18) final int currentStock;
+  @override @HiveField(19) final List<int> categoryIds;
+  @override @HiveField(20) final int minOrderQty;
+  @override @HiveField(21) final int status;
 
-//   factory WishlistProductModel.fromJson(Map<String, dynamic> j) => WishlistProductModel(
-//       id: j['id'] as String,
-//       title: j['title'] as String,
-//       price: (j['price'] as num).toDouble(),
-//       oldPrice: j['oldPrice'] != null ? (j['oldPrice'] as num).toDouble() : null,
-//       subTitle: j['subTitle'] as String,
-//       imageUrl: j['imageUrl'] as String,
-//       discount: j['discount'] as int?,
-//       isFavorite: j['isFavorite'] as bool? ?? true,
-//     );
-
-//   Map<String, dynamic> toJson() => {
-//       'id': id,
-//       'title': title,
-//       'price': price,
-//       'oldPrice': oldPrice,
-//       'subTitle': subTitle,
-//       'imageUrl': imageUrl,
-//       'discount': discount,
-//       'isFavorite': isFavorite,
-//     };
-// }
-
-import '../../domain/entities/wishlist_product.dart';
-
-class WishlistProductModel extends WishlistProduct {
   const WishlistProductModel({
-    required super.id,
-    required super.title,
-    required super.price,
-    super.oldPrice,
-    required super.subTitle,
-    required String? tag,
-    required super.thumbnail,
-    super.discount,
-    super.isFavorite,
-    required super.images,
-    required super.nutritionLines,
-    required super.rating,
-    required super.reviewCount,
-    required super.currentStock,
-    required super.categoryIds,
-    required super.minOrderQty,
-    required super.status,
-  });
+    required this.id,
+    required this.name,
+    required this.price,
+    this.originalPrice,
+    this.unit,
+    required this.subName,
+    this.tag,
+    this.slug,
+    required this.thumbnail,
+    this.discount,
+    this.discountType,
+    required this.isFavorite,
+    required this.images,
+    required this.nutritionLines,
+    required this.rating,
+    required this.reviewCount,
+    this.brand,
+    this.shippingCost,
+    required this.currentStock,
+    required this.categoryIds,
+    required this.minOrderQty,
+    required this.status,
+  }) : super(
+          id: id, name: name, price: price, originalPrice: originalPrice,
+          unit: unit, subName: subName, tag: tag, slug: slug,
+          thumbnail: thumbnail, discount: discount, discountType: discountType,
+          isFavorite: isFavorite, images: images, nutritionLines: nutritionLines,
+          rating: rating, reviewCount: reviewCount, brand: brand,
+          shippingCost: shippingCost, currentStock: currentStock,
+          categoryIds: categoryIds, minOrderQty: minOrderQty, status: status,
+        );
 
-  factory WishlistProductModel.fromJson(Map<String, dynamic> j) =>
+  factory WishlistProductModel.fromJson(Map<String, dynamic> json) => 
+      WishlistProductMapper.fromJson(json);
+
+  Map<String, dynamic> toJson() => WishlistProductMapper.toJson(this);
+
+  WishlistProductEntity toEntity() => WishlistProductMapper.toEntity(this);
+
+  WishlistProductModel toModel() => WishlistProductMapper.toModel(this);
+
+  WishlistProductModel copyWith({
+    String? id,
+    String? name,
+    double? price,
+    double? originalPrice,
+    String? unit,
+    String? subName,
+    String? tag,
+    String? slug,
+    String? thumbnail,
+    double? discount,
+    String? discountType,
+    bool? isFavorite,
+    List<String>? images,
+    Map<String, String>? nutritionLines,
+    double? rating,
+    int? reviewCount,
+    String? brand,
+    double? shippingCost,
+    int? currentStock,
+    List<int>? categoryIds,
+    int? minOrderQty,
+    int? status,
+  }) =>
       WishlistProductModel(
-        id: j['id']?.toString() ?? '',
-        title: j['title']?.toString() ?? '',
-        price: num.tryParse(j['price']?.toString() ?? '0')?.toDouble() ?? 0.0,
-        oldPrice: j['oldPrice'] != null
-            ? num.tryParse(j['oldPrice'].toString())?.toDouble()
-            : null,
-        subTitle: j['subTitle']?.toString() ?? '',
-        tag: j['tag']?.toString() ?? '',
-        thumbnail: j['thumbnail']?.toString() ?? '',
-        discount: num.tryParse(j['discount']?.toString() ?? '')?.toDouble(),
-        isFavorite: j['isFavorite'] as bool? ?? true,
-        images: (j['images'] as List<dynamic>?)
-                ?.map((e) => e.toString())
-                .toList() ??
-            [],
-        nutritionLines: (j['nutritionLines'] as List<dynamic>?)
-                ?.map((e) => e.toString())
-                .toList() ??
-            [],
-        rating: num.tryParse(j['rating']?.toString() ?? '0')?.toDouble() ?? 0.0,
-        reviewCount:
-            num.tryParse(j['reviewCount']?.toString() ?? '0')?.toInt() ?? 0,
-        currentStock:
-            num.tryParse(j['currentStock']?.toString() ?? '0')?.toInt() ?? 0,
-        categoryIds: (j['categoryIds'] as List<dynamic>?)
-                ?.map((e) => int.parse(e.toString()))
-                .toList() ??
-            [],
-        minOrderQty:
-            num.tryParse(j['minOrderQty']?.toString() ?? '1')?.toInt() ?? 1,
-        status: num.tryParse(j['status']?.toString() ?? '1')?.toInt() ?? 1,
+        id: id ?? this.id,
+        name: name ?? this.name,
+        price: price ?? this.price,
+        originalPrice: originalPrice ?? this.originalPrice,
+        unit: unit ?? this.unit,
+        subName: subName ?? this.subName,
+        tag: tag ?? this.tag,
+        slug: slug ?? this.slug,
+        thumbnail: thumbnail ?? this.thumbnail,
+        isFavorite: isFavorite ?? this.isFavorite,
+        images: images ?? this.images,
+        nutritionLines: nutritionLines ?? this.nutritionLines,
+        discount: discount ?? this.discount,
+        discountType: discountType ?? this.discountType,
+        rating: rating ?? this.rating,
+        reviewCount: reviewCount ?? this.reviewCount,
+        brand: brand ?? this.brand,
+        shippingCost: shippingCost ?? this.shippingCost,
+        currentStock: currentStock ?? this.currentStock,
+        categoryIds: categoryIds ?? this.categoryIds,
+        minOrderQty: minOrderQty ?? this.minOrderQty,
+        status: status ?? this.status,
       );
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'title': title,
-        'price': price,
-        'oldPrice': oldPrice,
-        'subTitle': subTitle,
-        'tag': tag,
-        'thumbnail': thumbnail,
-        'discount': discount,
-        'isFavorite': isFavorite,
-        'unit': unit,
-        'discount_type': discountType,
-        'images': images,
-        'nutritionLines': nutritionLines,
-        'rating': rating,
-        'review_count': reviewCount,
-        'wish_list_count': isFavorite ? 1 : 0,
-        'current_stock': currentStock,
-        'short_description': shortDescription,
-        'category_ids': categoryIds,
-        'brand': brand,
-        'minimum_order_qty': minOrderQty,
-        'shipping_cost': shippingCost,
-        'status': status,
-      };
 }

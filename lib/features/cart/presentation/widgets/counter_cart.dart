@@ -26,7 +26,8 @@ class CounterCart extends StatelessWidget {
               color: kTextDark.withOpacity(0.06),
               shape: const OvalBorder(),
             ),
-            child: Icon(icon, size: Dimensions.iconSizeSmall, color: kTextDark),
+            child:
+                Icon(icon, size: Dimensions.iconSizeSmall, color: kPrimaryBlue),
           ),
         ),
       );

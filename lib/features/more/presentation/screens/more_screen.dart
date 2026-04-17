@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grocery_shop_app/core/constants/app_colors.dart';
-import 'package:grocery_shop_app/core/widgets/success_dialog_widget.dart';
+import 'package:grocery_shop_app/core/widgets/confirm_dialog_widget.dart';
+import 'package:grocery_shop_app/features/profile/presentation/manager/profile_cubit.dart';
 
 import '../../../../config/routes/app_routes.dart';
 import '../../../../core/services/navigation_service.dart';
@@ -14,6 +16,7 @@ import '../widgets/custom_container_widget.dart';
 import '../widgets/menu_button_widget.dart';
 import '../widgets/more_horizontal_section_widget.dart';
 import '../widgets/profile_info_section.dart';
+import '../widgets/profile_info_section_shimmer.dart';
 
 class MoreScreen extends StatefulWidget {
   const MoreScreen({super.key});
@@ -24,7 +27,6 @@ class MoreScreen extends StatefulWidget {
 
 class _MoreScreenState extends State<MoreScreen> {
   final ScrollController _scrollController = ScrollController();
-  UserEntity? _lastUser;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -42,26 +44,31 @@ class _MoreScreenState extends State<MoreScreen> {
                     color: kSoftBg, fontSize: 22, fontWeight: FontWeight.w600)),
           ),
           SliverPersistentHeader(
+              floating: true,
               pinned: true,
               delegate: SliverDelegate(
                 height: 230,
                 child: Hero(
                     tag: 'profile',
                     child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: kPrimaryBlue,
-                            border: Border.all(color: kPrimaryBlue, width: 0)),
-                        padding: const EdgeInsets.fromLTRB(18, 14, 18, 14),
-                        child: ProfileInfoSection(
-                            user: _lastUser ??
-                                const UserEntity(
-                                  id: '1',
-                                  username: 'username',
-                                  fullName: 'fullName',
-                                  email: 'email33@gmail.com',
-                                  phone: '777777777',
-                                )))),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: kPrimaryBlue,
+                          border: Border.all(color: kPrimaryBlue, width: 0)),
+                      padding: const EdgeInsets.fromLTRB(18, 14, 18, 14),
+                      child: BlocBuilder<ProfileCubit, ProfileState>(
+                        builder: (context, state) {
+                          if (state is ProfileLoading) {
+                            return const ProfileInfoSectionShimmer();
+                          } else if (state is ProfileLoaded) {
+                            return ProfileInfoSection(user: state.profile);
+                          } else if (state is ProfileError) {
+                            return Text(state.message);
+                          }
+                          return const SizedBox.shrink();
+                        },
+                      ),
+                    )),
               )),
           SliverToBoxAdapter(
             child:
@@ -80,17 +87,25 @@ class _MoreScreenState extends State<MoreScreen> {
                       image: Images.trackOrder,
                       title: 'Track Order',
                       onTap: () =>
-                          NavigationService.navigateTo(AppRoutes.trackOrder),
+                          NavigationService.navigateTo(AppRoutes.guestTrackOrder),
                     ),
-                    const MenuButtonWidget(
-                      image: Images.personIcon, title: 'Profile',
-                      // navigateTo: const ProfileScreen1(),
+                    MenuButtonWidget(
+                      image: Images.personIcon,
+                      title: 'Profile',
+                      onTap: () =>
+                          NavigationService.navigateTo(AppRoutes.profile),
                     ),
                     MenuButtonWidget(
                       image: Images.address,
                       title: 'Addresses',
                       onTap: () =>
                           NavigationService.navigateTo(AppRoutes.checkout),
+                    ),
+                    MenuButtonWidget(
+                      image: Images.mapImage,
+                      title: 'Map',
+                      onTap: () =>
+                          NavigationService.navigateTo(AppRoutes.mapPicker),
                     ),
                     const MenuButtonWidget(
                       image: Images.coupon, title: 'Coupons',
@@ -144,38 +159,48 @@ class _MoreScreenState extends State<MoreScreen> {
                       MenuButtonWidget(
                         image: Images.logout,
                         title: 'Sign Out',
+                        iconColor: errorColor,
                         onTap: () {
-                          showDialog<SuccessDialog>(
+                          showDialog<ConfirmDialogWidget>(
                             context: context,
-                            builder: (context) => SuccessDialog(
+                            builder: (context) => ConfirmDialogWidget(
                                 title: 'Sign Out',
                                 description:
                                     'Are you sure you want to sign out?',
                                 onCancle: NavigationService.goBack,
                                 titleButton: 'Sign Out',
                                 icon: Icons.logout,
-                                onRemov: () =>
-                                    NavigationService.navigateAndClearStack(
-                                        AppRoutes.login)),
+                                isFailed: true,
+                                onPressed: () {
+                                  context.read<ProfileCubit>().logoutAction();
+                                  NavigationService.navigateAndClearStack(
+                                      AppRoutes.login);
+                                }),
                           );
                         },
                       ),
                       MenuButtonWidget(
                         image: Images.delete,
                         title: 'Delete Account',
+                        iconColor: errorColor,
                         onTap: () {
-                          showDialog<SuccessDialog>(
+                          showDialog<ConfirmDialogWidget>(
                             context: context,
-                            builder: (context) => SuccessDialog(
+                            builder: (context) => ConfirmDialogWidget(
                                 title: 'Delete Account',
                                 description:
-                                    'This action cannot be undone. All your data will be permanently deleted.',
+                                    'Are you sure you want to delete your account? This action cannot be undone.',
                                 onCancle: NavigationService.goBack,
-                                titleButton: 'delete',
+                                titleButton: 'Delete',
                                 icon: Icons.delete,
-                                onRemov: () =>
-                                    NavigationService.navigateAndClearStack(
-                                        AppRoutes.login)),
+                                isFailed: true,
+                                onPressed: () {
+                                  context
+                                      .read<ProfileCubit>()
+                                      .deleteAccountAction();
+                                  NavigationService.navigateAndClearStack(
+                                      AppRoutes.login);
+                                }),
                           );
                         },
                       ),

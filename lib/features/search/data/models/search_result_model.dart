@@ -17,7 +17,7 @@ class SearchResultModel extends SearchResult {
   factory SearchResultModel.fromJson(Map<String, dynamic> json) => SearchResultModel(
       products: _parseProducts(json['products']),
       total:
-          _parseInt(json['total']) ?? _parseInt(json['products']?.length) ?? 0,
+          _parseInt(json['total']) ?? _parseInt(json['products']) ?? 0,
       limit: _parseInt(json['limit']) ?? _parseInt(json['per_page']) ?? 20,
       cursor: json['cursor']?.toString(),
       nextCursor: json['next_cursor']?.toString(),
@@ -59,10 +59,9 @@ class SearchResultModel extends SearchResult {
         .map((item) {
           try {
             if (item is Map<String, dynamic>) {
-              return ProductModel.fromJson(item).toEntity();
+              return ProductModel.fromJson(item);
             } else if (item is Map) {
-              return ProductModel.fromJson(Map<String, dynamic>.from(item))
-                  .toEntity();
+              return ProductModel.fromJson(Map<String, dynamic>.from(item));
             }
           } catch (_) {}
           return null;

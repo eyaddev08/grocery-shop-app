@@ -12,12 +12,12 @@ import '../../domain/usecases/refresh_token.dart';
 import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  final Login loginUseCase;
-  final Register registerUseCase;
-  final RequestPasswordReset requestPasswordResetUseCase;
-  final VerifyResetCode verifyResetCodeUseCase;
-  final ResetPassword resetPasswordUseCase;
-  final RefreshToken refreshTokenUseCase;
+  final LoginUseCase loginUseCase;
+  final RegisterUseCase registerUseCase;
+  final RequestPasswordResetUseCase requestPasswordResetUseCase;
+  final VerifyResetCodeUseCase verifyResetCodeUseCase;
+  final ResetPasswordUseCase resetPasswordUseCase;
+  final RefreshTokenUseCase refreshTokenUseCase;
   final AuthRepository repository;
 
   AuthCubit({

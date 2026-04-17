@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_shop_app/core/constants/app_colors.dart';
 
+import '../../../../core/helpers/create_slide_fade_route.dart';
 import '../../../../core/helpers/price_converter.dart';
 import '../../../../core/utils/styles.dart';
 import '../../../../core/utils/dimensions.dart';
@@ -29,8 +30,8 @@ class SquareButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => InkWell(
-        onTap: () => Navigator.push<void>(
-            context, MaterialPageRoute(builder: (_) => navigateTo)),
+        onTap: () =>
+            Navigator.push<void>(context, createSlideFadeRoute(navigateTo)),
         child: Column(children: [
           Padding(
             padding: const EdgeInsets.all(8),
@@ -103,7 +104,7 @@ class SquareButtonWidget extends StatelessWidget {
                             backgroundColor: kAccentYellow,
                             child: Text(count.toString(),
                                 style: titilliumSemiBold.copyWith(
-                                    color: Theme.of(context).cardColor,
+                                    color: kPrimaryBlue,
                                     fontSize: Dimensions.fontSizeExtraSmall))))
                   else
                     const SizedBox(),

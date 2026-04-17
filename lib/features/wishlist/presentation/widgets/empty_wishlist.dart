@@ -26,7 +26,7 @@ class EmptyWishlist extends StatelessWidget {
                   textAlign: TextAlign.center),
               const SizedBox(height: 18),
               CustomButton(
-                onTap: onBrowse,
+                onPressed: onBrowse,
                 buttonText: 'Browse Products',
                 radius: 20,
                 buttonWidth: 200,

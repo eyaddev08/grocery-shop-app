@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
-import '../../domain/entities/address.dart';
+import '../../../../core/utils/images.dart';
+import '../../../../core/widgets/custom_asset_image_widget.dart';
+import '../../domain/entities/address_entity.dart';
 import '../../../../core/utils/styles.dart';
 
 class AddressCard extends StatelessWidget {
@@ -11,14 +13,15 @@ class AddressCard extends StatelessWidget {
       required this.onSelect,
       required this.onEdit,
       required this.onDelete});
-  final Address address;
+  final AddressEntity address;
   final VoidCallback onSelect;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
 
   @override
-  Widget build(BuildContext context) => GestureDetector(
+  Widget build(BuildContext context) => InkWell(
         onTap: onSelect,
+        borderRadius: BorderRadius.circular(12),
         child: Container(
           margin: const EdgeInsets.only(bottom: 16),
           padding: const EdgeInsets.all(12),
@@ -39,8 +42,7 @@ class AddressCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(address.addressType,
-                        style: textBold),
+                    Text(address.addressType, style: textBold),
                     const SizedBox(height: 16),
                     Text(address.details,
                         style: textBold.copyWith(color: kMuted)),
@@ -54,19 +56,16 @@ class AddressCard extends StatelessWidget {
                     children: [
                       InkWell(
                           onTap: onEdit,
-                          child: const SizedBox(
+                          child: SizedBox(
                             width: 49,
                             height: 16,
                             child: Text(
                               'Edit',
                               textAlign: TextAlign.right,
-                              style: TextStyle(
-                                color: Color(0xFF2A4BA0),
+                              style: textBold.copyWith(
+                                color: kPrimaryBlue,
                                 fontSize: 12,
-                                fontFamily: 'Manrope',
                                 fontWeight: FontWeight.w500,
-                                height: 1.33,
-                                letterSpacing: 0.24,
                               ),
                             ),
                           )),
@@ -74,10 +73,10 @@ class AddressCard extends StatelessWidget {
                       InkWell(
                         borderRadius: BorderRadius.circular(12),
                         onTap: onDelete,
-                        child: SizedBox(
+                        child: const SizedBox(
                           width: 24,
                           height: 24,
-                          child: Image.asset('assets/images/delete.png',
+                          child: CustomAssetImageWidget(Images.delete,
                               height: 18, width: 18),
                         ),
                       ),

@@ -7,7 +7,7 @@ class Images {
   static const String bagIcon = 'assets/svg/bag_icon.svg';
   static const String arrIcon = 'assets/svg/arr_icon.svg';
   static const String locationIcon = 'assets/svg/location-icon1.svg';
-    static const String officeIcon = 'assets/images/office.png';
+  static const String officeIcon = 'assets/images/office.png';
 
   static const String timeIcon = 'assets/svg/time-circle.svg';
   static const chatIcon = 'assets/svg/chat-icon1.svg';
@@ -22,6 +22,10 @@ class Images {
   static const String emptyImage = 'assets/svg/empty_image.svg';
 
   static const String logo = 'assets/images/logo.png';
+  static const String profile = 'assets/images/profile.png';
+  static const String phone = 'assets/images/call_icon.png';
+  static const String orderId = 'assets/images/order_id_icon.png';
+
   static const String snackbarError = 'assets/images/sanckbar_error.png';
   static const String snackbarWarning = 'assets/images/snackbar_warning.png';
   static const String snackbarTickmark = 'assets/images/snackbar_tickmark.png';

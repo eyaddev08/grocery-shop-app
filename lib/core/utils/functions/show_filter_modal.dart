@@ -6,7 +6,7 @@ import '../../../features/search/presentation/manager/search_state.dart';
 import '../../../features/search/presentation/widgets/filter_bottom_sheet.dart';
 
 void showFilterModal(BuildContext context, SearchLoaded state) {
-    showModalBottomSheet(
+    showModalBottomSheet<BottomSheet>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,

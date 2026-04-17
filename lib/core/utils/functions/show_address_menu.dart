@@ -46,14 +46,14 @@
 // lib/core/utils/functions/show_address_menu.dart
 
 import 'package:flutter/material.dart';
-import '../../../features/checkout/domain/entities/address.dart';
+import '../../../features/checkout/domain/entities/address_entity.dart';
 import '../../constants/app_colors.dart';
 import '../../utils/styles.dart';
 
-Future<Address?> showAddressMenu(
+Future<AddressEntity?> showAddressMenu(
   BuildContext context,
   GlobalKey addressKey,
-  List<Address>? addresses, {
+  List<AddressEntity>? addresses, {
   bool isLoading = false,
   required VoidCallback onAddAddress,
 }) async {
@@ -75,13 +75,13 @@ Future<Address?> showAddressMenu(
 
   // ===== 1) Loading state: show 3 shimmer placeholders (disabled)
   if (isLoading) {
-    return showMenu<Address>(
+    return showMenu<AddressEntity>(
       color: const Color(0xFF142F74),
       context: context,
       position: position,
       items: List.generate(
         3,
-        (i) => PopupMenuItem<Address>(
+        (i) => PopupMenuItem<AddressEntity>(
           enabled: false,
           child: Row(
             children: [
@@ -114,19 +114,19 @@ Future<Address?> showAddressMenu(
 
   // ===== 2) No addresses: show message + add button
   if (addresses == null || addresses.isEmpty) {
-    return showMenu<Address>(
+    return showMenu<AddressEntity>(
       color: const Color(0xFF142F74),
       context: context,
       position: position,
       items: [
-        PopupMenuItem<Address>(
+        PopupMenuItem<AddressEntity>(
           enabled: false,
           child: Text(
             'No saved  addresses',
             style: titleRegular.copyWith(color: kLightGrayBg),
           ),
         ),
-        PopupMenuItem<Address>(
+        PopupMenuItem<AddressEntity>(
           enabled: true,
           child: InkWell(
             onTap: () {
@@ -151,12 +151,12 @@ Future<Address?> showAddressMenu(
   }
 
   // ===== 3) Show real addresses
-  return showMenu<Address>(
+  return showMenu<AddressEntity>(
     color: const Color(0xFF142F74),
     context: context,
     position: position,
     items: addresses
-        .map((a) => PopupMenuItem<Address>(
+        .map((a) => PopupMenuItem<AddressEntity>(
               value: a,
               child: Row(
                 children: [

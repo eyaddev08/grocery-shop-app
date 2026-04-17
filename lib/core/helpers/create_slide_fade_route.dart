@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Route createSlideFadeRoute(Widget page, {RouteSettings? settings}) =>
+Route<dynamic> createSlideFadeRoute(Widget page, {RouteSettings? settings}) =>
     PageRouteBuilder(
       settings: settings,
       transitionDuration: const Duration(milliseconds: 480),
@@ -8,9 +8,9 @@ Route createSlideFadeRoute(Widget page, {RouteSettings? settings}) =>
       pageBuilder: (context, animation, secondaryAnimation) => page,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         final offset = Tween<Offset>(
-                begin: const Offset(1.0, 0.0), end: Offset.zero)
+                begin: const Offset(1, 0), end: Offset.zero)
             .animate(CurvedAnimation(parent: animation, curve: Curves.easeOut));
-        final opacity = Tween<double>(begin: 5.0, end: 5.0)
+        final opacity = Tween<double>(begin: 5, end: 5)
             .animate(CurvedAnimation(parent: animation, curve: Curves.easeIn));
         return SlideTransition(
           position: offset,

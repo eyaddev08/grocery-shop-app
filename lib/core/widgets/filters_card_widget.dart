@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_shop_app/core/constants/app_colors.dart';
 import 'package:shimmer/shimmer.dart';
+
+import '../utils/styles.dart';
 
 class FiltersCardWidget extends StatelessWidget {
   const FiltersCardWidget({
@@ -18,8 +21,8 @@ class FiltersCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     if (isLoading) {
       return Shimmer.fromColors(
-        baseColor: Colors.grey.shade300,
-        highlightColor: Colors.grey.shade100,
+        baseColor: kBaseColor,
+        highlightColor: kHighlightColor,
         child: Container(
           width: 80,
           height: 36,
@@ -27,7 +30,7 @@ class FiltersCardWidget extends StatelessWidget {
             color: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
-              side: const BorderSide(color: Color(0xFFB2BACE)),
+              side: const BorderSide(color: kMutedGray),
             ),
           ),
         ),
@@ -40,12 +43,11 @@ class FiltersCardWidget extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: ShapeDecoration(
-          color: active ? const Color(0xFFF9B023) : Colors.white,
+          color: active ? kAccentYellow : Colors.white,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
               side: BorderSide(
-                color:
-                    active ? const Color(0xFFF9B023) : const Color(0xFFB2BACE),
+                color: active ? kAccentYellow : kMutedGray,
               )),
         ),
         child: Row(
@@ -55,12 +57,8 @@ class FiltersCardWidget extends StatelessWidget {
             Text(
               filterName,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color:
-                    active ? const Color(0xFFFAFAFC) : const Color(0xFF61697C),
-                fontSize: 14,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.w600,
+              style: textBold.copyWith(
+                color: active ? const Color(0xFFFAFAFC) : kMuted,
                 height: 1.43,
               ),
             ),

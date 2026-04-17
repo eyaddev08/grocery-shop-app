@@ -1,3 +1,8 @@
+
+
+import '../../../wishlist/domain/entities/wishlist_product_entity.dart';
+import '../mappers/product_entity_mapper.dart';
+
 class ProductEntity {
   const ProductEntity({
     required this.id,
@@ -11,7 +16,7 @@ class ProductEntity {
     this.discountType,
     this.thumbnail,
     this.images = const [],
-    this.nutritionLines = const [],
+    this.nutritionLines = const {},
     this.rating = 0.0,
     this.reviewCount = 0,
     this.inWishlist = false,
@@ -22,6 +27,8 @@ class ProductEntity {
     this.minOrderQty = 1,
     this.shippingCost,
     this.status = 1,
+    this.slug = '',
+
   });
   final String id;
   final String name;
@@ -34,7 +41,7 @@ class ProductEntity {
   final String? discountType; // 'amount' or 'percent' (optional)
   final String? thumbnail; // url
   final List<String> images; // urls
-  final List<String> nutritionLines;
+  final  Map<String, String> nutritionLines;
   final double rating; // average rating 0.0 - 5.0
   final int reviewCount;
   final bool inWishlist;
@@ -45,4 +52,9 @@ class ProductEntity {
   final int minOrderQty;
   final double? shippingCost;
   final int status;
+  final String slug;
+
+    WishlistProductEntity toWishlistProduct() => ProductEntityMapper.toWishlistProduct(this);
+
 }
+

@@ -1,45 +1,63 @@
-import '../../domain/entities/cart_item.dart';
+import '../../domain/entities/cart_item_entity.dart';
+import '../mappers/cart_item_mapper.dart';
 
-class CartItemModel extends CartItem {
-  const CartItemModel({
-    required super.id,
-    required super.title,
-    required super.price,
-    required super.image,
-    required super.quantity,
-    required super.regularPrice,
-  });
+class CartItemModel extends CartItemEntity{
+  const CartItemModel(
+      {required this.id,
+      required this.name,
+      required this.price,
+      required this.thumbnail,
+      required this.quantity,
+       this.originalPrice,
+      this.discountedPrice,
+      this.maxQuantity,
+      this.discount,
+      this.discountType,
+      this.tax,
+      this.taxModel,
+      this.taxType,
+      this.increment,
+      this.decrement}) : super(
+        id: id,
+        name: name,
+        price: price,
+        originalPrice: originalPrice,
+        quantity: quantity,
+        thumbnail: thumbnail,
+        discountedPrice: discountedPrice,
+        maxQuantity: maxQuantity,
+        discount: discount,
+        discountType: discountType,
+        tax: tax,
+        taxModel: taxModel,
+        taxType: taxType,
+        increment: increment,
+        decrement: decrement);
+  final String id;
+  final String name;
+  final double price;
+  final double? originalPrice;
+  final int quantity;
+  final String thumbnail;
+  final double? discountedPrice;
+  final int? maxQuantity;
 
-  factory CartItemModel.fromJson(Map<String, dynamic> json) {
-    return CartItemModel(
-      id: json['id'] as String,
-      title: json['title'] as String,
-      price: (json['price'] as num).toDouble(),
-      image: json['image'] as String?,
-      quantity: json['quantity'] as int,
-      regularPrice: (json['regularPrice'] as num?)?.toDouble(),
-    );
-  }
+  final double? discount;
+  final String? discountType;
+  final double? tax;
+  final String? taxModel;
+  final String? taxType;
+  final bool? increment;
+  final bool? decrement;
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'price': price,
-      'image': image,
-      'quantity': quantity,
-      'regularPrice': regularPrice,
-    };
-  }
 
-  factory CartItemModel.fromEntity(CartItem item) {
-    return CartItemModel(
-      id: item.id,
-      title: item.title,
-      price: item.price,
-      image: item.image,
-      quantity: item.quantity,
-      regularPrice: item.regularPrice,
-    );
-  }
+  factory CartItemModel.fromJson(Map<String, dynamic> json) => 
+      CartItemMapper.fromJson(json);
+
+  Map<String, dynamic> toJson() => CartItemMapper.toJson(this);
+
+  CartItemEntity toEntity() => CartItemMapper.toEntity(this);
+
+  CartItemModel toModel() => CartItemMapper.toModel(this);
+  
 }

@@ -2,12 +2,10 @@ import 'package:dartz/dartz.dart';
 import '../../../../core/error/failure.dart';
 import '../repositories/search_repository.dart';
 
-class ClearSearchHistory {
+class ClearSearchHistoryUseCase {
+
+  ClearSearchHistoryUseCase(this.repository);
   final SearchRepository repository;
 
-  ClearSearchHistory(this.repository);
-
-  Future<Either<Failure, void>> call() async {
-    return await repository.clearSearchHistory();
-  }
+  Future<Either<Failure, void>> call() async => await repository.clearSearchHistory();
 }

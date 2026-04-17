@@ -13,13 +13,16 @@ class MenuButtonWidget extends StatelessWidget {
       this.isNotification = false,
       this.isProfile = false,
       this.trailing,
-      this.onTap});
+      this.onTap,
+      this.iconColor = kAccentYellow});
   final String image;
   final String? title;
 
   final Widget? trailing;
   final bool isNotification;
   final bool isProfile;
+  final Color iconColor;
+
   final VoidCallback? onTap;
 
   @override
@@ -31,7 +34,7 @@ class MenuButtonWidget extends StatelessWidget {
         width: 25,
         height: 25,
         fit: BoxFit.fill,
-        color: kAccentYellow.withOpacity(0.9),
+        color: iconColor.withOpacity(0.9),
       ),
       title: Text(title!,
           style: titilliumRegular.copyWith(

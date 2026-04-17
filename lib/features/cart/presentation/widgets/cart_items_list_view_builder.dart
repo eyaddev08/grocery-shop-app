@@ -6,31 +6,31 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/services/navigation_service.dart';
 import '../../../../core/utils/functions/show_removed_snack_bar.dart';
 import '../../../../core/widgets/custom_button_widget.dart';
-import '../../domain/entities/cart_item.dart';
+import '../../domain/entities/cart_item_entity.dart';
 import '../manager/cart_cubit.dart';
 import 'cart_item_card.dart';
 import 'cart_summary_section.dart';
+import 'empty_cart_state.dart';
 
 class CartItemsListViewBuilder extends StatelessWidget {
   const CartItemsListViewBuilder({
     super.key,
     required this.items,
-
+    required this.totalPrice,
   });
 
-  final List<CartItem> items;
+  final List<CartItemEntity> items;
+  final num totalPrice;
 
   @override
   Widget build(BuildContext context) {
-      final subtotal = items.fold<double>(
-                    0, (s, it) => s + it.price * it.quantity);
-                final shipping = items.isEmpty ? 0.0 : 3.5;
-                final tax = subtotal * 0.05;
-                final total = subtotal + shipping + tax;
+    final shipping = items.isEmpty ? 0.0 : 3.5;
+    // final tax = subtotal * 0.05;
+    // final total = subtotal + shipping + tax;
+    final total = totalPrice + shipping;
     return Expanded(
       child: ListView.builder(
         itemCount: items.length + 1,
-      
         itemBuilder: (context, index) {
           if (index < items.length) {
             final item = items[index];
@@ -44,19 +44,17 @@ class CartItemsListViewBuilder extends StatelessWidget {
                   color: Colors.red.shade700,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(Icons.delete_forever,
-                    color: kTextDark),
+                child: const Icon(Icons.delete_forever, color: kTextDark),
               ),
               onDismissed: (_) {
-                context.read<CartCubit>().removeItem(item.id);
+                context.read<CartCubit>().removeFromCart(item.id);
                 showRemovedSnackBar(context, item);
               },
               child: CartItemCard(
                   item: item,
                   onIncrement: () => context
                       .read<CartCubit>()
-                      .updateQuantity(
-                          item.id, item.quantity + 1),
+                      .updateQuantity(item.id, item.quantity + 1),
                   onDecrement: () {
                     final newQ = item.quantity - 1;
                     if (newQ <= 0) {
@@ -68,23 +66,28 @@ class CartItemsListViewBuilder extends StatelessWidget {
                     }
                   },
                   onRemove: () {
-                    context
-                        .read<CartCubit>()
-                        .removeItem(item.id);
+                    context.read<CartCubit>().removeFromCart(item.id);
                     showRemovedSnackBar(context, item);
                   }),
             );
           }
-          return CartSummarySection(
-            subtotal: subtotal,
-            delivery: shipping,
-            total: total,
-            button: CustomButton(
-              buttonText: 'Proceed To checkout',
-              onTap: () => NavigationService.navigateTo(
-                  AppRoutes.checkout),
-            ),
-          );
+          if (items.isNotEmpty) {
+            return CartSummarySection(
+              subtotal: totalPrice.toDouble(),
+              delivery: shipping,
+              total: total,
+              button: CustomButton(
+                buttonText: 'Proceed To checkout',
+                onPressed: () =>
+                    NavigationService.navigateTo(AppRoutes.checkout),
+              ),
+            );
+          } else {
+            return const Padding(
+              padding: EdgeInsets.symmetric(vertical: 160),
+              child: EmptyCartState(),
+            );
+          }
         },
       ),
     );

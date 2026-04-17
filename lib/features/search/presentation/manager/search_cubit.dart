@@ -8,11 +8,10 @@ import '../../../../core/utils/debounce.dart';
 import 'search_state.dart';
 
 class SearchCubit extends Cubit<SearchState> {
-  final GetSearchSuggestions getSearchSuggestions;
+  final GetSearchSuggestionsUseCase getSearchSuggestions;
   final SearchProducts searchProducts;
-  final ClearSearchHistory
-      clearSearchHistory;
-  final RemoveSearchHistoryItem removeSearchHistoryItem;
+  final ClearSearchHistoryUseCase clearSearchHistory;
+  final RemoveSearchHistoryItemUseCase removeSearchHistoryItem;
 
   late Debounce _suggestionsDebounce;
   late Debounce _searchDebounce;
@@ -53,7 +52,7 @@ class SearchCubit extends Cubit<SearchState> {
       emit(currentState.copyWith(isPaginationLoading: true));
     }
 
-    final params = SearchProductsParams(
+    final params = SearchProductsParamsUseCase(
       query: _lastQuery,
       filters: _currentFilters.isEmpty
           ? null

@@ -20,7 +20,9 @@ class CustomAppBarWidget extends StatelessWidget {
     this.labelColor = Colors.white,
     this.isBackButtonExist = false,
     this.showSearchIcon = true,
+    this.showCartIcon = true,
     this.onBackPressed,
+    this.onSearch,
   });
   final String label;
   final Color backgroundColor;
@@ -30,8 +32,10 @@ class CustomAppBarWidget extends StatelessWidget {
   final bool centerTitle;
   final bool isBackButtonExist;
   final bool showSearchIcon;
+  final bool showCartIcon;
 
   final VoidCallback? onBackPressed;
+  final VoidCallback? onSearch;
 
   @override
   Widget build(BuildContext context) {
@@ -70,59 +74,65 @@ class CustomAppBarWidget extends StatelessWidget {
             : null,
         title: Text(label,
             style: textBold.copyWith(
-              color: labelColor,
-              fontSize: labelSize * scale,
-            )),
+                color: labelColor.withOpacity(0.8),
+                fontSize: labelSize * scale,
+                fontWeight: FontWeight.w400)),
         actions: [
           if (showSearchIcon)
-            CustomAssetImageWidget(Images.searchIcon,
-                color: labelColor, height: 22 * scale)
+            IconButton(
+              onPressed: onSearch,
+              icon: CustomAssetImageWidget(Images.searchIcon,
+                  color: labelColor, height: 22 * scale),
+            )
           else
             const SizedBox.shrink(),
           const SizedBox(width: 8),
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              IconButton(
-                onPressed: () {
-                  NavigationService.navigateTo(AppRoutes.cart);
-                },
-                icon: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: CustomAssetImageWidget(
-                    Images.bagIcon,
-                    height: 22,
-                    color: labelColor,
+          if (showCartIcon)
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: IconButton(
+                    onPressed: () {
+                      NavigationService.navigateTo(AppRoutes.cart);
+                    },
+                    icon: CustomAssetImageWidget(
+                      Images.bagIcon,
+                      height: 22,
+                      color: labelColor,
+                    ),
                   ),
                 ),
-              ),
-              Positioned(
-                right: 14 * scale,
-                top: 6 * scale,
-                child: Container(
-                    width: 22 * scale,
-                    height: 22 * scale,
-                    decoration: BoxDecoration(
-                        color: kYellow,
-                        shape: BoxShape.circle,
-                        border:
-                            Border.all(color: Colors.white, width: 2 * scale)),
-                    child: BlocBuilder<CartCubit, CartState>(
-                      builder: (context, state) {
-                        int count = 0;
-                        if (state is CartLoaded) count = state.items.length;
+                Positioned(
+                  right: 14 * scale,
+                  top: 6 * scale,
+                  child: Container(
+                      width: 22 * scale,
+                      height: 22 * scale,
+                      decoration: BoxDecoration(
+                          color: kYellow,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                              color: Colors.white, width: 2 * scale)),
+                      child: BlocBuilder<CartCubit, CartState>(
+                        builder: (context, state) {
+                          int count = 0;
+                          if (state.status == CartStatus.loaded) count = state.items.length;
 
-                        return Center(
-                            child: Text(count.toString(),
-                                style: textBold.copyWith(
-                                  color: Colors.white,
-                                  fontSize: 12 * scale,
-                                )));
-                      },
-                    )),
-              )
-            ],
-          ),
+                          return Center(
+                              child: Text(count.toString(),
+                                  style: textBold.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 12 * scale,
+                                  )));
+                        },
+                      )),
+                )
+              ],
+            )
+          else
+            const SizedBox.shrink()
         ],
       ),
     );

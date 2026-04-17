@@ -1,196 +1,104 @@
 import 'package:dio/dio.dart';
 import '../../../../core/error/exception.dart';
 import '../models/wishlist_product_model.dart';
-import 'wishlist_remote_data_source.dart';
+
+abstract class WishlistRemoteDataSource {
+  Future<List<WishlistProductModel>> getWishlist();
+
+  Future<WishlistProductModel> addToWishlist(WishlistProductModel product);
+
+  Future<void> removeFromWishlist(String productId);
+
+  Future<WishlistProductModel> toggleFavorite(String productId);
+}
+
+
 
 class WishlistRemoteDataSourceImpl implements WishlistRemoteDataSource {
+
   WishlistRemoteDataSourceImpl({required this.client, this.baseUrl = ''});
   final Dio client;
   final String baseUrl;
 
-  Map<String, dynamic>? _toMap(dynamic data) {
-    if (data == null) return null;
-    if (data is Map<String, dynamic>) return data;
-    if (data is Map) return Map<String, dynamic>.from(data);
-    return null;
-  }
 
   @override
-  Future<List<WishlistProductModel>> getWishlist() async {
-    try {
-      final response = await client.get<dynamic>(
-        '$baseUrl/api/wishlist',
-        options: Options(
-          headers: {'Content-Type': 'application/json'},
-        ),
+  Future<List<WishlistProductModel>> getWishlist() async =>
+      _processRequest<List<WishlistProductModel>>(
+        request: () => client.get('$baseUrl/api/wishlist'),
+        onSuccess: (data) {
+          final List<dynamic> rawList =
+              (data['data'] ?? data['products'] ?? data['wishlist'] ?? <List<dynamic>>[])  as List<dynamic>;
+          return rawList
+              .map((e) =>
+                  WishlistProductModel.fromJson(Map<String, dynamic>.from(e as Map<String, dynamic>)))
+              .toList();
+        },
       );
-
-      if (response.statusCode != 200) {
-        throw ServerException('Failed to load wishlist');
-      }
-
-      final map = _toMap(response.data);
-      if (map == null) {
-        throw ServerException('Invalid response format');
-      }
-
-      final raw =
-          map['data'] ?? map['products'] ?? map['wishlist'] ?? <dynamic>[];
-      if (raw is List) {
-        return raw
-            .map<WishlistProductModel?>((e) {
-              if (e is Map) {
-                return WishlistProductModel.fromJson(
-                  Map<String, dynamic>.from(e),
-                );
-              }
-              return null;
-            })
-            .whereType<WishlistProductModel>()
-            .toList();
-      }
-
-      return <WishlistProductModel>[];
-    } on DioException catch (e) {
-      if (e.type == DioExceptionType.connectionTimeout ||
-          e.type == DioExceptionType.receiveTimeout ||
-          e.type == DioExceptionType.sendTimeout) {
-        throw NetworkException('Connection timeout');
-      }
-      if (e.response?.statusCode == 404) {
-        return <WishlistProductModel>[];
-      }
-      throw ServerException('Failed to load wishlist: ${e.message}');
-    } catch (e) {
-      if (e is ServerException || e is NetworkException) {
-        rethrow;
-      }
-      throw ServerException('Unexpected error: ${e.toString()}');
-    }
-  }
 
   @override
   Future<WishlistProductModel> addToWishlist(
-      WishlistProductModel product) async {
-    try {
-      final response = await client.post<dynamic>(
-        '$baseUrl/api/wishlist',
-        data: product.toJson(),
-        options: Options(
-          headers: {'Content-Type': 'application/json'},
-        ),
+          WishlistProductModel product) async =>
+      _processRequest<WishlistProductModel>(
+        request: () => client.post('$baseUrl/api/wishlist', data: product.toJson()),
+        onSuccess: (data) {
+          final productData = data['data'] ?? data['product'] ?? data;
+          return WishlistProductModel.fromJson(
+              Map<String, dynamic>.from(productData as Map<String, dynamic>));
+        },
       );
-
-      if (response.statusCode != 200 && response.statusCode != 201) {
-        throw ServerException('Failed to add product to wishlist');
-      }
-
-      final map = _toMap(response.data);
-      if (map == null) {
-        throw ServerException('Invalid response format');
-      }
-
-      final productData = map['data'] ?? map['product'] ?? map;
-      if (productData is Map) {
-        return WishlistProductModel.fromJson(
-          Map<String, dynamic>.from(productData),
-        );
-      }
-
-      // إذا لم يكن هناك بيانات في الاستجابة، نعيد المنتج المرسل
-      return product;
-    } on DioException catch (e) {
-      if (e.type == DioExceptionType.connectionTimeout ||
-          e.type == DioExceptionType.receiveTimeout ||
-          e.type == DioExceptionType.sendTimeout) {
-        throw NetworkException('Connection timeout');
-      }
-      if (e.response?.statusCode == 409) {
-        throw ServerException('Product already exists in wishlist');
-      }
-      throw ServerException('Failed to add product: ${e.message}');
-    } catch (e) {
-      if (e is ServerException || e is NetworkException) {
-        rethrow;
-      }
-      throw ServerException('Unexpected error: ${e.toString()}');
-    }
-  }
 
   @override
   Future<void> removeFromWishlist(String productId) async {
-    try {
-      final response = await client.delete<dynamic>(
-        '$baseUrl/api/wishlist/$productId',
-        options: Options(
-          headers: {'Content-Type': 'application/json'},
-        ),
-      );
-
-      if (response.statusCode != 200 && response.statusCode != 204) {
-        throw ServerException('Failed to remove product from wishlist');
-      }
-    } on DioException catch (e) {
-      if (e.type == DioExceptionType.connectionTimeout ||
-          e.type == DioExceptionType.receiveTimeout ||
-          e.type == DioExceptionType.sendTimeout) {
-        throw NetworkException('Connection timeout');
-      }
-      if (e.response?.statusCode == 404) {
-        // المنتج غير موجود، نعتبر العملية ناجحة
-        return;
-      }
-      throw ServerException('Failed to remove product: ${e.message}');
-    } catch (e) {
-      if (e is ServerException || e is NetworkException) {
-        rethrow;
-      }
-      throw ServerException('Unexpected error: ${e.toString()}');
-    }
+    await _processRequest<void>(
+      request: () => client.delete('$baseUrl/api/wishlist/$productId'),
+      onSuccess: (_) {},
+    );
   }
 
   @override
-  Future<WishlistProductModel> toggleFavorite(String productId) async {
-    try {
-      final response = await client.patch<dynamic>(
-        '$baseUrl/api/wishlist/$productId/toggle',
-        options: Options(
-          headers: {'Content-Type': 'application/json'},
-        ),
+  Future<WishlistProductModel> toggleFavorite(String productId) async =>
+      _processRequest<WishlistProductModel>(
+        request: () => client.patch('$baseUrl/api/wishlist/$productId/toggle'),
+        onSuccess: (data) {
+          final productData = data['data'] ?? data['product'] ?? data;
+          return WishlistProductModel.fromJson(
+              Map<String, dynamic>.from(productData as Map<String, dynamic>));
+        },
       );
 
-      if (response.statusCode != 200) {
-        throw ServerException('Failed to toggle favorite status');
-      }
+  Future<T> _processRequest<T>({
+    required Future<Response<dynamic>> Function() request,
+    required T Function(dynamic data) onSuccess,
+  }) async {
+    try {
+      final response = await request();
 
-      final map = _toMap(response.data);
-      if (map == null) {
-        throw ServerException('Invalid response format');
+      if (response.statusCode! >= 200 && response.statusCode! < 300) {
+        return onSuccess(response.data);
+      } else {
+        throw ServerException(
+            'Server error with status: ${response.statusCode}');
       }
-
-      final productData = map['data'] ?? map['product'] ?? map;
-      if (productData is Map) {
-        return WishlistProductModel.fromJson(
-          Map<String, dynamic>.from(productData),
-        );
-      }
-
-      throw ServerException('Invalid response format');
     } on DioException catch (e) {
-      if (e.type == DioExceptionType.connectionTimeout ||
-          e.type == DioExceptionType.receiveTimeout ||
-          e.type == DioExceptionType.sendTimeout) {
-        throw NetworkException('Connection timeout');
-      }
-      if (e.response?.statusCode == 404) {
-        throw ServerException('Product not found in wishlist');
-      }
-      throw ServerException('Failed to toggle favorite: ${e.message}');
+      throw _handleDioError(e);
     } catch (e) {
-      if (e is ServerException || e is NetworkException) {
-        rethrow;
-      }
-      throw ServerException('Unexpected error: ${e.toString()}');
+      throw ServerException(e.toString());
     }
+  }
+
+  Exception _handleDioError(DioException e) {
+    if (e.type == DioExceptionType.connectionTimeout ||
+        e.type == DioExceptionType.receiveTimeout) {
+      return NetworkException('Connection timeout');
+    }
+
+    // معالجة الأخطاء بناءً على الـ status code القادم من السيرفر
+    final statusCode = e.response?.statusCode;
+    if (statusCode == 404) return ServerException('Resource not found');
+    if (statusCode == 409)
+      return ServerException('Conflict: Item already exists');
+    if (statusCode == 401) return ServerException('Unauthorized access');
+
+    return ServerException(e.message ?? 'Unknown server error');
   }
 }

@@ -1,14 +1,12 @@
 import 'package:dartz/dartz.dart' hide Order;
 import 'package:grocery_shop_app/core/error/failure.dart';
-import '../entities/order.dart';
+import '../entities/order_entity.dart';
 import '../repositories/order_repository.dart';
 
-class GetOrders {
+class GetOrdersUseCase {
+
+  GetOrdersUseCase(this.repository);
   final OrderRepository repository;
 
-  GetOrders(this.repository);
-
-  Future<Either<Failure, List<Order>>> call() async {
-    return await repository.getOrders();
-  }
+  Future<Either<Failure, List<OrderEntity>>> call() async => await repository.getOrders();
 }

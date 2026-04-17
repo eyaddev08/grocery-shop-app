@@ -1,7 +1,4 @@
-// ملف مسؤول عن نموذج بيانات تسجيل المستخدم الجديد.
-
 class UserRegisterModel {
-
   const UserRegisterModel({
     required this.name,
     required this.email,
@@ -14,10 +11,9 @@ class UserRegisterModel {
   final String passwordConfirmation;
 
   Map<String, dynamic> toJson() => {
-      'name': name,
-      'email': email,
-      'password': password,
-      'password_confirmation': passwordConfirmation,
-    };
+        'name': name,
+        'email': email,
+        'password': password,
+        'password_confirmation': passwordConfirmation,
+      };
 }
-

@@ -18,8 +18,8 @@ class DealProductShimmerCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         child: Shimmer.fromColors(
-          baseColor: Colors.grey.shade300,
-          highlightColor: Colors.grey.shade100,
+          baseColor: kBaseColor,
+          highlightColor: kHighlightColor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -27,8 +27,8 @@ class DealProductShimmerCard extends StatelessWidget {
                 child: Container(
                     width: 98,
                     height: 98,
-                    decoration: const BoxDecoration(
-                        color: Colors.white, shape: BoxShape.circle)),
+                    decoration:  BoxDecoration(
+                        color: kBaseColor, shape: BoxShape.circle)),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -37,15 +37,15 @@ class DealProductShimmerCard extends StatelessWidget {
                       width: 32,
                       height: 32,
                       decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: kBaseColor,
                           borderRadius: BorderRadius.circular(6))),
                 ],
               ),
               Container(width: 60, height: 15, color: Colors.black),
               const SizedBox(height: 6),
-              Container(width: 140, height: 12, color: Colors.white),
+              Container(width: 140, height: 12, color: kBaseColor),
               const SizedBox(height: 3),
-              Container(width: 65, height: 12, color: Colors.white),
+              Container(width: 65, height: 12, color: kBaseColor),
             ],
           ),
         ),

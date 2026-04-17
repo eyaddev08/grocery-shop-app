@@ -1,12 +1,12 @@
 import 'package:dartz/dartz.dart';
 import '../../../../core/error/failure.dart';
-import '../entities/wishlist_product.dart';
+import '../entities/wishlist_product_entity.dart';
 import '../repositories/wishlist_repository.dart';
 
-class RemoveFromWishlist {
+class RemoveFromWishlistUseCase {
+  RemoveFromWishlistUseCase(this.repository);
   final WishlistRepository repository;
-  RemoveFromWishlist(this.repository);
 
-  Future<Either<Failure, List<WishlistProduct>>> call(String productId) =>
+  Future<Either<Failure, List<WishlistProductEntity>>> call(String productId) =>
       repository.removeFromWishlist(productId);
 }

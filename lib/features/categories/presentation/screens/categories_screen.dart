@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/utils/styles.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/filter_shimmer_list_view_widget.dart';
 import '../manager/categories_cubit.dart';
@@ -41,7 +42,10 @@ class CategoriesScreen extends StatelessWidget {
                   );
                 }
                 if (state is CategoriesError) {
-                  return Center(child: Text(state.message));
+                  return Center(child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(state.message, style: textBold),
+                  ));
                 }
                 if (state is CategoriesLoaded) {
                   final category = state.categories;

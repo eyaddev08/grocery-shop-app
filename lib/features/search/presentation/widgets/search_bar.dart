@@ -5,15 +5,9 @@ import '../../../../core/utils/images.dart';
 import '../../../../core/utils/styles.dart';
 import '../../../../core/widgets/custom_asset_image_widget.dart';
 
-class AppSearchBar extends StatelessWidget {
-  final TextEditingController controller;
-  final String hintText;
-  final ValueChanged<String>? onChanged;
-  final VoidCallback? onSearch;
-  final VoidCallback? onClear;
-  final bool autoFocus;
+class CustomSearchBar extends StatelessWidget {
 
-  const AppSearchBar({
+  const CustomSearchBar({
     super.key,
     required this.controller,
     this.hintText = 'Search',
@@ -22,6 +16,12 @@ class AppSearchBar extends StatelessWidget {
     this.onClear,
     this.autoFocus = false,
   });
+  final TextEditingController controller;
+  final String hintText;
+  final ValueChanged<String>? onChanged;
+  final VoidCallback? onSearch;
+  final VoidCallback? onClear;
+  final bool autoFocus;
 
   @override
   Widget build(BuildContext context) => Row(children: [

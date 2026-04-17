@@ -68,4 +68,6 @@ class ValidateCheck {
     if (v.trim().length < 3) return 'Invalid CVC';
     return null;
   }
+
+  // static validatePhone(String? value) {}
 }

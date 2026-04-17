@@ -24,12 +24,19 @@ class TitleBody extends StatelessWidget {
                 fontSize: 18 * scale,
                 fontWeight: FontWeight.w600,
                 color: kTextDark)),
-        // InkWell(
-        //     onTap: onTap,
-        //     child:  Text('View all',
-        //         style: textBold.copyWith(
-        //             color: const Color(0xFF5E596E),
-        //             fontSize: 12,
-        //             )))
+        InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(12),
+            child: Container(
+              margin: EdgeInsets.symmetric(
+                  horizontal: 10 * scale, vertical: 8 * scale),
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(12)),
+              child: Text('View all',
+                  style: textBold.copyWith(
+                    color: kPrimaryBlue, // const Color(0xFF5E596E),
+                    fontSize: 13,
+                  )),
+            ))
       ]));
 }

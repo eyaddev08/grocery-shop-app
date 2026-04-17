@@ -6,7 +6,7 @@ import '../../../../config/di/injection_container.dart';
 import '../../../../core/helpers/create_slide_fade_route.dart';
 import '../../../../core/utils/images.dart';
 import '../../../../core/utils/styles.dart';
-import '../../../../core/widgets/add_card_widget.dart';
+import '../../../../core/widgets/add_to_cart_widget.dart';
 import '../../../../core/widgets/custom_image_widget.dart';
 import '../../../product_details/presentation/manager/product_details/product_details_cubit.dart';
 import '../../../product_details/presentation/screens/product_details_screen.dart';
@@ -68,14 +68,8 @@ class ProductCard extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          AddCardWidget(
-                              id: p!.id,
-                              title: p.name,
-                              price: p.price,
-                              regularPrice: p.originalPrice,
-                              image: p.thumbnail!,
-                              sizeContainer: 26,
-                              sizeIcon: 14),
+                          AddToCartWidget(
+                              product: p!, sizeContainer: 26, sizeIcon: 14),
                         ],
                       ),
                       Text('\$${p.price.toStringAsFixed(2)}', style: textBold),
