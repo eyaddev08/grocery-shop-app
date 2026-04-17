@@ -17,7 +17,7 @@ class TrackOrderLoading extends TrackOrderState {
 }
 
 class TrackOrderLoaded extends TrackOrderState {
-  final TrackOrder trackOrder;
+  final TrackOrderEntity trackOrder;
 
   const TrackOrderLoaded(this.trackOrder);
 

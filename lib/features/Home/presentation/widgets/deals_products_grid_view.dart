@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/entities/deal_product.dart';
+import '../../../products/domain/entities/product_entity.dart';
 import 'deal_product_card.dart';
 
 class DealsProductsGridView extends StatelessWidget {
@@ -9,7 +9,7 @@ class DealsProductsGridView extends StatelessWidget {
     required this.scale,
     required this.product,
   });
-  final List<DealsProduct> product;
+  final List<ProductEntity> product;
   final double scale;
 
   @override

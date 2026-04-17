@@ -18,30 +18,30 @@ class OrderProductInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          productName,
-          style: textBold.copyWith(
-            color: kMuted,
-            fontWeight: FontWeight.w400,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            productName,
+            style: textBold.copyWith(
+              color: kMuted,
+              fontWeight: FontWeight.w400,
+            ),
           ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          '\$${price.toStringAsFixed(2)}',
-          style: textBold.copyWith(
-            color: kTextDark,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        if (showDate && date != null) ...[
           const SizedBox(height: 4),
           Text(
-            date!,
-            style: textBold.copyWith(color: kMuted),
+            '\$${price.toStringAsFixed(2)}',
+            style: textBold.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
           ),
+          if (showDate && date != null) ...[
+            const SizedBox(height: 4),
+            Text(
+              date!,
+              maxLines: 1,
+              style: textBold.copyWith(color: kMuted),
+            ),
+          ],
         ],
-      ],
-    );
+      );
 }

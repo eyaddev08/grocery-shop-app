@@ -21,28 +21,27 @@ class ProductModel extends ProductEntity {
   factory ProductModel.fromJson(Map<String, dynamic> json, {String? baseUrl}) {
     String? sanitizeUrl(dynamic raw) {
       if (raw == null) return null;
-      String s = raw.toString().trim();
+      final String s = raw.toString().trim();
       if (s.isEmpty || s.toLowerCase() == 'null') return null;
       if (s.startsWith('http://') || s.startsWith('https://')) return s;
       if (s.startsWith('/')) {
          return baseUrl != null ? Uri.parse(baseUrl).resolve(s).toString() : s;
       }
-      return baseUrl != null ? '$baseUrl/$s' : s; // Fallback concatenation
+      return baseUrl != null ? '$baseUrl/$s' : s;
     }
 
     final id = (json['id'] ?? '').toString();
     final name = (json['name'] ?? '').toString();
 
-    // Robust Image parsing
     List<String> images = [];
     final rawImages = json['images'];
     if (rawImages is List) {
-      images = rawImages.map((e) => sanitizeUrl(e)).whereType<String>().toList();
+      images = rawImages.map(sanitizeUrl).whereType<String>().toList();
     } else if (rawImages is String) {
       try {
         final decoded = jsonDecode(rawImages);
         if (decoded is List) {
-          images = decoded.map((e) => sanitizeUrl(e)).whereType<String>().toList();
+          images = decoded.map(sanitizeUrl).whereType<String>().toList();
         }
       } catch (_) {}
     }
@@ -64,8 +63,7 @@ class ProductModel extends ProductEntity {
       return int.tryParse(v.toString()) ?? 0;
     }
 
-    // Facets/Category IDs parsing
-    List<int> categoryIds = [];
+    final List<int> categoryIds = [];
     final rawCats = json['category_ids'];
     if (rawCats is List) {
        for (var e in rawCats) {

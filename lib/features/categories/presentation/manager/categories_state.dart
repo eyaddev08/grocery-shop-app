@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../../domain/entities/category.dart';
+import '../../domain/entities/category_entity.dart';
 
 abstract class CategoriesState extends Equatable {
   const CategoriesState();
@@ -12,7 +12,7 @@ class CategoriesInitial extends CategoriesState {}
 class CategoriesLoading extends CategoriesState {}
 
 class CategoriesLoaded extends CategoriesState {
-  final List<Category> categories;
+  final List<CategoryEntity> categories;
   const CategoriesLoaded(this.categories);
   @override
   List<Object?> get props => [categories];

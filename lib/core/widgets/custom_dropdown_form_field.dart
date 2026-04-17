@@ -106,7 +106,6 @@ class _CustomDropdownFormFieldState<T> extends State<CustomDropdownFormField<T>>
               child: CompositedTransformFollower(
                 link: _layerLink,
                 showWhenUnlinked: false,
-                offset: Offset(0, 0),
                 child: FadeTransition(
                   opacity: _fade,
                   child: Material(
@@ -148,10 +147,8 @@ class _CustomDropdownFormFieldState<T> extends State<CustomDropdownFormField<T>>
                                     ? (kPrimaryBlue.withOpacity(0.06))
                                     : Colors.transparent,
                                 child: DefaultTextStyle(
-                                  style: TextStyle(
-                                    color: selected ? kPrimaryBlue : kTextDark,
-                                    fontSize: 14,
-                                    fontFamily: 'Poppins',
+                                  style: textMedium.copyWith(
+                                    color: selected ? kPrimaryBlue : kMuted,
                                   ),
                                   child: item.child,
                                 ),
@@ -193,8 +190,7 @@ class _CustomDropdownFormFieldState<T> extends State<CustomDropdownFormField<T>>
       return match.child;
     } catch (_) {
       return Text(widget.hint ?? '',
-          style: const TextStyle(
-              color: Color(0xFF9AA0B4), fontSize: 14, fontFamily: 'Poppins'));
+          style: textBold.copyWith(color: kTextDark));
     }
   }
 
@@ -219,7 +215,6 @@ class _CustomDropdownFormFieldState<T> extends State<CustomDropdownFormField<T>>
                       color: kMuted,
                       fontSize: 18,
                     ),
-                   
                     hintStyle: textBold.copyWith(
                       color: kMuted,
                       fontSize: 16,

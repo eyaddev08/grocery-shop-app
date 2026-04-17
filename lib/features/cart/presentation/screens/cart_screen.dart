@@ -20,7 +20,8 @@ class CartScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
             child: BlocBuilder<CartCubit, CartState>(
               builder: (context, state) {
-                if (state is CartInitial || state is CartLoading) {
+                if (state.status == CartStatus.loading ||
+                    state.status == CartStatus.initial) {
                   return ListView.builder(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     itemBuilder: (_, __) => const Padding(
@@ -29,22 +30,26 @@ class CartScreen extends StatelessWidget {
                     ),
                     itemCount: 5,
                   );
-                } else if (state is CartError) {
-                  return Center(child: Text(state.message));
-                } else if (state is CartEmpty) {
-                  return const EmptyCartState();
-                } else if (state is CartLoaded) {
+                } else if (state.status == CartStatus.error) {
+                  return Center(child: Text(state.errorMessage));
+                } else if (state.status == CartStatus.loaded) {
                   final items = state.items;
+                  if (items.isEmpty) {
+                    return const EmptyCartState();
+                  }
 
                   return Column(
                     children: [
                       const SizedBox(height: 10),
-                      CartItemsListViewBuilder(items: items),
+                      CartItemsListViewBuilder(
+                        items: items,
+                        totalPrice: state.totalPrice,
+                      ),
                     ],
                   );
-                } 
+                }
 
-                return  const SizedBox.shrink();
+                return const SizedBox.shrink();
               },
             ),
           ),

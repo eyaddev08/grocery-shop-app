@@ -29,7 +29,7 @@ class AppExitCard extends StatelessWidget {
                     width: 60,
                     child: Image.asset(
                       'assets/images/logout.png',
-                      color: kYellow,
+                      color: kPrimaryBlue,
                     )),
               ),
               const SizedBox(
@@ -45,7 +45,7 @@ class AppExitCard extends StatelessWidget {
                       top: Dimensions.paddingSizeSmall,
                       bottom: Dimensions.paddingSizeSmall),
                   child: Text('Do you want to close and exit app',
-                      style: textRegular.copyWith(color: kTextDark))),
+                      style: textMedium.copyWith(color: kTextDark))),
               const SizedBox(height: Dimensions.paddingSizeDefault),
               const Padding(
                   padding: EdgeInsets.symmetric(
@@ -56,7 +56,8 @@ class AppExitCard extends StatelessWidget {
                         Expanded(
                             child: CustomButton(
                           buttonText: 'Cancel',
-                          onTap: NavigationService.goBack,
+                          buttonHeight: 50,
+                          onPressed: NavigationService.goBack,
                         )),
                         SizedBox(
                           width: Dimensions.paddingSizeDefault,
@@ -65,7 +66,8 @@ class AppExitCard extends StatelessWidget {
                             child: CustomButton(
                                 backgroundColor: kYellow,
                                 buttonText: 'Exit',
-                                onTap: SystemNavigator.pop))
+                                buttonHeight: 50,
+                                onPressed: SystemNavigator.pop))
                       ]))
             ],
           ),

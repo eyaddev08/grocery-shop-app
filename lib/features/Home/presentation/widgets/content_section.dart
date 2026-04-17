@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:grocery_shop_app/core/utils/styles.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../domain/entities/deal_product.dart';
-import '../manager/deal_product/deal_product_cubit.dart';
+import '../../../../core/helpers/create_slide_fade_route.dart';
+
+import '../../../products/presentation/manager/product_cubit/product_cubit.dart';
+import '../../../products/presentation/manager/product_cubit/product_state.dart';
+import '../../../products/presentation/screens/products_screen.dart';
 import 'animated_hero_banner.dart';
 
 import 'deals_products_grid_view.dart';
@@ -24,7 +27,20 @@ class ContentSection extends StatelessWidget {
       Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         SizedBox(height: 12 * scale),
         const AnimatedHeroBanner(),
-        TitleBody(title: 'Recommended', onTap: () {}, scale: scale),
+        TitleBody(
+            title: 'Recommended',
+            onTap: () {
+              // NavigationService.navigateTo(AppRoutes.recommendedProducts);
+              Navigator.push(
+                context,
+                createSlideFadeRoute(
+                  const ProductsScreen(
+                      title: 'Recommended',
+                      source: ProductSource.recommended),
+                ),
+              );
+            },
+            scale: scale),
         SizedBox(height: 12 * scale),
         RecommendedListView(scale: scale),
         SizedBox(height: 32 * scale),
@@ -47,27 +63,35 @@ class ContentSection extends StatelessWidget {
                       label: 'Your time saved'))
             ])),
         const SizedBox(height: 18),
-        TitleBody(title: 'Deals on Fruits & Tea', onTap: () {}, scale: scale),
+        TitleBody(
+            title: 'Deals on Fruits & Tea',
+            onTap: () {
+              // NavigationService.navigateTo(AppRoutes.deals);
+              Navigator.push(
+                context,
+                createSlideFadeRoute(
+                  const ProductsScreen(
+                      title: 'Special Deals', source: ProductSource.deals),
+                ),
+              );
+            },
+            scale: scale),
         const SizedBox(height: 12),
-        BlocBuilder<DealProductCubit, DealProductState>(builder: (context, state) {
-          final cubit = context.read<DealProductCubit>();
-
-          if (state is DealProductInitial || state is DealProductLoading) {
-            cubit.loadProducts();
-
+        BlocBuilder<ProductCubit, ProductState>(builder: (context, state) {
+          if (state.status == ProductStatus.loading ||
+              state.status == ProductStatus.initial) {
             return const DealsProductShimmerGridView();
           }
-          if (state is DealProductError) {
-            return Center(child: Text(state.message));
+
+          if (state.status == ProductStatus.error) {
+            return Center(child: Text(state.errorMessage, style: textBold));
+          } else if (state.status == ProductStatus.loaded) {
+            return DealsProductsGridView(
+                scale: scale, product: state.dealsProducts);
+          } else {
+            return SizedBox.shrink();
           }
-
-          final List<DealsProduct> product =
-              state is DealProductLoaded ? state.products : <DealsProduct>[];
-
-          return DealsProductsGridView(scale: scale, product: product);
         }),
         const SizedBox(height: 50),
       ]);
 }
-
-

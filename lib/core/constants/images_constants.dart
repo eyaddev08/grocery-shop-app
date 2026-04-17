@@ -50,7 +50,6 @@ class ImagesConstants {
   static const String citrusMix =
       'https://static.vecteezy.com/system/resources/thumbnails/059/251/602/small/fresh-citrus-fruits-arranged-on-a-transparent-background-featuring-orange-lemon-lime-and-bergamot-slices-with-leaves-orange-lemon-lime-bergamot-isolated-on-transparent-background-free-png.png';
 
-  // Freepik (JPG/PNG) — ملاحظة: تحقق من ترخيص Freepik عند الاستخدام التجاري
   static const String rawMeatAssortment =
       'https://img.freepik.com/free-psd/assortment-raw-meat-cuts-wooden-board_632498-26287.jpg';
   static const String goldenFishProfile =

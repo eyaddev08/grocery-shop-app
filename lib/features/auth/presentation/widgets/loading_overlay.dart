@@ -1,4 +1,3 @@
-// ملف مسؤول عن طبقة تحميل شفافة تظهر أثناء الطلبات الشبكية.
 
 import 'package:flutter/material.dart';
 import 'package:grocery_shop_app/core/constants/app_colors.dart';

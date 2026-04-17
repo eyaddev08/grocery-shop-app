@@ -36,14 +36,10 @@
 //   const CheckoutAddressTypeLoaded( this.addressType);
 //   final List<LabelAsEntity> addressType;
 
-
 //   @override
 //   List<Object?> get props => [addressType];
 // }
 // class CheckoutUpdateAddressIndex extends CheckoutState {}
-
-
-
 
 // class CheckoutError extends CheckoutState {
 //   const CheckoutError(this.message);
@@ -56,7 +52,7 @@
 // lib/features/checkout/manager/checkout_state.dart
 
 import 'package:equatable/equatable.dart';
-import '../../domain/entities/address.dart';
+import '../../domain/entities/address_entity.dart';
 import '../../domain/entities/label_entity.dart';
 
 abstract class CheckoutState extends Equatable {
@@ -79,7 +75,7 @@ class CheckoutEmpty extends CheckoutState {
 }
 
 class CheckoutLoaded extends CheckoutState {
-  final List<Address> addresses;
+  final List<AddressEntity> addresses;
   final String? selectedAddressId;
 
   const CheckoutLoaded(this.addresses, {this.selectedAddressId});

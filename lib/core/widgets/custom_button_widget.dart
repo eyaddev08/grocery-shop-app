@@ -21,9 +21,9 @@ class CustomButton extends StatelessWidget {
     this.isLoading = false,
     this.buttonHeight = 56,
     this.buttonWidth = double.infinity,
-    this.onTap,
+    this.onPressed,
   });
-  final Function()? onTap;
+  final void Function()? onPressed;
   final String? buttonText;
   final bool isBuy;
   final bool isBorder;
@@ -41,12 +41,12 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ElevatedButton(
-        onPressed: isLoading ? null : onTap as void Function()?,
+        onPressed: isLoading ? null :  onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: onTap == null ? kMuted : backgroundColor,
+          backgroundColor: onPressed == null ? kMuted : backgroundColor,
           padding: const EdgeInsets.all(0),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         ),
         child: Container(
           width: buttonWidth,
@@ -54,12 +54,11 @@ class CustomButton extends StatelessWidget {
           alignment: Alignment.center,
           decoration: BoxDecoration(
               border: isBorder
-                  ? Border.all(color: kPrimaryBlue, width: borderWidth ?? 1)
+                  ? Border.all(
+                      color: isBorder ? kPrimaryBlue : kMuted,
+                      width: borderWidth ?? 1)
                   : null,
-              color: onTap == null
-                  ? kMuted
-                  : backgroundColor ??
-                      (isBuy ? const Color(0xffFE961C) : kPrimaryBlue),
+              color: onPressed == null ? kMuted : backgroundColor,
               borderRadius: BorderRadius.circular(radius != null
                   ? radius!
                   : isBorder
@@ -90,11 +89,11 @@ class CustomButton extends StatelessWidget {
                             )),
                       ),
                     Flexible(
-                      child: Text(buttonText ?? '',
-                          style: titilliumSemiBold.copyWith(
-                              fontSize: fontSize ?? 16,
-                              color: textColor),
-                              ),
+                      child: Text(
+                        buttonText ?? '',
+                        style: titilliumSemiBold.copyWith(
+                            fontSize: fontSize ?? 16, color: textColor),
+                      ),
                     ),
                   ],
                 ),

@@ -3,11 +3,9 @@ import '../../../../core/error/failure.dart';
 import '../../domain/repositories/cart_repository.dart';
 
 class ClearCartUseCase {
-  final CartRepository repository;
 
   ClearCartUseCase(this.repository);
+  final CartRepository repository;
 
-  Future<Either<Failure, void>> call() async {
-    return await repository.clearCart();
-  }
+  Future<Either<Failure, Unit>> call() async => await repository.clearCart();
 }

@@ -1,12 +1,13 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failure.dart';
-import '../entities/category.dart';
+import '../entities/category_entity.dart';
 import '../repositories/category_repository.dart';
 
-class GetCategories {
-  GetCategories(this.repository);
+class GetCategoriesUseCase {
+  GetCategoriesUseCase(this.repository);
   final CategoryRepository repository;
 
-  Future<Either<Failure, List<Category>>> call() async => await repository.getCategories();
+  Future<Either<Failure, List<CategoryEntity>>> call() =>
+      repository.getCategories();
 }

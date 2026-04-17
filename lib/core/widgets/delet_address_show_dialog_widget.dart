@@ -69,7 +69,7 @@ class DeletFromAddressShowDialog extends StatelessWidget {
                               fontSize: 13,
                               backgroundColor: kPrimaryBlue,
                               textColor: kSoftBg,
-                              onTap: () => Navigator.of(context).pop(false),
+                              onPressed: () => Navigator.of(context).pop(false),
                             )),
                         const SizedBox(
                           width: Dimensions.paddingSizeDefault,
@@ -82,7 +82,7 @@ class DeletFromAddressShowDialog extends StatelessWidget {
                                 fontSize: 13,
                                 backgroundColor:
                                     Theme.of(context).colorScheme.error,
-                                onTap: () {
+                                onPressed: () {
                                   // context.read<AddressCubit>().removeAddress('addressId');
                                   // Navigator.of(context).pop();
                                   Navigator.of(context).pop(true);

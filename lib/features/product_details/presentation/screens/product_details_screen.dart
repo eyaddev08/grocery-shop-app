@@ -30,7 +30,7 @@ class ProductDetailsScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: BlocProvider.value(
         value: BlocProvider.of<ProductDetailsCubit>(context)
-          ..load(id: productId, initialProduct: initialProduct),
+          ..loadProductDetails(id: productId, initialProduct: initialProduct),
         child: SafeArea(child: ProductDetailBody(designW: designW)),
       ),
     );
@@ -93,7 +93,8 @@ class ProductDetailBody extends StatelessWidget {
                     ActionButtonsRow(details: state.details),
                     const SizedBox(height: 20),
                     ProductInfoSection(
-                        desc: state.details.shortDescription ?? ''),
+                        desc: state.details.shortDescription ??
+                            'Not short description'),
                     const SizedBox(height: 18),
                     ProductNutritionalInfo(
                         nutrition: state.details.nutritionLines),
@@ -107,7 +108,7 @@ class ProductDetailBody extends StatelessWidget {
                     const SizedBox(height: 6),
                     BlocProvider.value(
                       value: BlocProvider.of<SimilarProductCubit>(context)
-                        ..load(state.details.id),
+                        ..loadSimilarProduct(state.details.id),
                       child: const SimilarProductsSection(),
                     ),
                     const SizedBox(height: 24),

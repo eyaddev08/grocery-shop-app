@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:grocery_shop_app/core/utils/dimensions.dart';
 
 import '../../../../core/constants/app_colors.dart';
-
+import '../../../../core/utils/styles.dart';
 
 class CartSummarySection extends StatelessWidget {
   const CartSummarySection({
@@ -10,14 +10,13 @@ class CartSummarySection extends StatelessWidget {
     required this.subtotal,
     required this.delivery,
     required this.total,
-   required this.button,
+    required this.button,
   });
 
   final double subtotal;
   final double delivery;
   final double total;
   final Widget button;
-
 
   @override
   Widget build(BuildContext context) => Container(
@@ -44,7 +43,7 @@ class CartSummarySection extends StatelessWidget {
                 amount: '\$${total.toStringAsFixed(2)}',
                 isTotal: true),
             const SizedBox(height: 35),
-           button,
+            button,
             const SizedBox(height: 8),
           ],
         ),
@@ -60,21 +59,16 @@ class CartSummarySection extends StatelessWidget {
           children: [
             Text(
               title,
-              style: const TextStyle(
-                color: Color(0xFF61697C),
-                fontSize: 14,
+              style: textBold.copyWith(
+                color: const Color(0xFF61697C),
                 fontWeight: FontWeight.w400,
-                fontFamily: 'Poppins',
               ),
             ),
             const Spacer(),
             Text(
               amount,
-              style: TextStyle(
-                color: const Color(0xFF1E222B),
-                fontSize: 14,
+              style: textBold.copyWith(
                 fontWeight: isTotal ? FontWeight.w600 : FontWeight.w500,
-                fontFamily: 'Poppins',
               ),
             ),
           ],

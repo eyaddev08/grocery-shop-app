@@ -7,7 +7,7 @@ import '../manager/search_cubit.dart';
 
 class SearchHistoryChip extends StatelessWidget {
   const SearchHistoryChip({super.key, required this.text, required this.onSearch});
-  final Function(String) onSearch;
+  final void Function(String) onSearch;
 
   final String text;
 

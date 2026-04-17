@@ -34,82 +34,81 @@ class OrderDeliverySection extends StatelessWidget {
   }
 
   Widget _buildDeliveryIllustration() => Column(
-      children: [
-        Stack(
-          children: [
-            Image.asset(
-              Images.deliveryImage,
-              width: 175,
-              fit: BoxFit.fill,
-            ),
-            if (riderName != null)
-              const Positioned(
-                left: 62,
-                top: 86,
-                child: OrderRiderAvatar(),
+        children: [
+          Stack(
+            children: [
+              Image.asset(
+                Images.deliveryImage,
+                width: 175,
+                fit: BoxFit.fill,
               ),
+              if (riderName != null)
+                const Positioned(
+                  left: 62,
+                  top: 86,
+                  child: OrderRiderAvatar(),
+                ),
+            ],
+          ),
+          if (riderName != null) ...[
+            const SizedBox(height: 10),
+            _buildRiderName(),
           ],
-        ),
-        if (riderName != null) ...[
-          const SizedBox(height: 10),
-          _buildRiderName(),
         ],
-      ],
-    );
+      );
 
   Widget _buildRiderName() => Row(
-      children: [
-        Text(
-          'Meet our rider, ',
-          style: titilliumRegular.copyWith(
-            color: kTextGray,
-            fontWeight: FontWeight.w400,
+        children: [
+          Text(
+            'Meet our rider, ',
+            style: titilliumRegular.copyWith(
+              color: kTextGray,
+              fontWeight: FontWeight.w400,
+            ),
           ),
-        ),
-        Text(
-          riderName!,
-          style: titilliumRegular.copyWith(
-            color: kMuted,
-            fontWeight: FontWeight.w400,
+          Text(
+            riderName!,
+            style: titilliumRegular.copyWith(
+              color: kMuted,
+              fontWeight: FontWeight.w400,
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
 
   Widget _buildMessageAndButton(Map<String, String> messageParts) => Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              messageParts['first'] ?? 'Your',
-              style: titleHeader.copyWith(
-                color: kTextDark,
-                fontSize: 20,
-                fontWeight: FontWeight.w400,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                messageParts['first'] ?? 'Your',
+                style: titleHeader.copyWith(
+                  color: kTextDark,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
-            ),
-            Text(
-              messageParts['second'] ?? 'order is on the way',
-              maxLines: 1,
-              style: titleHeader.copyWith(
-                color: kTextDark,
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
+              Text(
+                messageParts['second'] ?? 'order is on the way',
+                maxLines: 1,
+                style: titleHeader.copyWith(
+                  color: kTextDark,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 15),
-        CustomButton(
-          buttonText: 'Track Order',
-          radius: 20,
-          buttonWidth: 115,
-          onTap: onTrackOrder ?? () {},
-        ),
-      ],
-    );
+            ],
+          ),
+          const SizedBox(height: 15),
+          CustomButton(
+            buttonText: 'Track Order',
+            buttonWidth: 115,
+            onPressed: onTrackOrder ?? () {},
+          ),
+        ],
+      );
 
   Map<String, String> _parseDeliveryMessage(String? message) {
     if (message == null || message.isEmpty) {

@@ -1,71 +1,60 @@
-// data/repositories/similar_product_repository_impl.dart
 import 'package:dartz/dartz.dart';
 import '../../../../core/error/failure.dart';
-
 import '../../domain/repositories/similar_product_repository.dart';
 import '../../../products/domain/repositories/product_repository.dart';
 import '../../../products/domain/entities/product_entity.dart';
 
 class SimilarProductRepositoryImpl implements SimilarProductRepository {
-
   SimilarProductRepositoryImpl(this.productRepository);
   final ProductRepository productRepository;
 
   @override
-  Future<Either<Failure, List<ProductEntity>>> getSimilarProducts(String id, {int limit = 6})  async{
-      try {
-      final Either<Failure, List<ProductEntity>> res = await productRepository.getProducts();
-
-      return await res.fold(
+  Future<Either<Failure, List<ProductEntity>>> getSimilarProducts(String id, {int limit = 6}) async {
+    try {
+      final baseProductRes = await productRepository.getProductById(id);
+      
+      return await baseProductRes.fold(
         (failure) async => Left(failure),
-        (products) async {
-          final baseList = products.where((p) => p.id.toString() == id.toString()).toList();
-          if (baseList.isEmpty) {
-            return Left(ServerFailure(message: 'Base product not found'));
+        (baseProduct) async {
+          
+          Either<Failure, List<ProductEntity>> targetListResponse;
+          if (id.startsWith('rec_')) {
+            targetListResponse = await productRepository.getRecommendedProducts();
+          } else if (id.startsWith('deal_')) {
+            targetListResponse = await productRepository.getDealsProducts();
+          } else {
+            targetListResponse = await productRepository.getProducts();
           }
-          final base = baseList.first;
 
-          final Set<ProductEntity> found = {};
+          return targetListResponse.fold(
+            (failure) async => Left(failure),
+            (poolProducts) {
+              final availableProducts = poolProducts.where((p) => p.id != id).toList();
+              final Set<ProductEntity> similarProducts = {};
 
-          // 1) منتجات بنفس الفئات (categoryIds)
-          if (base.categoryIds.isNotEmpty) {
-            for (final catId in base.categoryIds) {
-              for (final p in products) {
-                if (p.id.toString() == base.id.toString()) continue;
-                if (p.categoryIds.contains(catId)) {
-                  found.add(p);
-                  if (found.length >= limit) break;
-                }
+              if (baseProduct.categoryIds.isNotEmpty) {
+                similarProducts.addAll(availableProducts.where(
+                  (p) => p.categoryIds.any((catId) => baseProduct.categoryIds.contains(catId))
+                ).take(limit));
               }
-              if (found.length >= limit) break;
-            }
-          }
 
-          // 2) إن لم يكفّ، منتجات بنفس الماركة
-          if (found.length < limit && base.brand != null && base.brand!.trim().isNotEmpty) {
-            for (final p in products) {
-              if (p.id.toString() == base.id.toString()) continue;
-              if (p.brand != null && p.brand!.toLowerCase() == base.brand!.toLowerCase()) {
-                found.add(p);
-                if (found.length >= limit) break;
+              if (similarProducts.length < limit && baseProduct.brand != null) {
+                similarProducts.addAll(availableProducts.where(
+                  (p) => p.brand?.toLowerCase() == baseProduct.brand?.toLowerCase()
+                ).take(limit - similarProducts.length));
               }
-            }
-          }
 
-          // 3) كاحتياط: أي منتجات أخرى تختلف عن الأساسي
-          if (found.length < limit) {
-            for (final p in products) {
-              if (p.id.toString() == base.id.toString()) continue;
-              found.add(p);
-              if (found.length >= limit) break;
-            }
-          }
+              if (similarProducts.length < limit) {
+                similarProducts.addAll(availableProducts.take(limit - similarProducts.length));
+              }
 
-          return Right(found.toList().take(limit).toList());
+              return Right(similarProducts.toList());
+            },
+          );
         },
       );
     } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
+      return Left(ServerFailure( e.toString()));
     }
   }
 }

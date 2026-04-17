@@ -70,7 +70,6 @@ class _SortBottomSheetState extends State<SortBottomSheet> {
                 ),
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Column(
@@ -104,12 +103,10 @@ class _SortBottomSheetState extends State<SortBottomSheet> {
                 ],
               ),
             ),
-
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 24),
               child: Divider(color: kMutedGray, height: 1),
             ),
-
             const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -117,13 +114,11 @@ class _SortBottomSheetState extends State<SortBottomSheet> {
                   style: textBold.copyWith(fontSize: 18, color: kPrimaryBlue)),
             ),
             const SizedBox(height: 8),
-
             _buildRadioOption('Latest Products', 'relevance'),
             _buildRadioOption('Alphabetically A-Z', 'name_asc'),
             _buildRadioOption('Alphabetically Z-A', 'name_desc'),
             _buildRadioOption('Low to high price', 'price_asc'),
             _buildRadioOption('High to low price', 'price_desc'),
-
             const SizedBox(height: 24),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -141,7 +136,7 @@ class _SortBottomSheetState extends State<SortBottomSheet> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: CustomButton(
-                      onTap: () {
+                      onPressed: () {
                         widget.onApply(_tempSort, _tempPriceRange);
                         Navigator.pop(context);
                       },

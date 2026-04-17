@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grocery_shop_app/core/constants/app_colors.dart';
+import '../../../../core/helpers/create_slide_fade_route.dart';
 import '../../../../core/utils/functions/show_filter_modal.dart';
 import '../../../../core/utils/functions/show_sort_modal.dart';
 import '../../../../core/utils/styles.dart';
@@ -75,7 +76,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                  child: AppSearchBar(
+                  child: CustomSearchBar(
                     controller: _searchController,
                     hintText: 'Search Products or store',
                     onChanged: (q) =>
@@ -173,10 +174,8 @@ class _SearchScreenState extends State<SearchScreen> {
                               onTapProduct: (product) {
                                 Navigator.push(
                                     context,
-                                    MaterialPageRoute<void>(
-                                        builder: (builder) =>
-                                            ProductDetailsScreen(
-                                                initialProduct: product)));
+                                    createSlideFadeRoute(ProductDetailsScreen(
+                                        initialProduct: product)));
                               },
                             ),
                           ),

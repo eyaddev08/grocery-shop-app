@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/utils/styles.dart';
+
 
 class ProductRatingRow extends StatelessWidget {
   const ProductRatingRow({super.key});
@@ -23,13 +25,11 @@ class ProductRatingRow extends StatelessWidget {
                       )),
             ),
             const SizedBox(width: 8),
-            const Text(
+             Text(
               '110 Reviews',
-              style: TextStyle(
-                fontFamily: 'Poppins',
-                fontSize: 14,
+              style: textBold.copyWith(
                 fontWeight: FontWeight.w400,
-                color: Color(0xFFA0A0AB),
+                color: kTextGray,
               ),
             ),
           ],

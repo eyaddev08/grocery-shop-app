@@ -77,6 +77,18 @@ class Validators {
     }
     return null;
   }
+   static String? orderId(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Order ID is required';
+    }
+    // if (value.length != 8 || !RegExp(r'^\d+$').hasMatch(value)) {
+    //   return 'Order ID must be 8 digits';
+    // }
+    // if (value.length > 10) {
+    //   return 'Order ID must be less than 10 digits';
+    // }
+    return null;
+  }
 
 
   // Phone number validation
@@ -86,15 +98,15 @@ class Validators {
     }
 
     // Remove all non-digit characters
-    final digitsOnly = value.replaceAll(RegExp(r'[^\d]'), '');
+    // final digitsOnly = value.replaceAll(RegExp(r'[^\d]'), '');
 
-    if (digitsOnly.length < 10) {
-      return 'Phone number must be at least 10 digits';
-    }
+    // if (digitsOnly.length < 10) {
+    //   return 'Phone number must be at least 10 digits';
+    // }
 
-    if (digitsOnly.length > 15) {
-      return 'Phone number must be less than 15 digits';
-    }
+    // if (digitsOnly.length > 15) {
+    //   return 'Phone number must be less than 15 digits';
+    // }
 
     return null;
   }
@@ -247,7 +259,22 @@ class Validators {
 
     return null;
   }
+  // Country validation
+  static String? country(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Country is required';
+    }
 
+    if (value.length < 2) {
+      return 'Country must be at least 2 characters long';
+    }
+
+    if (value.length > 50) {
+      return 'Country must be less than 50 characters';
+    }
+
+    return null;
+  }
   // ZIP code validation
   static String? zipCode(String? value) {
     if (value == null || value.isEmpty) {

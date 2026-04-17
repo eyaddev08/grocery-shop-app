@@ -1,24 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grocery_shop_app/config/routes/app_routes.dart';
 
-import '../../../../core/constants/app_colors.dart';
-import '../../../../core/helpers/card_number_input_formatter.dart';
-import '../../../../core/helpers/expiry_input_formatter.dart';
-import '../../../../core/helpers/validate_check.dart';
 import '../../../../core/services/navigation_service.dart';
-import '../../../../core/utils/styles.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/custom_button_widget.dart';
-import '../../../../core/widgets/custom_dropdown_form_field.dart';
 import '../../../../core/widgets/custom_snackbar_widget.dart';
-import '../../../../core/widgets/custom_textfield_widget.dart';
 import '../../../cart/presentation/manager/cart_cubit.dart';
 import '../../../cart/presentation/widgets/cart_summary_section.dart';
-import '../../../cart/domain/entities/cart_item.dart';
-import '../../domain/entiites/card_info.dart';
+import '../../../cart/domain/entities/cart_item_entity.dart';
+import '../../../orders/presentation/manager/order_cubit.dart';
 import '../manager/payment_cubit/payment_cubit.dart';
+import '../widgets/add_card_form.dart';
 
 class AddCardScreen extends StatefulWidget {
   const AddCardScreen({super.key, required this.amount});
@@ -29,34 +22,11 @@ class AddCardScreen extends StatefulWidget {
 }
 
 class _AddCardScreenState extends State<AddCardScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _nameCtrl = TextEditingController(text: 'John Smith');
-  final _cardCtrl = TextEditingController();
-  final _expCtrl = TextEditingController();
-  final _cvcCtrl = TextEditingController();
-  String _brand = 'Visa';
+  final _formKey = GlobalKey<AddCardFormState>();
 
-  @override
-  void dispose() {
-    _nameCtrl.dispose();
-    _cardCtrl.dispose();
-    _expCtrl.dispose();
-    _cvcCtrl.dispose();
-    super.dispose();
-  }
-
-  void _submit() {
-    if (!(_formKey.currentState?.validate() ?? false)) return;
-    final card = CardInfo(
-      holderName: _nameCtrl.text.trim(),
-      number: _cardCtrl.text.trim(),
-      expiry: _expCtrl.text.trim(),
-      cvc: _cvcCtrl.text.trim(),
-      brand: _brand,
-    );
-    final items = context.read<CartCubit>().state is CartLoaded
-        ? (context.read<CartCubit>().state as CartLoaded).items
-        : <CartItem>[]; // Should handle empty cart case if needed
+  void _trySubmit(List<CartItemEntity> items) {
+    final card = _formKey.currentState?.getCardIfValid();
+    if (card == null) return;
 
     context.read<PaymentCubit>().tokenizeAndPay(
           card: card,
@@ -78,6 +48,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
               showCustomSnackBarWidget(
                   'Payment success ${tx.transactionId}', context);
               context.read<CartCubit>().clearCart();
+              context.read<OrderCubit>().loadOrders();
 
               NavigationService.navigateAndReplace(AppRoutes.layout);
             } else if (state is PaymentFailureState) {
@@ -92,132 +63,35 @@ class _AddCardScreenState extends State<AddCardScreen> {
               child: Column(
                 children: [
                   const SizedBox(height: 8),
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'CARD TYPE',
-                              style: textBold.copyWith(
-                                color: kMuted,
-                                fontSize: 13.5,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          child: CustomDropdownFormField<String>(
-                            value: _brand,
-                            items: [
-                              DropdownMenuItem(
-                                  value: 'Visa',
-                                  child: Text('Visa', style: textMedium)),
-                              DropdownMenuItem(
-                                  value: 'Mastercard',
-                                  child: Text('Mastercard', style: textMedium)),
-                              DropdownMenuItem(
-                                  value: 'Amex',
-                                  child: Text('Amex', style: textMedium)),
-                            ],
-                            onChanged: (v) => setState(
-                              () => _brand = v ?? 'Visa',
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 18),
-                        CustomTextFieldWidget(
-                          controller: _nameCtrl,
-                          inputType: TextInputType.name,
-                          capitalization: TextCapitalization.words,
-                          validator: (v) => ValidateCheck.nonEmpty(
-                              v, 'Enter card holder name'),
-                          labelText: 'CARD HOLDER NAME',
-                          required: true,
-                        ),
-                        const SizedBox(height: 18),
-                        CustomTextFieldWidget(
-                          controller: _cardCtrl,
-                          inputType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                            LengthLimitingTextInputFormatter(19),
-                            CardNumberInputFormatter(),
-                          ],
-                          validator: ValidateCheck.cardValidator,
-                          labelText: 'CARD NUMBER',
-                          required: true,
-                        ),
-                        const SizedBox(height: 18),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: CustomTextFieldWidget(
-                                controller: _expCtrl,
-                                inputType: TextInputType.number,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly,
-                                  LengthLimitingTextInputFormatter(4),
-                                  ExpiryInputFormatter(),
-                                ],
-                                validator: ValidateCheck.expiryValidator,
-                                labelText: 'EXP DATE',
-                                required: true,
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: CustomTextFieldWidget(
-                                controller: _cvcCtrl,
-                                inputType: TextInputType.number,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly,
-                                  LengthLimitingTextInputFormatter(4)
-                                ],
-                                validator: ValidateCheck.cvcValidator,
-                                labelText: 'CVC',
-                                required: true,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                  AddCardForm(key: _formKey),
                   const SizedBox(height: 108),
-                  BlocBuilder<CartCubit, CartState>(
-                    builder: (context, state) {
-                      if (state is CartLoaded) {
-                        final items = state.items;
+                  BlocBuilder<CartCubit, CartState>(builder: (context, state) {
+                    if (state.status == CartStatus.loaded) {
+                      final items = state.items;
+                      final subtotal =
+                          items.fold<double>(0, (s, it) => s + it.totalPrice);
+                      final shipping = items.isEmpty ? 0.0 : 3.5;
 
-                        final subtotal = items.fold<double>(
-                            0, (s, it) => s + it.price * it.quantity);
-                        final shipping = items.isEmpty ? 0.0 : 3.5;
-                        final tax = subtotal * 0.05;
-                        final total = subtotal + shipping + tax;
-                        return CartSummarySection(
-                          subtotal: subtotal,
-                          delivery: shipping,
-                          total: total,
-                          button: BlocBuilder<PaymentCubit, PaymentState>(
-                            builder: (context, state) {
-                              final isLoading = state is PaymentLoading;
-                              return CustomButton(
-                                  buttonText: 'Make Payment',
-                                  onTap: isLoading ? null : _submit,
-                                  isLoading: isLoading);
-                            },
-                          ),
-                        );
-                      }
-                      return const SizedBox.shrink();
-                    },
-                  ),
+                      final total = subtotal + shipping;
+                      return CartSummarySection(
+                        subtotal: subtotal,
+                        delivery: shipping,
+                        total: total,
+                        button: BlocBuilder<PaymentCubit, PaymentState>(
+                          builder: (context, state) {
+                            final isLoading = state is PaymentLoading;
+                            return CustomButton(
+                                buttonText: 'Make Payment',
+                                onPressed:
+                                    isLoading ? null : () => _trySubmit(items),
+                                radius: 12,
+                                isLoading: isLoading);
+                          },
+                        ),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  })
                 ],
               ),
             ),

@@ -1,7 +1,4 @@
-// ملف مسؤول عن تعريف الكيانات الخاصة بالجلسة والمستخدم في طبقة المجال.
-
 class AuthToken {
-
   const AuthToken({
     required this.accessToken,
     required this.refreshToken,
@@ -24,4 +21,3 @@ class AuthToken {
   @override
   int get hashCode => accessToken.hashCode ^ refreshToken.hashCode;
 }
-

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grocery_shop_app/core/constants/app_colors.dart';
 import 'package:grocery_shop_app/features/auth/presentation/manager/auth_cubit.dart';
@@ -11,87 +10,56 @@ import 'core/services/navigation_service.dart';
 import 'core/theme/app_theme.dart';
 import 'core/utils/styles.dart';
 import 'core/widgets/custom_app_bar.dart';
-import 'core/widgets/custom_app_bar_widget.dart';
 import 'core/widgets/custom_button_widget.dart';
-import 'features/Home/domain/usecases/get_deal_products.dart';
-import 'features/Home/domain/usecases/get_recommended_products.dart';
-import 'features/Home/presentation/manager/deal_product/deal_product_cubit.dart';
-import 'features/Home/presentation/manager/recommended/recommended_cubit.dart';
+import 'features/products/presentation/manager/product_cubit/product_cubit.dart';
 
 import 'features/cart/presentation/manager/cart_cubit.dart';
-import 'features/categories/domain/usecases/get_categories.dart';
 import 'features/categories/presentation/manager/categories_cubit.dart';
 import 'features/checkout/presentation/manager/checkout_cubit.dart';
-
-import 'features/cart/domain/usecases/clear_cart_usecase.dart';
-import 'features/orders/domain/usecases/create_orders_usecase.dart';
-import 'features/payment/domain/usecase/tokenize_and_pay.dart';
+import 'features/location/presentation/manager/location_cubit.dart';
 import 'features/payment/presentation/manager/payment_cubit/payment_cubit.dart';
-import 'features/product_details/domain/usecases/get_product_details.dart';
-import 'features/product_details/domain/usecases/get_similar_product.dart';
 import 'features/product_details/presentation/manager/product_details/product_details_cubit.dart';
 import 'features/product_details/presentation/manager/similar_product/similar_product_cubit.dart';
-
+import 'features/profile/presentation/manager/profile_cubit.dart';
 import 'features/search/presentation/manager/search_cubit.dart';
 
+import 'features/track_order/presentation/manager/track_order_cubit.dart';
 import 'features/wishlist/presentation/manager/cubit/wishlist_cubit.dart';
-import 'features/orders/presentation/manager/orders_cubit.dart';
+import 'features/orders/presentation/manager/order_cubit.dart';
 
 class GroceryShopApp extends StatelessWidget {
   const GroceryShopApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // Set system UI overlay style
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-        systemNavigationBarColor: Colors.white,
-        systemNavigationBarIconBrightness: Brightness.dark,
-      ),
-    );
-
-    return MultiBlocProvider(
+  Widget build(BuildContext context) => MultiBlocProvider(
       providers: [
         BlocProvider(
-            create: (context) =>
-                DealProductCubit(sl<GetDealProductsUseCase>())),
+            create: (context) => sl<CategoriesCubit>()..loadCategories()),
         BlocProvider(
-            create: (context) =>
-                RecommendedCubit(sl<GetRecommendedProducts>())),
+            create: (context) => sl<LocationCubit>()..getCurrentLocation()),
         BlocProvider(
-            create: (context) =>
-                CategoriesCubit(sl<GetCategories>())..loadCategories()),
-        // BlocProvider(
-        //   create: (context) =>
-        //       ProductsCubit(GetProducts(ProductRepositoryImpl()))..load(),
-        // ),
-        BlocProvider(
-          create: (context) => sl<CartCubit>()..loadCarts(),
+          create: (_) => sl<ProfileCubit>()..loadProfile(),
         ),
         BlocProvider(
-            create: (context) => ProductDetailsCubit(sl<GetProductDetails>())),
+          create: (context) => sl<CartCubit>()..loadCart(),
+        ),
+        BlocProvider(create: (context) => sl<ProductDetailsCubit>()),
+         BlocProvider(create: (context) => sl<ProductCubit>()..loadHomeScreenData()),
+        BlocProvider(create: (context) => sl<SimilarProductCubit>()),
         BlocProvider(
-            create: (context) => SimilarProductCubit(
-                getSimilarProduct: sl<GetSimilarProduct>())),
-        BlocProvider(
-          create: (context) => sl<CheckoutCubit>()
-            ..loadAddresses(),
-            
+          create: (context) => sl<CheckoutCubit>()..loadAddresses(),
         ),
         BlocProvider(
-          create: (_) => PaymentCubit(
-            useCase: sl<TokenizeAndPayUseCase>(),
-            createOrderUseCase: sl<CreateOrderUseCase>(),
-            clearCartUseCase: sl<ClearCartUseCase>(),
-          ),
+          create: (_) => sl<PaymentCubit>(),
         ),
         BlocProvider(
           create: (_) => sl<WishlistCubit>()..loadWishlist(),
         ),
         BlocProvider(
-          create: (_) => OrdersCubit(getOrdersUseCase: sl())..loadOrders(),
+          create: (_) => sl<OrderCubit>()..loadOrders(),
+        ),
+         BlocProvider(
+          create: (context) => sl<TrackOrderCubit>(),
         ),
         BlocProvider(
           create: (_) => sl<SearchCubit>()..loadSuggestions(''),
@@ -118,7 +86,6 @@ class GroceryShopApp extends StatelessWidget {
         ),
       ),
     );
-  }
 }
 
 class NotFoundScreen extends StatelessWidget {
@@ -151,7 +118,7 @@ class NotFoundScreen extends StatelessWidget {
                   style: textBold.copyWith(color: kMuted)),
               const SizedBox(height: 24),
               const CustomButton(
-                onTap: NavigationService.goBack,
+                onPressed: NavigationService.goBack,
                 buttonText: 'Back to Home',
                 buttonWidth: 180,
                 buttonHeight: 48,

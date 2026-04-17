@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../config/di/injection_container.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/helpers/create_slide_fade_route.dart';
 import '../../../../core/utils/styles.dart';
+import '../../../../core/widgets/add_to_cart_widget.dart';
 import '../../../../core/widgets/custom_image_widget.dart';
 import '../../../products/domain/entities/product_entity.dart';
 import '../../domain/usecases/get_product_details.dart';
@@ -19,12 +21,11 @@ class SimilarProductCard extends StatelessWidget {
         onTap: () {
           Navigator.push(
               context,
-              MaterialPageRoute<void>(
-                  builder: (builder) => BlocProvider(
-                        create: (context) => ProductDetailsCubit(
-                            sl<GetProductDetails>()),
-                        child: ProductDetailsScreen(productId: product.id),
-                      )));
+              createSlideFadeRoute(BlocProvider(
+                create: (context) =>
+                    ProductDetailsCubit(sl<GetProductDetailsUseCase>()),
+                child: ProductDetailsScreen(productId: product.id),
+              )));
         },
         child: Container(
           width: 140,
@@ -45,7 +46,7 @@ class SimilarProductCard extends StatelessWidget {
                   child: Center(
                     child: Padding(
                       padding: const EdgeInsets.all(10),
-                      child: CustomImageWidget(image:  product.thumbnail ?? ''),
+                      child: CustomImageWidget(image: product.thumbnail ?? ''),
                     ),
                   ),
                 ),
@@ -65,23 +66,14 @@ class SimilarProductCard extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                         '${ product.price}',
+                          '${product.price}',
                           style: titilliumBold.copyWith(
                             color: kPrimaryBlue,
                           ),
                         ),
                         const Spacer(),
-                        Container(
-                          width: 32,
-                          height: 32,
-                          decoration: ShapeDecoration(
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: Image.asset('assets/images/add_icon.png',
-                              color: kYellow, height: 18),
+                        AddToCartWidget(
+                        product: product,
                         ),
                       ],
                     ),

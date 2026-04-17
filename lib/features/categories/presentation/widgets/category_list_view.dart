@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grocery_shop_app/features/products/presentation/manager/product_cubit/product_state.dart';
 
-import '../../../../config/di/injection_container.dart';
 import '../../../../core/helpers/create_slide_fade_route.dart';
-import '../../../products/presentation/manger/products_cubit.dart';
+import '../../../../core/helpers/json_converter.dart';
 import '../../../products/presentation/screens/products_screen.dart';
-import '../../domain/entities/category.dart';
+import '../../domain/entities/category_entity.dart';
 import 'category_card.dart';
 
 class CategoryListView extends StatelessWidget {
@@ -14,7 +13,7 @@ class CategoryListView extends StatelessWidget {
     required this.category,
   });
 
-  final List<Category> category;
+  final List<CategoryEntity> category;
 
   @override
   Widget build(BuildContext context) => ListView.builder(
@@ -27,21 +26,10 @@ class CategoryListView extends StatelessWidget {
           return CategoriesCard(
               category: c,
               onTap: () {
-                // NavigationService.navigateTo(
-                //   AppRoutes.products,
-                //   arguments: {
-                //     'categoryId': c.id,
-                //     'title': c.title,
-                //   },
-                // );
                 Navigator.push(
                   context,
                   createSlideFadeRoute(
-                    BlocProvider(
-                      create: (ctx) =>
-                          sl<ProductsCubit>()..loadProducts(categoryId: c.id),
-                      child: ProductsScreen(categoryTitle: c.title),
-                    ),
+                    ProductsScreen(title: c.name, categoryId: JsonConverter.parseInt(c.id), source: ProductSource.category,),
                   ),
                 );
               });

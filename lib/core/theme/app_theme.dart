@@ -116,7 +116,7 @@ class AppTheme {
           bodySmall: GoogleFonts.poppins(
             fontSize: 12,
             fontWeight: FontWeight.normal,
-            color: textSecondaryColor,
+            color: textPrimaryColor,
           ),
           labelLarge: GoogleFonts.poppins(
             fontSize: 14,
@@ -131,7 +131,7 @@ class AppTheme {
           labelSmall: GoogleFonts.poppins(
             fontSize: 10,
             fontWeight: FontWeight.w500,
-            color: textSecondaryColor,
+            color: textPrimaryColor,
           ),
         ),
 
@@ -179,7 +179,14 @@ class AppTheme {
             ),
           ),
         ),
-
+        // Dropdown Menu Theme
+        dropdownMenuTheme: DropdownMenuThemeData(
+          textStyle: GoogleFonts.poppins(
+            fontSize: 14,
+            fontWeight: FontWeight.normal,
+            color: textPrimaryColor,
+          ),
+        ),
         // Input Decoration Theme
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
@@ -330,32 +337,32 @@ class AppTheme {
           bodyLarge: GoogleFonts.poppins(
             fontSize: 16,
             fontWeight: FontWeight.normal,
-            color: darkTextPrimaryColor,
+            color: textSecondaryColor,
           ),
           bodyMedium: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.normal,
-            color: darkTextPrimaryColor,
+            color: textSecondaryColor,
           ),
           bodySmall: GoogleFonts.poppins(
             fontSize: 12,
             fontWeight: FontWeight.normal,
-            color: darkTextSecondaryColor,
+            color: textPrimaryColor,
           ),
           labelLarge: GoogleFonts.poppins(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: darkTextPrimaryColor,
+            color: textSecondaryColor,
           ),
           labelMedium: GoogleFonts.poppins(
             fontSize: 12,
             fontWeight: FontWeight.w500,
-            color: darkTextPrimaryColor,
+            color: textSecondaryColor,
           ),
           labelSmall: GoogleFonts.poppins(
             fontSize: 10,
             fontWeight: FontWeight.w500,
-            color: darkTextSecondaryColor,
+            color: textSecondaryColor,
           ),
         ),
 
@@ -401,6 +408,15 @@ class AppTheme {
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
+          ),
+        ),
+
+        // Dropdown Menu Theme
+        dropdownMenuTheme: DropdownMenuThemeData(
+          textStyle: GoogleFonts.poppins(
+            fontSize: 14,
+            fontWeight: FontWeight.normal,
+            color: textPrimaryColor,
           ),
         ),
 

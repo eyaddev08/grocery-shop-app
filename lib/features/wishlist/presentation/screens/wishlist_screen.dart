@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grocery_shop_app/core/utils/styles.dart';
 
+import '../../../../core/helpers/create_slide_fade_route.dart';
 import '../../../../core/utils/layout.dart';
 import '../../../../core/widgets/custom_app_bar_widget.dart';
 import '../../../../core/widgets/custom_snackbar_widget.dart';
-import '../../../../core/widgets/success_dialog_widget.dart';
-import '../../domain/entities/wishlist_product.dart';
+import '../../../../core/widgets/confirm_dialog_widget.dart';
+import '../../domain/entities/wishlist_product_entity.dart';
 
 import '../manager/cubit/wishlist_cubit.dart';
 import '../widgets/wishlist_card.dart';
@@ -41,23 +42,21 @@ class WishlistScreen extends StatelessWidget {
                 } else if (state is WishlistEmpty) {
                   return EmptyWishlist(
                       onBrowse: () => Navigator.maybePop(
-                          context,
-                          MaterialPageRoute<void>(
-                              builder: (builder) => const Layout())));
+                          context, createSlideFadeRoute(const Layout())));
                 } else if (state is WishlistLoaded) {
                   final items = state.items;
                   return ListView.builder(
                     padding: const EdgeInsets.only(bottom: 160, top: 8),
                     itemCount: items.length,
                     itemBuilder: (context, idx) {
-                      final WishlistProduct p = items[idx];
+                      final WishlistProductEntity p = items[idx];
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 6),
                         child: WishlistCard(
-                          product: p,
+                          wishlistProduct: p,
                           onRemove: (id) => _confirmRemove(context, id),
-                          onToggle: (id) =>
-                              context.read<WishlistCubit>().toggleFavorite(id),
+                          // onToggle: (id) =>
+                          //     context.read<WishlistCubit>().toggleFavorite(id),
                           onAddToCart: (id) {
                             showCustomSnackBarWidget(
                                 'Added to cart (demo)',
@@ -83,14 +82,14 @@ class WishlistScreen extends StatelessWidget {
   void _confirmRemove(BuildContext context, String id) {
     showDialog<Dialog>(
         context: context,
-        builder: (_) => SuccessDialog(
+        builder: (dialogContext) => ConfirmDialogWidget(
               isFailed: true,
               title: 'Remove item',
               description:
                   'Do you want to remove this item from your wishlist?',
               icon: Icons.delete,
-              onRemov: () {
-                Navigator.of(context).pop();
+              onPressed: () {
+                Navigator.pop(dialogContext);
                 context.read<WishlistCubit>().remove(id);
                 showCustomToast(
                     message:

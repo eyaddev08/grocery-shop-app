@@ -1,0 +1,60 @@
+{
+  "get_profile": {
+    "status": "success",
+    "data": {
+      "id": "u1",
+      "name": "Jane Doe",
+      "email": "jane@example.com",
+      "phone": "+15551234567",
+      "address": {
+        "street": "123 Main St",
+        "city": "Springfield",
+        "region": "IL",
+        "postal_code": "62704",
+        "country": "US"
+      },
+      "avatar_url": "https://cdn.example.com/avatars/u1.jpg",
+      "created_at": "2024-10-01T12:34:56Z"
+    }
+  },
+  "update_profile": {
+    "status": "success",
+    "data": {
+      "id": "u1",
+      "name": "Jane D",
+      "email": "jane00@example.com",
+      "phone": "+15551230000",
+      "address": {
+        "street": "123 Main St",
+        "city": "Springfield",
+        "region": "IL",
+        "postal_code": "62704",
+        "country": "US"
+      },
+      "avatar_url": "https://cdn.example.com/avatars/u1.jpg",
+      "created_at": "2024-10-01T12:34:56Z"
+    }
+  },
+  "upload_avatar": {
+    "status": "success",
+    "data": {
+      "avatar_url": "https://cdn.example.com/avatars/u1_new.jpg"
+    }
+  },
+  "change_password": {
+    "status": "success",
+    "message": "Password changed successfully"
+  },
+  "change_password_error": {
+    "status": "error",
+    "message": "Incorrect current password"
+  },
+  "logout": {
+    "status": "success",
+    "message": "Logged out"
+  },
+  "delete_account": {
+    "status": "success",
+    "message": "Account deleted"
+  }
+}

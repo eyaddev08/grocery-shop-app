@@ -1,13 +1,12 @@
-// ملف مسؤول عن تنفيذ واجهة المستودع لميزة المصادقة.
-
 import 'package:dartz/dartz.dart';
 import '../../../../core/error/exception.dart';
 import '../../../../core/error/failure.dart';
 import '../../domain/entities/auth_token.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/auth_repository.dart';
-import '../datasources/auth_local_data_source.dart';
-import '../datasources/auth_remote_data_source.dart';
+
+import '../datasources/auth_local_data_source_impl.dart';
+import '../datasources/auth_remote_data_source_impl.dart';
 import '../models/auth_token_model.dart';
 import '../models/user_register_model.dart';
 
@@ -27,14 +26,14 @@ class AuthRepositoryImpl implements AuthRepository {
       await localDataSource.saveTokens(tokenModel);
       return Right(tokenModel);
     } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.message ?? 'Server error'));
+      return Left(ServerFailure( e.message));
     } on NetworkException catch (e) {
-      return Left(NetworkFailure(message: e.message ?? 'Network error'));
+      return Left(NetworkFailure( e.message));
     } on ValidationException catch (e) {
       final errorMessage = e.errors.values.firstOrNull?.firstOrNull ?? 'Validation error';
       return Left(ValidationFailure(message: errorMessage, errors: e.errors));
     } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
+      return Left(ServerFailure(e.toString()));
     }
   }
 
@@ -56,14 +55,14 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       return Right(user);
     } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.message ?? 'Server error'));
+      return Left(ServerFailure( e.message));
     } on NetworkException catch (e) {
-      return Left(NetworkFailure(message: e.message ?? 'Network error'));
+      return Left(NetworkFailure( e.message));
     } on ValidationException catch (e) {
       final errorMessage = e.errors.values.firstOrNull?.firstOrNull ?? 'Validation error';
       return Left(ValidationFailure(message: errorMessage, errors: e.errors));
     } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
+      return Left(ServerFailure( e.toString()));
     }
   }
 
@@ -73,11 +72,11 @@ class AuthRepositoryImpl implements AuthRepository {
       await remoteDataSource.requestPasswordReset(email);
       return const Right(null);
     } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.message ?? 'Server error'));
+      return Left(ServerFailure( e.message));
     } on NetworkException catch (e) {
-      return Left(NetworkFailure(message: e.message ?? 'Network error'));
+      return Left(NetworkFailure( e.message));
     } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
+      return Left(ServerFailure(e.toString()));
     }
   }
 
@@ -87,11 +86,11 @@ class AuthRepositoryImpl implements AuthRepository {
       final token = await remoteDataSource.verifyResetCode(email, code);
       return Right(token);
     } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.message ?? 'Server error'));
+      return Left(ServerFailure( e.message ));
     } on NetworkException catch (e) {
-      return Left(NetworkFailure(message: e.message ?? 'Network error'));
+      return Left(NetworkFailure( e.message ));
     } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
+      return Left(ServerFailure( e.toString()));
     }
   }
 
@@ -109,14 +108,14 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       return const Right(null);
     } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.message ?? 'Server error'));
+      return Left(ServerFailure( e.message));
     } on NetworkException catch (e) {
-      return Left(NetworkFailure(message: e.message ?? 'Network error'));
+      return Left(NetworkFailure( e.message ));
     } on ValidationException catch (e) {
       final errorMessage = e.errors.values.firstOrNull?.firstOrNull ?? 'Validation error';
       return Left(ValidationFailure(message: errorMessage, errors: e.errors));
     } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
+      return Left(ServerFailure( e.toString()));
     }
   }
 
@@ -127,11 +126,9 @@ class AuthRepositoryImpl implements AuthRepository {
       await localDataSource.saveTokens(tokenModel);
       return Right(tokenModel);
     } on ServerException catch (e) {
-      return Left(ServerFailure(message: e.message ?? 'Server error'));
-    } on NetworkException catch (e) {
-      return Left(NetworkFailure(message: e.message ?? 'Network error'));
+      return Left(ServerFailure( e.message));
     } catch (e) {
-      return Left(ServerFailure(message: e.toString()));
+      return Left(ServerFailure( e.toString()));
     }
   }
 
@@ -141,7 +138,7 @@ class AuthRepositoryImpl implements AuthRepository {
       await localDataSource.deleteTokens();
       return const Right(null);
     } catch (e) {
-      return Left(CacheFailure(message: e.toString()));
+      return Left(CacheFailure( e.toString()));
     }
   }
 
@@ -151,7 +148,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final token = await localDataSource.getTokens();
       return Right(token);
     } catch (e) {
-      return Left(CacheFailure(message: e.toString()));
+      return Left(CacheFailure( e.toString()));
     }
   }
 
@@ -166,7 +163,7 @@ class AuthRepositoryImpl implements AuthRepository {
       ));
       return const Right(null);
     } catch (e) {
-      return Left(CacheFailure(message: e.toString()));
+      return Left(CacheFailure( e.toString()));
     }
   }
 
@@ -176,7 +173,7 @@ class AuthRepositoryImpl implements AuthRepository {
       await localDataSource.deleteTokens();
       return const Right(null);
     } catch (e) {
-      return Left(CacheFailure(message: e.toString()));
+      return Left(CacheFailure( e.toString()));
     }
   }
 }

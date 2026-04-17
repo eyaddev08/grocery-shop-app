@@ -10,12 +10,12 @@ import '../manager/search_state.dart';
 import 'search_history_chip.dart';
 
 class RecentSearchesWidget extends StatelessWidget {
-  final Function(String) onSearch;
 
   const RecentSearchesWidget({
     super.key,
     required this.onSearch,
   });
+  final void Function(String) onSearch;
 
   @override
   Widget build(BuildContext context) => BlocBuilder<SearchCubit, SearchState>(

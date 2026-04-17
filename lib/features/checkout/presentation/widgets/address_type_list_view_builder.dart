@@ -78,6 +78,7 @@ class AddressTypeListViewBuilder extends StatelessWidget {
 
                   return InkWell(
                     onTap: () => cubit.updateAddressIndex(index, true),
+                    mouseCursor: MouseCursor.defer,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         vertical: Dimensions.paddingSizeDefault,
@@ -89,8 +90,8 @@ class AddressTypeListViewBuilder extends StatelessWidget {
                             BorderRadius.circular(Dimensions.paddingSizeSmall),
                         border: Border.all(
                           color: selected
-                              ? kPrimaryBlue
-                              : kPrimaryBlue.withOpacity(.125),
+                              ? kAccentYellow
+                              : kYellow.withOpacity(.155),
                         ),
                       ),
                       child: Row(
@@ -101,8 +102,8 @@ class AddressTypeListViewBuilder extends StatelessWidget {
                             child: Image.asset(
                               item.icon,
                               color: selected
-                                  ? kPrimaryBlue
-                                  : kPrimaryBlue.withOpacity(.35),
+                                  ? kAccentYellow
+                                  : kYellow.withOpacity(.55),
                             ),
                           ),
                           const SizedBox(width: Dimensions.paddingSizeSmall),

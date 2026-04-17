@@ -3,9 +3,9 @@ import 'package:grocery_shop_app/core/utils/images.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/styles.dart';
-import '../../../../core/widgets/add_card_widget.dart';
+import '../../../../core/widgets/add_to_cart_widget.dart';
 import '../../../../core/widgets/custom_image_widget.dart';
-import '../../domain/entities/recommended_product.dart';
+import '../../../products/domain/entities/product_entity.dart';
 
 class RecommendedCard extends StatelessWidget {
   const RecommendedCard(
@@ -13,13 +13,13 @@ class RecommendedCard extends StatelessWidget {
       required this.width,
       required this.scale,
       required this.product});
-  final RecommendedProduct product;
+  final ProductEntity product;
   final double width;
 
   final double scale;
 
   @override
-  Widget build(BuildContext context)  => Container(
+  Widget build(BuildContext context) => Container(
         width: width,
         margin: EdgeInsets.symmetric(horizontal: 8 * scale),
         decoration: BoxDecoration(
@@ -36,7 +36,8 @@ class RecommendedCard extends StatelessWidget {
                 // color: const Color(0xFFF2F5F8),
                 borderRadius: BorderRadius.circular(8 * scale)),
             child: CustomImageWidget(
-                image: product.thumbnail ?? '', fit: BoxFit.contain),
+                image: product.thumbnail ?? Images.emptyImage,
+                fit: BoxFit.contain),
           ),
           SizedBox(height: 20 * scale),
           Divider(
@@ -44,12 +45,12 @@ class RecommendedCard extends StatelessWidget {
             thickness: 1.5,
           ),
           SizedBox(height: 12 * scale),
-          Text(product.title,
+          Text(product.name,
               style: TextStyle(
                   fontSize: 13 * scale,
                   fontWeight: FontWeight.w600,
                   color: kTextDark)),
-          Text(product.slug!,
+          Text(product.filterLabel ?? '',
               style: TextStyle(fontSize: 11 * scale, color: kMuted)),
           SizedBox(height: 8 * scale),
           Container(
@@ -64,16 +65,23 @@ class RecommendedCard extends StatelessWidget {
                       offset: Offset(0, 4)),
                 ]),
             child: Row(children: [
-              Text(product.unit!,
-                  style:
-                      textBold.copyWith(fontSize: 11 * scale, color: kMuted)),
+              SizedBox(width: 5 * scale),
+              RichText(
+                text: TextSpan(
+                  style: textBold.copyWith(fontSize: 12),
+                  children: [
+                    TextSpan(
+                      text: product.unit ?? '',
+                      style: textBold.copyWith(
+                          fontSize: 11 * scale, color: kMuted),
+                    ),
+                    TextSpan(text: ' \$${product.price}'),
+                  ],
+                ),
+              ),
               const Spacer(),
-              AddCardWidget(
-                  id: product.id,
-                  title: product.title,
-                  price: product.price,
-                  regularPrice: product.originalPrice,
-                  image: product.thumbnail ?? Images.emptyImage,
+              AddToCartWidget(
+                 product: product,
                   sizeContainer: 26,
                   sizeIcon: 14),
             ]),

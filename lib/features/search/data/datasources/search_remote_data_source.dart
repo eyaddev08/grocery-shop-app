@@ -21,23 +21,9 @@ abstract class SearchRemoteDataSource {
 }
 
 class SearchRemoteDataSourceImpl implements SearchRemoteDataSource {
-
   SearchRemoteDataSourceImpl({required this.client, this.baseUrl = ''});
   final Dio client;
   final String baseUrl;
-
-  Map<String, dynamic>? _toMap(dynamic data) {
-    if (data == null) return null;
-    if (data is Map<String, dynamic>) return data;
-    if (data is Map) return Map<String, dynamic>.from(data);
-    if (data is String) {
-      try {
-        final decoded = jsonDecode(data);
-        if (decoded is Map) return Map<String, dynamic>.from(decoded);
-      } catch (_) {}
-    }
-    return null;
-  }
 
   @override
   Future<List<SuggestionModel>> getSuggestions(String query,
@@ -56,9 +42,9 @@ class SearchRemoteDataSourceImpl implements SearchRemoteDataSource {
           rethrow;
         }
       }
-      if (response.statusCode != 200) throw ServerException();
+      if (response.statusCode != 200) throw ServerFailure('No data found');
       final map = _toMap(response.data) ?? {};
-      final raw = map['suggestions'] ?? [];
+      final raw = map['suggestions'] ?? <List<dynamic>>[];
       if (raw is Iterable) {
         return SuggestionModel.fromJsonList(List<dynamic>.from(raw));
       }
@@ -71,11 +57,12 @@ class SearchRemoteDataSourceImpl implements SearchRemoteDataSource {
         } catch (_) {}
       }
       return <SuggestionModel>[];
-    } on DioException catch (e) {
-      if (e.type == DioExceptionType.cancel) throw Failure(e.toString());
-      throw ServerException();
-    } catch (_) {
-      throw ServerException();
+    } catch (e) {
+      if (e is DioException) {
+        if (e.type == DioExceptionType.cancel)
+          throw ServerException.fromDioError(e);
+      }
+      throw ServerFailure(e.toString());
     }
   }
 
@@ -98,19 +85,30 @@ class SearchRemoteDataSourceImpl implements SearchRemoteDataSource {
           params['filters[$k]'] = v;
         });
       }
-
-     final  response = await client.get('/api/search',
+      final response = await client.get<Map<String, dynamic>>('/api/search',
           queryParameters: params, cancelToken: cancelToken);
-      if (response.statusCode != 200) throw ServerException();
+      if (response.statusCode != 200) throw ServerFailure('No data found');
       final Map<String, dynamic>? map = _toMap(response.data);
-      if (map == null) throw ServerException();
-      // ملاحظة: لا نمرّر baseUrl إلى ProductModel.fromJson لأن المصنع في مشروعك لا يقبله.
+      if (map == null) throw ServerFailure('No data found');
       return SearchResultModel.fromJson(map);
     } on DioException catch (e) {
-      if (e.type == DioExceptionType.cancel) throw Failure(e.toString());
-      throw ServerException();
-    } catch (_) {
-      throw ServerException();
+      throw ServerException.fromDioError(e);
+    } catch (e) {
+      throw ServerFailure(e.toString());
     }
+    ServerFailure('No data found');
+  }
+
+  Map<String, dynamic>? _toMap(dynamic data) {
+    if (data == null) return null;
+    if (data is Map<String, dynamic>) return data;
+    if (data is Map) return Map<String, dynamic>.from(data);
+    if (data is String) {
+      try {
+        final decoded = jsonDecode(data);
+        if (decoded is Map) return Map<String, dynamic>.from(decoded);
+      } catch (_) {}
+    }
+    return null;
   }
 }

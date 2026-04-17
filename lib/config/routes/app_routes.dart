@@ -12,17 +12,24 @@ class AppRoutes {
   static const String home = '/home';
   static const String categories = '/categories';
   static const String products = '/products';
+    static const String recommendedProducts = '/recommended-products';
+  static const String deals = '/deals';
+
   static const String productDetails = '/product-details';
   static const String search = '/search';
   static const String cart = '/cart';
   static const String checkout = '/checkout';
   static const String addAddress = '/add_address';
   static const String editAddress = '/edit_address';
+  static const String mapPicker = '/map-picker';
   static const String addCard = '/add_Card';
   static const String profile = '/profile';
+  static const String editProfile = '/edit_profile';
+  static const String changePassword = '/change_password';
   static const String orders = '/orders';
   static const String orderDetails = '/order-details';
   static const String trackOrder = '/track-order';
+   static const String guestTrackOrder = '/guest-track-order';
   static const String favorites = '/favorites';
   static const String settings = '/settings';
   static const String notifications = '/notifications';
@@ -49,6 +56,8 @@ class AppRoutes {
     home: 'Home',
     categories: 'Categories',
     products: 'Products',
+    recommendedProducts: 'Recommended Products',
+    deals: 'Deals',
     productDetails: 'Product Details',
     search: 'Search',
     cart: 'Cart',
@@ -60,6 +69,7 @@ class AppRoutes {
     orders: 'Orders',
     orderDetails: 'Order Details',
     trackOrder: 'Track Order',
+    guestTrackOrder: 'Guest Track Order',
     favorites: 'Favorites',
     settings: 'Settings',
     notifications: 'Notifications',
@@ -89,6 +99,8 @@ class AppRoutes {
         home,
         categories,
         products,
+        recommendedProducts,
+        deals,
         productDetails,
         search,
         cart,
@@ -97,6 +109,8 @@ class AppRoutes {
         editAddress,
         addAddress,
         profile,
+        trackOrder,
+        guestTrackOrder,
         orders,
         orderDetails,
         favorites,
@@ -136,6 +150,8 @@ class AppRoutes {
         home,
         categories,
         products,
+        recommendedProducts,
+        deals,
         productDetails,
         search,
         cart,
@@ -144,6 +160,8 @@ class AppRoutes {
         editAddress,
         addAddress,
         profile,
+        trackOrder,
+        guestTrackOrder,
         orders,
         orderDetails,
         favorites,

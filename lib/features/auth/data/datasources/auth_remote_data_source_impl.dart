@@ -1,11 +1,24 @@
-// تنفيذ مصدر بيانات المصادقة البعيدة
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/error/exception.dart';
 import '../models/auth_token_model.dart';
 import '../models/user_model.dart';
 import '../models/user_register_model.dart';
-import 'auth_remote_data_source.dart';
+
+
+abstract class AuthRemoteDataSource {
+  Future<AuthTokenModel> login(String email, String password);
+  Future<UserModel> register(UserRegisterModel model);
+  Future<void> requestPasswordReset(String email);
+  Future<String> verifyResetCode(String email, String code);
+  Future<void> resetPassword({
+    required String token,
+    required String password,
+    required String passwordConfirmation,
+  });
+  Future<AuthTokenModel> refreshToken(String refreshToken);
+}
+
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   AuthRemoteDataSourceImpl({required this.client});
@@ -34,58 +47,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       debugPrint('[Remote]❌ error: $e\n$st');
       throw ServerException('❌ Server connection failed');
     }
-    // try {
-    //   final response = await client.post<Map<String, dynamic>>(
-    //     '/api/auth/login',
-    //     data: {
-    //       'email': email,
-    //       'password': password,
-    //     },
-    //   );
-
-    //   if (response.statusCode == 200) {
-    //     final responseData = response.data;
-    //     if (responseData == null) {
-    //       throw ServerException('Invalid response');
-    //     }
-    //     final data =
-    //         (responseData['data'] ?? responseData) as Map<String, dynamic>;
-    //     return AuthTokenModel.fromJson(data);
-    //   } else {
-    //     final message =
-    //         (response.data as Map<String, dynamic>?)?['message'] as String? ??
-    //             'Login failed';
-    //     throw ServerException(message);
-    //   }
-    // } on DioException catch (e) {
-    //   if (e.response != null) {
-    //     final statusCode = e.response!.statusCode;
-    //     final data = e.response!.data;
-
-    //     if (statusCode == 401) {
-    //       throw ServerException(
-    //           data['message'] as String? ?? 'Invalid credentials');
-    //     } else if (statusCode == 422) {
-    //       final errors = data['errors'] as Map<String, dynamic>?;
-
-    //       if (errors != null) {
-    //         final errorMap =
-    //             errors.map((k, v) => MapEntry(k, (v as List).cast<String>()));
-
-    //         throw ValidationException(errorMap);
-    //       }
-    //     }
-    //     throw ServerException(data['message'] as String? ?? 'Server error');
-    //   }
-    //   throw NetworkException(e.message ?? 'Network error');
-    // } catch (e) {
-    //   if (e is ServerException ||
-    //       e is ValidationException ||
-    //       e is NetworkException) {
-    //     rethrow;
-    //   }
-    //   throw ServerException(e.toString());
-    // }
   }
 
   @override
@@ -110,51 +71,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       debugPrint('[Remote] ❌ error: $e\n$st');
       throw ServerException('❌ Server connection failed');
     }
-    // try {
-    //   final response = await client.post<Map<String, dynamic>>(
-    //     '/api/auth/register',
-    //     data: model.toJson(),
-    //   );
-
-    //   if (response.statusCode == 201 || response.statusCode == 200) {
-    //     final responseData = response.data;
-    //     if (responseData == null) {
-    //       throw ServerException('Invalid response');
-    //     }
-    //     final data =
-    //         (responseData['data'] ?? responseData) as Map<String, dynamic>;
-    //     return UserModel.fromJson(data);
-    //   } else {
-    //     final message =
-    //         (response.data as Map<String, dynamic>?)?['message'] as String? ??
-    //             'Registration failed';
-
-    //     throw ServerException(message);
-    //   }
-    // } on DioException catch (e) {
-    //   if (e.response != null) {
-    //     final statusCode = e.response!.statusCode;
-    //     final data = e.response!.data;
-
-    //     if (statusCode == 422) {
-    //       final errors = data['errors'] as Map<String, dynamic>?;
-    //       if (errors != null) {
-    //         final errorMap =
-    //             errors.map((k, v) => MapEntry(k, (v as List).cast<String>()));
-    //         throw ValidationException(errorMap);
-    //       }
-    //     }
-    //     throw ServerException(data['message'] as String? ?? 'Server error');
-    //   }
-    //   throw NetworkException(e.message ?? 'Network error');
-    // } catch (e) {
-    //   if (e is ServerException ||
-    //       e is ValidationException ||
-    //       e is NetworkException) {
-    //     rethrow;
-    //   }
-    //   throw ServerException(e.toString());
-    // }
   }
 
   @override
@@ -177,29 +93,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       debugPrint('[Remote] ❌ error: $e\n$st');
       throw ServerException('❌ Server connection failed');
     }
-    // try {
-    //   final response = await client.post<Map<String, dynamic>>(
-    //     '/api/auth/forgot',
-    //     data: {'email': email},
-    //   );
-
-    //   if (response.statusCode != 200) {
-    //     final message =
-    //         response.data?['message'] as String? ?? 'Request failed';
-    //     throw ServerException(message);
-    //   }
-    // } on DioException catch (e) {
-    //   if (e.response != null) {
-    //     final data = e.response!.data;
-    //     throw ServerException(data['message'] as String? ?? 'Server error');
-    //   }
-    //   throw NetworkException(e.message ?? 'Network error');
-    // } catch (e) {
-    //   if (e is ServerException || e is NetworkException) {
-    //     rethrow;
-    //   }
-    //   throw ServerException(e.toString());
-    // }
   }
 
   @override
@@ -223,34 +116,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       debugPrint('[Remote] ❌ error: $e\n$st');
       throw ServerException('❌ Server connection failed');
     }
-    // try {
-    //   final response = await client.post<Map<String, dynamic>>(
-    //     '/api/auth/verify-reset',
-    //     data: {
-    //       'email': email,
-    //       'code': code,
-    //     },
-    //   );
 
-    //   if (response.statusCode == 200) {
-    //     return response.data?['token'] as String? ?? '';
-    //   } else {
-    //     final message =
-    //         response.data?['message'] as String? ?? 'Verification failed';
-    //     throw ServerException(message);
-    //   }
-    // } on DioException catch (e) {
-    //   if (e.response != null) {
-    //     final data = e.response!.data;
-    //     throw ServerException(data['message'] as String? ?? 'Server error');
-    //   }
-    //   throw NetworkException(e.message ?? 'Network error');
-    // } catch (e) {
-    //   if (e is ServerException || e is NetworkException) {
-    //     rethrow;
-    //   }
-    //   throw ServerException(e.toString());
-    // }
   }
 
   @override
@@ -278,44 +144,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       debugPrint('[Remote] ❌ error: $e\n$st');
       throw ServerException('❌ Server connection failed');
     }
-    // try {
-    //   final response = await client.post<Map<String, dynamic>>(
-    //     '/api/auth/reset',
-    //     data: {
-    //       'token': token,
-    //       'password': password,
-    //       'password_confirmation': passwordConfirmation,
-    //     },
-    //   );
-
-    //   if (response.statusCode != 200) {
-    //     final message = response.data?['message'] as String? ?? 'Reset failed';
-    //     throw ServerException(message);
-    //   }
-    // } on DioException catch (e) {
-    //   if (e.response != null) {
-    //     final statusCode = e.response!.statusCode;
-    //     final data = e.response!.data;
-
-    //     if (statusCode == 422) {
-    //       final errors = data['errors'] as Map<String, dynamic>?;
-    //       if (errors != null) {
-    //         final errorMap =
-    //             errors.map((k, v) => MapEntry(k, (v as List).cast<String>()));
-    //         throw ValidationException(errorMap);
-    //       }
-    //     }
-    //     throw ServerException(data['message'] as String? ?? 'Server error');
-    //   }
-    //   throw NetworkException(e.message ?? 'Network error');
-    // } catch (e) {
-    //   if (e is ServerException ||
-    //       e is ValidationException ||
-    //       e is NetworkException) {
-    //     rethrow;
-    //   }
-    //   throw ServerException(e.toString());
-    // }
   }
 
   @override
@@ -337,9 +165,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       if (e.response != null) {
         throw ServerException('Token refresh failed');
       }
-      throw NetworkException(e.message ?? 'Network error');
+      throw ServerException(e.message ?? 'Network error');
     } catch (e) {
-      if (e is ServerException || e is NetworkException) {
+      if (e is ServerException || e is ValidationException) {
         rethrow;
       }
       throw ServerException(e.toString());

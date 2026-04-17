@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/styles.dart';
 import '../../../../core/widgets/custom_image_widget.dart';
-import '../../domain/entities/cart_item.dart';
+import '../../domain/entities/cart_item_entity.dart';
 import 'counter_cart.dart';
 
 class CartItemCard extends StatelessWidget {
@@ -13,7 +13,7 @@ class CartItemCard extends StatelessWidget {
     required this.onDecrement,
     required this.onRemove,
   });
-  final CartItem item;
+  final CartItemEntity item;
   final VoidCallback onIncrement;
   final VoidCallback onDecrement;
   final VoidCallback onRemove;
@@ -27,7 +27,7 @@ class CartItemCard extends StatelessWidget {
               width: 56,
               height: 56,
               child: CustomImageWidget(
-                  image: item.image ?? '', fit: BoxFit.contain),
+                  image: item.thumbnail, fit: BoxFit.contain),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -36,12 +36,10 @@ class CartItemCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    item.title,
-                    style: const TextStyle(
-                        color: kTextDark,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'Poppins'),
+                    item.name,
+                    style: textBold.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                   const SizedBox(height: 6),
                   Row(
@@ -51,16 +49,16 @@ class CartItemCard extends StatelessWidget {
                         style: textBold.copyWith(fontWeight: FontWeight.w600),
                       ),
                       const SizedBox(width: 8),
-                      if (item.regularPrice != null)
+                      if (item.originalPrice != null)
                         Opacity(
                             opacity: 0.6,
                             child: Text(
-                              '\$${item.regularPrice?.toStringAsFixed(2)}',
+                              '\$${item.originalPrice?.toStringAsFixed(2)}',
                               style: textBold.copyWith(
                                 color: kMuted,
                                 decoration: TextDecoration.lineThrough,
                               ),
-                            )),
+                            ))
                     ],
                   ),
                 ],
@@ -91,10 +89,8 @@ class CartItemCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(6)),
                       child: Text(
                         '${item.quantity}',
-                        style: const TextStyle(
+                        style: textBold.copyWith(
                           color: kTextDark,
-                          fontSize: 14,
-                          fontFamily: 'Poppins',
                           fontWeight: FontWeight.w500,
                         ),
                       ),

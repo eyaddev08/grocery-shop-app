@@ -1,0 +1,51 @@
+{
+    "categories": {
+        "status": "success",
+        "data": [
+            {
+                "id": "1",
+                "name": "Big & Small Fishes",
+                "subName": "Fresh from sea",
+                "tag": "fish",
+                "thumbnail": "https://drive.google.com/uc?export=view&id=1Iad6X8-hckjPK9QfZZwQnCe-Lfvljbck",
+                "price": "36",
+                "color": "0xFFFFC3BB"
+            },
+            {
+                "id": "2",
+                "name": "Vegetables",
+                "subName": "Fresh & Seasonal",
+                "tag": "vegetables",
+                "thumbnail": "https://drive.google.com/uc?export=view&id=1PFvykX2m5s15V4B5N1h7A8OgQZDcxp7f",
+                "price": "Varies",
+                "color": "0xFFD8F5D1"            },
+            {
+                "id": "3",
+                "name": "Meats",
+                "subName": "Organic & Halal",
+                "tag": "meats",
+                "thumbnail": "https://drive.google.com/uc?export=view&id=1wik3_sOhRe2TuSMdE36qz9OixHLf3fbm",
+                "price": "Varies",
+                "color": "0xFFFFDC82"
+            },
+            {
+                "id": "4",
+                "name": "Organic Eggs",
+                "subName": "Farm Fresh",
+                "tag": "organic_eggs",
+                "thumbnail": "https://drive.google.com/uc?export=view&id=1HTUdqZYmSZ3uD56mKnU2YoRM_8C-MalS",
+                "price": "Varies",
+                "color": "0xFFEFFAC5"
+            },
+            {
+                "id": "6",
+                "name": "Fruits",
+                "subName": "Fresh & Juicy",
+                "tag": "fruits",
+                "thumbnail": "https://drive.google.com/uc?export=view&id=1b1ry2ROxoT149QjdHB_a0TN6WoCTDqU6",
+                "price": "Varies",
+                "color": "0xFFFFF1C8"
+            }
+        ]
+    }
+}

@@ -1,49 +1,27 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 
+import '../../../../core/error/exception.dart';
 import '../../../../core/error/failure.dart';
 import '../../domain/entities/suggestion.dart';
 import '../../domain/entities/search_result.dart';
 import '../../domain/repositories/search_repository.dart';
 import '../datasources/search_local_data_source.dart';
 import '../datasources/search_remote_data_source.dart';
-import '../../../products/domain/repositories/product_repository.dart';
 
 class SearchRepositoryImpl implements SearchRepository {
-  final ProductRepository productRepository;
-  final SearchRemoteDataSource? remoteDataSource;
-  final SearchLocalDataSource? localDataSource;
 
   SearchRepositoryImpl({
-    required this.productRepository,
     this.remoteDataSource,
     this.localDataSource,
   });
 
+  final SearchRemoteDataSource? remoteDataSource;
+  final SearchLocalDataSource? localDataSource;
+
   @override
   Future<Either<Failure, List<Suggestion>>> getSuggestions(String query) async {
     final q = query.trim();
-
-    if (q.isEmpty) {
-       final demo = ['recommended', 'waterproof bag', 'shoes', 'apple'];
-
-      try {
-        if (localDataSource != null) {
-          final history = await localDataSource!.getSearchHistory();
-          final suggestions = history
-              .map((t) => Suggestion(text: t, type: SuggestionType.history))
-              .toList();
-         return Right(suggestions);
-        }
-
-       return Right(demo
-            .map((t) => Suggestion(text: t, type: SuggestionType.keyword))
-            .toList());
-      } catch (e, st) {
-        debugPrint('SearchRepository.getSuggestions failed:  $e\n$st');
-        return Left(Failure(e.toString()));
-      }
-    }
 
     if (remoteDataSource != null) {
       try {
@@ -56,43 +34,11 @@ class SearchRepositoryImpl implements SearchRepository {
           await localDataSource?.cacheSuggestions(remote);
         } catch (_) {}
         return Right(results);
-      } catch (e) {
+      } on ServerException catch (e) {
+        return Left(ServerFailure(e.message));
       }
     }
-
-    // Fallback: اقتراحات مبنية من ProductRepository (محلي)
-    try {
-      final either = await productRepository.getProducts();
-      return either.fold((f) => Left(f), (products) {
-        final lower = q.toLowerCase();
-        final Set<String> seen = {};
-        final List<Suggestion> out = [];
-
-        // from names
-        for (final p in products) {
-          final name = p.name.toLowerCase();
-          if (name.contains(lower) && !seen.contains(name)) {
-            seen.add(name);
-            out.add(Suggestion(
-                text: p.name, type: SuggestionType.keyword, subtitle: p.brand));
-          }
-        }
-
-        // from brands
-        for (final p in products) {
-          final brand = (p.brand ?? '').toLowerCase();
-          if (brand.contains(lower) && !seen.contains('brand:$brand')) {
-            seen.add('brand:$brand');
-            out.add(
-                Suggestion(text: p.brand ?? '', type: SuggestionType.brand));
-          }
-        }
-        final limited = out.take(30).toList();
-        return Right(limited);
-      });
-    } catch (e) {
-      return Left(Failure('Enternal Error: ${e.toString()}'));
-    }
+    return Left(ServerFailure('Remote data source is not available'));
   }
 
   @override
@@ -116,65 +62,50 @@ class SearchRepositoryImpl implements SearchRepository {
         );
 
         if (cursor == null && localDataSource != null) {
-         try {
+          try {
             await localDataSource!.cacheLastResult(remoteModel);
-          } catch (e) {
-            debugPrint('Failed to cache remote result: $e');
-          }
+          } catch (_) {}
 
           if (q.isNotEmpty) {
             try {
               await localDataSource!.addSearchToHistory(q);
-            } catch (e) {
-              debugPrint('Failed to add (remote) search history: $e');
-            }
+            } on CacheException {
+        return left(CacheFailure('No internet and no cached data'));
+      }
           }
         }
 
         return Right(remoteModel);
-      } catch (e) {
-        // Fallback to local
+      } on ServerException catch (e) {
+        return left(ServerFailure(e.message));
       }
     }
 
-    if (localDataSource == null) {
-      return Left(
-          Failure('Local data source not available for fallback search.'));
-    }
+    return Left(ServerFailure('Remote data source not available.'));
+  }
 
+  @override
+  Future<Either<Failure, List<String>>> getSearchHistory() async {
+     try {
+       if (localDataSource != null) {
+         final history = await localDataSource!.getSearchHistory();
+         return Right(history);
+       }
+       return const Right([]);
+     } catch (e) {
+       return Left(CacheFailure( e.toString()));
+     }
+  }
+
+  @override
+  Future<Either<Failure, void>> addSearchToHistory(String query) async {
     try {
-      final either = await productRepository.getProducts();
-      return await either.fold((failure) async => Left(failure),
-          (allProducts) async {
-        final result = await localDataSource!.searchInList(
-          products: allProducts,
-          query: q,
-          filters: filters,
-          cursor: cursor,
-          limit: limit,
-          sort: sort,
-        );
-
-        if (cursor == null && localDataSource != null) {
-          try {
-            await localDataSource!.cacheLastResult(result);
-          } catch (e) {
-            debugPrint('Failed to cache last result: $e');
-          }
-
-          if (q.isNotEmpty) {
-            try {
-              await localDataSource!.addSearchToHistory(q);
-            } catch (e) {
-              debugPrint('Failed to add search history: $e');
-            }
-          }
-        }
-
-        return Right(result);
-      });
+      if (localDataSource != null) {
+        await localDataSource!.addSearchToHistory(query);
+      }
+      return const Right(null);
     } catch (e) {
-      return Left(Failure('Internal error${e.toString()}'));
+      return Left(CacheFailure( e.toString()));
     }
   }
 
@@ -186,7 +117,7 @@ class SearchRepositoryImpl implements SearchRepository {
       }
       return const Right(null);
     } catch (e) {
-      return Left(CacheFailure(message: e.toString()));
+      return Left(CacheFailure( e.toString()));
     }
   }
 
@@ -198,7 +129,7 @@ class SearchRepositoryImpl implements SearchRepository {
       }
       return const Right(null);
     } catch (e) {
-      return Left(CacheFailure(message: e.toString()));
+      return Left(CacheFailure( e.toString()));
     }
   }
 }

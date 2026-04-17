@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:grocery_shop_app/core/utils/images.dart';
+import 'package:grocery_shop_app/core/widgets/custom_asset_image_widget.dart';
 
 import '../../../../config/routes/app_routes.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/services/navigation_service.dart';
+import '../../../../core/utils/styles.dart';
 import '../../../cart/presentation/manager/cart_cubit.dart';
 
 class TopBar extends StatelessWidget {
@@ -24,8 +26,8 @@ class TopBar extends StatelessWidget {
                 color: kTextDark.withOpacity(0.06), shape: BoxShape.circle),
             child: IconButton(
                 padding: EdgeInsets.zero,
-                icon: SvgPicture.asset(
-                  'assets/svg/arr_icon.svg',
+                icon: CustomAssetImageWidget(
+                  Images.arrIcon,
                   height: 12,
                   width: 12,
                   color: kTextDark.withOpacity(0.8),
@@ -48,8 +50,8 @@ class TopBar extends StatelessWidget {
                     IconButton(
                       onPressed: () =>
                           NavigationService.navigateTo(AppRoutes.cart),
-                      icon: SvgPicture.asset(
-                        'assets/svg/bag_icon.svg',
+                      icon: const CustomAssetImageWidget(
+                       Images.bagIcon,
                         height: 22,
                         color: Colors.black54,
                       ),
@@ -69,16 +71,14 @@ class TopBar extends StatelessWidget {
                         child: Center(child: BlocBuilder<CartCubit, CartState>(
                           builder: (context, state) {
                             int count = 0;
-                            if (state is CartLoaded) count = state.items.length;
+                            if (state.status == CartStatus.loaded) count = state.items.length;
 
                             return Center(
                                 child: Text(count.toString(),
-                                    style: TextStyle(
+                                    style: textBold.copyWith(
                                       color: Colors.white,
                                       fontSize: 12 * scale,
                                       fontWeight: FontWeight.w600,
-                                      fontFamily: 'Poppins',
-                                      height: 1,
                                     )));
                           },
                         )),

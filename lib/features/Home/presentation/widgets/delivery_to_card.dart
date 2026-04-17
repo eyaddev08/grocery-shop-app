@@ -6,7 +6,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/services/navigation_service.dart';
 import '../../../../core/utils/functions/show_address_menu.dart';
 import '../../../../core/utils/styles.dart';
-import '../../../checkout/domain/entities/address.dart';
+import '../../../checkout/domain/entities/address_entity.dart';
 import '../../../checkout/presentation/manager/checkout_cubit.dart';
 import '../../../checkout/presentation/manager/checkout_state.dart';
 
@@ -26,7 +26,7 @@ class DeliveryToCard extends StatelessWidget {
           builder: (context, state) {
             // defaults
             String displayedAddress = 'Select delivery address';
-            List<Address> addresses = const [];
+            List<AddressEntity> addresses = const [];
 
             if (state is CheckoutLoading) {
               displayedAddress = 'Loading address...';
@@ -35,7 +35,7 @@ class DeliveryToCard extends StatelessWidget {
             } else if (state is CheckoutLoaded) {
               addresses = state.addresses;
               // Try resolve selected Address by selectedAddressId
-              Address? selected;
+              AddressEntity? selected;
               if (state.selectedAddressId != null) {
                 selected = addresses.firstWhere(
                   (a) => a.id == state.selectedAddressId,
@@ -72,7 +72,7 @@ class DeliveryToCard extends StatelessWidget {
                     final cubit = context.read<CheckoutCubit>();
                     final state = cubit.state;
 
-                    Address? picked;
+                    AddressEntity? picked;
 
                     if (state is CheckoutLoading) {
                       // Show shimmer placeholders

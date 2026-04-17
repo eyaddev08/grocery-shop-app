@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../config/di/injection_container.dart';
+import 'package:grocery_shop_app/config/routes/app_routes.dart';
+import 'package:grocery_shop_app/core/constants/app_colors.dart';
+import '../../../../core/services/navigation_service.dart';
+import '../../../../core/utils/images.dart';
+import '../../../../core/utils/styles.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
-import '../../../track_order/domain/usecases/get_track_order.dart';
-import '../../../track_order/presentation/manager/track_order_cubit.dart';
-import '../../../track_order/presentation/screens/track_order_screen.dart';
-import '../manager/orders_cubit.dart';
-import '../manager/orders_state.dart';
-import '../widgets/active_order_card.dart';
-import '../widgets/completed_order_card.dart';
-import '../widgets/order_divider.dart';
+import '../../../../core/widgets/custom_button_widget.dart';
+import '../../../../core/widgets/custom_snackbar_widget.dart';
+import '../../../../core/widgets/no_items_widget.dart';
+
+import '../manager/order_cubit.dart';
+import '../manager/order_state.dart';
+
 import '../widgets/order_shimmer.dart';
-import '../../domain/entities/order.dart';
+import '../widgets/orders_list_view.dart';
 
 class OrdersScreen extends StatelessWidget {
   const OrdersScreen({super.key});
@@ -23,101 +26,78 @@ class OrdersScreen extends StatelessWidget {
           preferredSize: Size.fromHeight(50),
           child: CustomAppBar(title: 'Orders'),
         ),
-        body: BlocBuilder<OrdersCubit, OrdersState>(
-          builder: (context, state) {
-            if (state is OrdersLoading) {
-              return const OrderShimmer();
+        body: BlocConsumer<OrderCubit, OrderState>(
+          listener: (context, state) {
+            if (state is OrderActionSuccess) {
+              showCustomSnackBarWidget(state.message, context);
+              context.read<OrderCubit>().loadOrders();
+            } else if (state is OrderActionError) {
+              showCustomToast(
+                  message: state.message, context: context, isSuccess: false);
             }
-
-            if (state is OrdersError) {
+          },
+          builder: (context, state) {
+            if (state is OrderLoading) {
+              return const OrderShimmer();
+            } else if (state is OrderError) {
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       state.message,
-                      style: const TextStyle(
-                        color: Colors.red,
-                        fontSize: 16,
-                      ),
+                      style: textBold.copyWith(color: Colors.red, fontSize: 16),
+                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () {
-                        context.read<OrdersCubit>().loadOrders();
-                      },
-                      child: const Text('Retry'),
+                    CustomButton(
+                      buttonText: 'Retry',
+                      onPressed: () => context.read<OrderCubit>().loadOrders(),
+                      buttonWidth: 200,
                     ),
                   ],
                 ),
               );
-            }
+            } else if (state is OrderLoaded || state is OrderActionLoading) {
+              final orders = context.read<OrderCubit>().currentOrders;
 
-            if (state is OrdersLoaded) {
-              final orders = state.orders;
-              if (orders.isEmpty) {
-                return const Center(
-                  child: Text(
-                    'No orders found',
-                    style: TextStyle(
-                      color: Color(0xFF61697C),
-                      fontSize: 16,
-                    ),
+              return Stack(
+                children: [
+                  RefreshIndicator(
+                    backgroundColor: Colors.white,
+                    color: kAccentYellow,
+                    onRefresh: () async {
+                      await context.read<OrderCubit>().loadOrders();
+                    },
+                    child: orders.isEmpty
+                        ? CustomScrollView(
+                            slivers: [
+                              SliverFillRemaining(
+                                child: Center(
+                                  child: NoItemsWidget(
+                                    message: 'No orders found',
+                                    buttonTitle: 'Shop now',
+                                    image: Images.noOrder,
+                                    onShowAll: () =>
+                                        NavigationService.navigateTo(
+                                            AppRoutes.cart),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : OrdersListView(orders: orders),
                   ),
-                );
-              }
-
-              final activeOrders =
-                  orders.where((o) => o.status == OrderStatus.active).toList();
-              final completedOrders =
-                  orders.where((o) => o.status != OrderStatus.active).toList();
-
-              return SingleChildScrollView(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ...activeOrders.map(
-                      (order) => ActiveOrderCard(
-                        order: order,
-                        onTrackOrder: () {
-                          Navigator.push(context,
-                              MaterialPageRoute<void>(builder: (builder) => BlocProvider(
-                              create: (context) => TrackOrderCubit(
-                                getTrackOrderUseCase: sl<GetTrackOrder>(),
-                              )..loadTrackOrder(order.id),
-                              child: TrackOrderScreen(orderId: order.id),
-                            )));
-                          // NavigationService.navigateTo(
-                          //   AppRoutes.trackOrder,
-                          //   arguments: order,
-                          // );
-                        },
-                      ),
+                  if (state is OrderActionLoading)
+                    ColoredBox(
+                      color: Colors.black.withOpacity(0.3),
+                      child: const Center(
+                          child:
+                              CircularProgressIndicator(color: kAccentYellow)),
                     ),
-
-                    // Divider if there are both active and completed orders
-                    if (activeOrders.isNotEmpty && completedOrders.isNotEmpty)
-                      const OrderDivider(),
-
-                    // Completed orders
-                    ...completedOrders.asMap().entries.map((entry) {
-                      final index = entry.key;
-                      final order = entry.value;
-                      return Column(
-                        children: [
-                          CompletedOrderCard(order: order),
-                          if (index < completedOrders.length - 1)
-                            const OrderDivider(),
-                        ],
-                      );
-                    }),
-                  ],
-                ),
+                ],
               );
             }
-
             return const SizedBox.shrink();
           },
         ),

@@ -1,6 +1,4 @@
-// كيان المستخدم
 class User {
-
   const User({
     required this.id,
     required this.name,
@@ -21,4 +19,3 @@ class User {
   @override
   int get hashCode => id.hashCode ^ email.hashCode;
 }
-

@@ -1,5 +1,3 @@
-// ملف مسؤول عن نموذج تحويل بيانات رموز المصادقة بين الـ JSON والكيان.
-
 import '../../domain/entities/auth_token.dart';
 
 class AuthTokenModel extends AuthToken {
@@ -11,7 +9,6 @@ class AuthTokenModel extends AuthToken {
   });
 
   factory AuthTokenModel.fromJson(Map<String, dynamic> json) {
-    // Handle both string and object formats
     String accessToken;
     String refreshToken;
     int expiresIn;
@@ -44,13 +41,11 @@ class AuthTokenModel extends AuthToken {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
+  Map<String, dynamic> toJson() => {
       'access_token': accessToken,
       'refresh_token': refreshToken,
       'expires_in': expiresIn,
       'token_type': tokenType,
     };
-  }
 }
 

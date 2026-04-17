@@ -1,10 +1,9 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../core/error/failure.dart';
-import '../../domain/entities/address.dart';
+import '../../domain/entities/address_entity.dart';
 import '../../domain/entities/label_entity.dart';
 import '../../domain/usecases/add_address.dart';
 import '../../domain/usecases/delete_address.dart';
@@ -26,10 +25,10 @@ class CheckoutCubit extends Cubit<CheckoutState> {
 
   final GetAddressesUseCase getAddresses;
   final GetAddressTypeUseCase getAddressType;
-  final AddAddressUseCase addAddress; 
-  final UpdateAddressUseCase updateAddress; 
+  final AddAddressUseCase addAddress;
+  final UpdateAddressUseCase updateAddress;
   final SetDefaultAddressUseCase setDefaultAddress;
-  final DeleteAddressUseCase deleteAddress; 
+  final DeleteAddressUseCase deleteAddress;
 
   List<LabelAsEntity> addressTypeList = [];
 
@@ -37,13 +36,14 @@ class CheckoutCubit extends Cubit<CheckoutState> {
   int get selectAddressIndex => _selectAddressIndex;
 
   void _emitAddressTypesLoaded([int selectedIndex = 0]) {
-    emit(CheckoutAddressTypesLoaded(addressTypeList, selectedIndex: selectedIndex));
+    emit(CheckoutAddressTypesLoaded(addressTypeList,
+        selectedIndex: selectedIndex));
   }
 
   Future<void> loadAddresses() async {
     emit(const CheckoutLoading());
 
-    final Either<Failure, List<Address>> result = await getAddresses();
+    final Either<Failure, List<AddressEntity>> result = await getAddresses();
     result.fold(
       (failure) => emit(CheckoutError(failure.message)),
       (addresses) {
@@ -68,10 +68,25 @@ class CheckoutCubit extends Cubit<CheckoutState> {
     required String label,
     required String addressType,
     required String details,
+    String? address,
+    String? city,
+    String? country,
+    String? latitude,
+    String? longitude,
   }) async {
     emit(const CheckoutLoading());
     final id = const Uuid().v4();
-    final a = Address(id: id, label: label, addressType: addressType, details: details);
+    final a = AddressEntity(
+      id: id,
+      label: label,
+      addressType: addressType,
+      details: details,
+      address: address,
+      city: city,
+      country: country,
+      latitude: latitude,
+      longitude: longitude,
+    );
 
     final Either<Failure, Unit> result = await addAddress(a);
     result.fold(
@@ -85,9 +100,24 @@ class CheckoutCubit extends Cubit<CheckoutState> {
     required String label,
     required String addressType,
     required String details,
+    String? address,
+    String? city,
+    String? country,
+    String? latitude,
+    String? longitude,
   }) async {
     emit(const CheckoutLoading());
-    final a = Address(id: id, label: label, addressType: addressType, details: details);
+    final a = AddressEntity(
+      id: id,
+      label: label,
+      addressType: addressType,
+      details: details,
+      address: address,
+      city: city,
+      country: country,
+      latitude: latitude,
+      longitude: longitude,
+    );
 
     final Either<Failure, Unit> result = await updateAddress(a);
     result.fold(
