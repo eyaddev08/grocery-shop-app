@@ -9,6 +9,8 @@ void main() async {
   // Initialize dependency injection (includes Hive.initFlutter())
   await di.init();
 
+  
+
   // Set preferred orientations
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
